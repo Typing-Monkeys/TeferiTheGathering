@@ -1,0 +1,6 @@
+	Sorgenti/Players/client.html
+-Aggiunta selezione sideboard tramite menu a tendina
+-Aggiunta selezione type of game tramite menu a tendina: standard, vanguard, commander, archenemy
+
+	Sorgenti/Players/script/client.js
+Aggiunto invio dati sideboard e type of game insieme ai dati del Player

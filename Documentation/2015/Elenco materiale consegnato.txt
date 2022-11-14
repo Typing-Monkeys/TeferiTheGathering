@@ -1,0 +1,25 @@
+ELENCO MATERIALE CONSEGNATO
+
+
+1) File: PROGETTO MAGIC.ZIP che contiene: 
+- cartella codice html guest
+- cartella codice html client
+- cartella codice node
+- cartella codice sorgente java 
+
+2) Files: Class Diagram.pdf e uml.ucls
+Documento sorgente e pdf che illustra classi, variabili e metodi in formato UML. Il formato ucls è quello sorgente del plugin ObjectAid per Eclipse.
+
+3) Le tre slides presentate a lezione:
+-SLIDES Campi e zone di gioco
+-SLIDES Abilità ed Effetti
+-SLIDES Struttura del Progetto
+
+4) Tre relazioni in formato doc:
+-Relazione Server Node.doc
+-Relazione Server Java.doc
+-Relazione Client html.doc
+
+
+
+TEAM DROOLS 2014

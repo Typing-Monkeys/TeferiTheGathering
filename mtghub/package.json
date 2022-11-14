@@ -1,0 +1,22 @@
+{
+  "name": "magic-node-server",
+  "version": "1.0.0",
+  "description": "A middleware for the Java Drools server of Magic project.",
+  "main": "server.js",
+  "dependencies": {
+    "component-emitter": "^1.2.1",
+    "express": "^4.15.2",
+    "json-socket": "^0.2.1",
+    "socket.io": "^1.7.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "magic",
+    "drools"
+  ],
+  "author": "University Of Perugia",
+  "license": "ISC"
+}

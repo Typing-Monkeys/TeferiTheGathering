@@ -1,0 +1,784 @@
+body{
+    font-family: "Arial", "Times new Roman";
+    color: blacklack;
+}
+
+input{
+    border-radius: 7px;
+    background-color: rgba(180, 180, 180, 1);
+    color: white;
+}
+
+#corpo_comandi{
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: 10em;
+    margin-right: 10em;
+
+    border-radius: 6px;
+    background-color: #cccccc;
+    border: 2px solid #000000;
+}
+
+#whereTo{
+    color:#363636;
+}
+
+.row{
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+#dataPlayer1{
+    text-align: left;
+    float: left;
+    left: 10em;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    margin-bottom: 1em;
+}
+
+#connect{
+    border-radius: 7px;
+    width: 12em;
+    background-color: rgba(99, 204, 99, 1);
+    color: white;
+    height: 3em;
+    font-size: 14px;
+}
+
+#dataPlayer2{
+    text-align: left;
+    float: right;
+    right: 10em;
+    border: 2px solid #000000;
+    border-radius: 5px;
+    margin-bottom: 1em;
+}
+.playerID1{
+    border-color:yellow;
+}
+
+.playerID2{
+    border-color:green;
+}
+
+.dataPlayerRow{
+    height: auto;
+    width: auto;
+    padding: 5px 10px 5px 10px;
+}
+
+#DebugButton{
+    background-color: darkred;
+    color: rgb(245, 245, 245);
+}
+
+
+#playersList{
+    margin-top: 1em;
+}
+
+.row-centered{
+    text-align: center;
+}
+
+@media (min-width: 1200px){
+
+    .container {
+        width: auto;
+    }
+}
+#ubody{
+    display: flex; flex-flow: column nowrap;
+}
+fieldset{
+    width:15em;
+}
+
+#upper_area, #under_area{
+    padding-left: 1em;
+}
+
+#choices_area{
+    margin: .5em 0 -.5em .5em; min-height: 1.5em;
+}
+
+#gt_select{
+    font-size: .8em;
+}
+
+#multi_var_opt input[type='radio'],#multi_var_opt label{
+    display:inline-block;
+}
+#aside_buttons{
+    padding: 1em;
+}
+.in_room{
+    margin: .5em .5em;
+}
+#visualizer{
+    height: 40em; 
+    width: auto; 
+    margin: 1% 1% 1% 0; 
+    background-color: whitesmoke;
+}
+
+#row0{
+    display: inline-flex;
+}
+
+#row3{
+    display: flex; 
+    flex-flow: row nowrap;
+}
+#nickname{
+    margin: .5em;
+}
+#team_name{
+    margin-bottom: .5em;
+}
+#nop{
+    margin-bottom: .5em;
+}
+/*
+#row2{display: flex; flex-flow: row nowrap; justify-content: flex-start;}
+UBUNTU style
+textarea{font-family: monospace; color: aliceblue; background-color: #5e0081;}
+*/
+textarea{align-self: flex-end;}
+
+#row1{
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 5em;
+}
+
+#in_room_buttons{
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#row1sub1{display: flex; flex-flow: row nowrap; width: 100%;}
+
+.gen-overlay-background{
+    background: rgba(255, 255, 255, .4);
+    border-radius: .2em;
+    align-self: center;
+}
+
+#card-overlay-background {
+    background: rgba(255, 255, 255, .6) none repeat scroll 0% 0%;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 90;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+ }
+
+#card-overlay {
+    max-height: 96%;
+    max-width: 40%;    
+    background: antiquewhite;
+    border-radius: 1em;
+    /*border: 2px solid purple;
+    
+    z-index: 100;*/
+}
+
+#blob-card{
+    border-radius: .8em;
+    max-height: 800px;
+    max-width: 600px;
+}
+
+#blob-card img{
+    border-radius: .8em;
+    width: 100%;
+}
+
+/* MOD Liceo */
+
+html{
+    height: 100%;
+}
+
+body{
+    background-image:url(../images/terra.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    height: auto;
+    width: 100%;
+}
+/* Mai lasciare codice ai liceali!
+.in_room{
+margin-left: 11em;
+margin-top: 0.5em;
+    width: 42em;
+height: 2em;}
+*/
+.avatar{ border-radius: 2em; }
+
+.mana{ border-radius: 2em; 
+    height: 1em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+.priorita-op{ border-radius: 2em;
+height: 1em;
+width: 1em;
+border: 2px solid #00F;
+margin-left: 1em;
+    margin-top: 0.8em;}
+
+.hand-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;
+    margin-left: 4em;
+    margin-top: -6.5em;
+
+    background-position: center center;
+    background-size: contain;
+}
+
+.library-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;margin-left: 4em;
+    background-position: center center;
+    background-size: contain;
+    margin-top: 0.5em;
+
+}
+
+.grave-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;
+    margin-left: 7em;
+
+    background-position: center center;
+    background-size: contain;
+    margin-top: -3.25em;
+
+}
+
+#library-my1{
+    margin-left: 9em;
+    margin-top: -7.25em;
+}
+
+#hand-my1{
+    /*height: 3em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 6em;
+    margin-top: -1em;
+    background-position: center center;
+    background-size: contain;
+    ADAPT - era classe hand-my che non esiste...*/
+    padding-left: 17em;
+    display: flex;
+    flex-flow: row nowrap;
+    border: 1px solid green;
+}
+
+#hand-my1 span img{
+    /*Cards images*/
+    width: 100%;
+    border-radius: 0.2em;
+}
+
+#library-my1{
+    position: absolute;
+    
+}
+
+#grave-my1{
+    margin-left: 12em;
+    margin-top: -3.25em;
+}
+
+.class{opacity: 0.5;
+	transition: opacity .25s ease-in-out;}
+
+
+.rotate{
+    transition: 1s;
+    transform-style: preserve-3d;
+    transform:rotate(90deg);
+    
+    
+}
+
+.face{
+    transform: rotateY(180deg);
+    background-image: url(../images/carte.jpg) !important;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;}
+
+.flip{
+    transition: 1s;
+    transform-style: preserve-3d;
+    transform:rotate(180deg);
+}
+
+
+.fade {
+    opacity: 0.5;
+	transition: opacity .25s ease-in-out;
+}
+
+.tapface{
+    transform: rotateY(180deg) rotate(90deg);
+    background-image: url(../images/back.JPG) !important;
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.move{transition: 1s;
+    transform-style: preserve-3d;
+    transform: translate(0em, -20em);}
+
+
+
+
+#container{
+    
+}
+
+
+#game {
+    border: 2px solid #000000;
+    border-radius: 17px;
+    height: 34em;
+}
+#opponent-team {
+    height: 17em;
+    width: 56.5em;
+    
+    border: 2px solid #555555;
+    //height: 10em;
+    //width: 56.5em;
+    margin: auto;
+    margin-top: 0.5em;
+    background-color: #cccccc !important;
+    border-radius: 15px;
+}
+#op-team1 {
+    border: 2px solid #9e5151;
+    height: 10em;
+    width: 27em;
+    border-radius: 15px;
+    background-color: #c5b5b2;
+}
+
+#op-team2{
+    border: 2px solid #9e5151;
+    height: 10em;
+    width: 27em;
+    border-radius: 15px;
+    background-color: #c5b5b2;
+    
+}
+
+
+#active-si-no-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 0.1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+#active-si-no-op2{
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 0.1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+
+#lp-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+#lp-op2{
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+#pc-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+#pc-op2{
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 0.1em;
+    border-radius: 5px;
+}
+
+.op_player{
+    height: 9.5em;
+    width: 20em;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+
+
+#op-player1{
+    float: left;
+    left: 10em;
+    
+}
+
+#op-player2{
+    float: right;
+    right: 10em;
+}
+
+
+#avatar-op1 {
+    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+    
+
+
+
+#avatar-op2{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+
+
+
+
+
+
+
+#avatar-op3{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+
+#avatar-op4{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+
+
+.tapped_true{
+    transform: rotate(90deg);
+}
+
+
+
+
+
+#stack_area span img{
+    width: 100%;
+    border-radius: 0.2em;
+}
+
+#my-team{
+    border: 2px solid #555555;
+    height: 17em;
+    width: 56.5em;
+    margin: 0.5em auto auto;
+    background-color: #cccccc;
+    border-radius: 15px;
+}
+
+#my-team1{
+    border: 2px solid #9e5151;
+    height: 16em;
+    width: 37.25em;
+    margin-top: 0.4em;
+    margin-left: 16%;
+    border-radius: 15px;
+    background-color: #c5b5b2;
+}
+
+#active-si-no-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 1.1em;
+    margin-top: 2em;
+}
+
+#lp-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 6.1em;
+    margin-top: -2.3em;
+}
+
+#pc-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 11.1em;
+    margin-top: -2.2em;
+}
+
+#my-player1{
+    width: 35.5em;
+    border: 2px solid #069e1e;
+    margin-top: 3.5em;
+    margin-left: 0.7em;
+    height: 7.6em;
+    border-radius: 5px;
+    background-color: rgba(0, 128, 0, 0.24);
+
+}
+
+#avatar-my1{    height: 4em;
+    width: 4em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+#mp-my1{
+    height: 1.2em;
+    width: 4em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+#priorita-si-no-my1{
+    border-radius: 2em;
+    height: 1em;
+    width: 1em;
+    border: 2px solid #00F;
+    margin-left: 6em;
+    margin-top: -6.2em;
+}
+
+#my-player2{
+    border: 2px solid #1E3;
+    margin-top: -15.25em;
+    height: 6em;
+    width: 21em;
+    margin-left: 15.2em;
+}
+
+#avatar-my2{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+    
+
+
+#my-team2{
+    border: 2px solid #F00;
+    margin-left: 39em;
+    width: 16.8em;
+    margin-top: -16.25em;
+    height: 16em;
+}
+
+#active-si-no-my2{
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #00F;
+    margin-top: 0.2em;
+    margin-left: 12.7em;
+}
+
+#lp-my2{
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #00F;
+    margin-top: -2.25em;
+    margin-left: 7.5em;
+}
+
+#pc-my2{    
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #00F;
+    margin-top: -2.25em;
+    margin-left: 2.23em;
+}
+
+#my-player3{
+    border: 2px solid #1E3;
+    height: 5.75em;
+    margin-top: 0.6em;
+    width: 15.6em;
+    margin-left: 0.5em;
+}
+
+#avatar-my3{    
+    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+    
+
+#my-player4{
+    border: 2px solid #1E3;
+    margin-left: 0.5em;
+    height: 5.75em;
+    width: 15.6em;
+    margin-top: 0.3em;
+}
+
+#avatar-my4{    
+    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+/* END MOD*/
+
+.card{
+    background-size: 100%;
+	margin: .2em;
+    cursor: pointer;
+    height: 6em;
+    width: 4em;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.faceDown_true{
+    /*background-image: url(images/backside.jpg);*/
+    background-color: #693a04;
+    padding: 0;
+    cursor: default;
+}
+.faceDown_false{
+    /*border: 0;*/
+}
+.round{
+    width: 100%;
+    background-size: cover;
+}
+
+#game_status_viewer{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#languages{
+    margin-bottom: .5em;
+    font-size: .8em;
+}
+
+#message{
+    display: inline-block;
+    border-radius: 5px;
+    border-color: cadetblue;
+}
+
+
+#theCardModal{
+    display: none;
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    top: 10em;
+    left: 50%;
+    margin-left: -200px;
+    background: #c0c0c0;
+    z-index: 9999;
+    
+}
+
+
+        /*	OTHERS	*/
+
+[id^=choices]{margin-left: .5em;}
+
+.spacer_w1{width: 1em;}
+#game_status_viewer div {padding:.1em .2em .1em .2em;}
+
+.flex-start{align-self: flex-start;}
+
+/* Links */
+	.clickable,
+	#siteContents a:link,
+	#siteContents a:visited {
+	    color: #0240ca;
+	    font-weight: bold;
+	    text-decoration: none;
+	    border-bottom: 1px solid transparent;
+	}
+
+	#siteContents a:hover,
+	#siteContents a:focus,
+	.clickable:hover,
+	span.fakelink:hover	{
+	    border-bottom: 1px solid #0240ca;
+	    outline: none; /* Chrome/Safari fix */
+	}
+
+	.clickable { cursor: pointer !important; }
+	
+	.manaSymbolBox {
+	    padding-top: 5px;
+	}

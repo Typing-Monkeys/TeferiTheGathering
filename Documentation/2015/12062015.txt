@@ -1,0 +1,17 @@
+num cart per ogni zona e carte se presenti	v?
+creare div OPPONENT dove risiedono tutti gli opp del giocatore	v
+
+crea un DIV per più type2 (per ogni messaggio una label/select in più) v
+
+Separare Recieve game con Recieve zone: RG solo aggiorna i TYPE1  -IMP-
+
+Implementare:
+Active player
+Priority Player
++ Fase e Step
+
+
+"Join the room" deve leggere da input n giocatori e tipo di gioco (e spedirli) /LO FA/
+Scrivere su client: numero di giocatori mancanti e se è stata fatta la room
+
+Send data manda solo le info del giocatore e i dati del -gioco assieme (al numero di giocatori) IN CONFLITTO- prima dello Start

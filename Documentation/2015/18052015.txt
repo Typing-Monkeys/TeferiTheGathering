@@ -1,0 +1,11 @@
+18/05/2015
+
+Lasciare nella fase inizializzazione solo le regole che settano le fasi e gli step.
+
+Creare variabile che memorizza la fase di gioco (Stage) con valori 1=Starting e 2=Game
+
+Spostare in General le altre regole di Initialization
+
+Aggiungere il controllo Stage sulle general
+
+Ridefinire le costanti per gli Attempt

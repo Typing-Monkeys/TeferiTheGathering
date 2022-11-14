@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Test Magic-->
+        <title>MAGIC: THE GATHERING</title>
+        <meta charset="UTF-8" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js?ver=15"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js?ver=15"></script>
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css?ver=15">
+        <link rel="stylesheet" href="./css/playerL.css?ver=15">
+    </head>
+    <body id="body">
+        <div id="card-overlay-background" hidden="">
+            <div id="card-overlay">
+                <div id="blob-card"></div>
+            </div>
+        </div>
+        <marker xmlns="http://www.w3.org/2000/svg" id="triangle" viewBox="0 0 10 10" refX="0" refY="5" markerUnits="strokeWidth" markerWidth="4" markerHeight="3" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z"/>
+        </marker>
+        <div id="upper_area">
+            <div id="row0">
+                <div id="text_disc">
+                    <textarea id='message' cols="70" rows="4" class="in_room" readonly></textarea>
+                    <input  id="disconnect" class="in_room create_room" type="button" value="Disconnect" />
+                </div>
+            </div>
+            <div id="row1">
+                <h3 id='nomePlayer'>Player</h3>
+                <div id="in_room_buttons" class="in_room">
+                    <input id="start_game" hidden type="button" value="Start Game" />
+                    <!--
+                                    <input id="receive_zone" class="in_room" type="button" value="Receive Zone" />
+                -->
+
+                    <input id="priority_button" type="button" value="Pass priority" />
+
+                </div>
+                <div id="row1sub1">
+                    <div class="in_room">
+                        <label for="option_button">Select command</label>
+                        <select id="option" name="option">
+                            <option value=0>&nbsp;</option>
+                            <option value=1>Pass Priority</option>
+                            <option value=2>Cast Instant Spell</option>
+                            <option value=3>Cast Non Instant Spell</option>
+                            <option value=4>Activate Ability</option>
+                            <option value=5>Activate Mana Ability</option>
+                            <option value=6>Take Special Action</option>
+                        </select>
+                        <!--<input id="option2_button" type="button" value="Select option"/>-->&nbsp;
+                        <select id="option2" name="option" hidden="true">
+                            <option value=0>&nbsp;</option>
+                            <option value=1>Play Land</option>
+                            <!--rule 115.2a-->
+                            <option value=2>Face up</option>
+                            <!--rule 115.2b-->
+                            <option value=3>Later Action</option>
+                            <!--rule 115.2c-->
+                            <option value=4>Ignore Ability</option>
+                            <!--rule 115.2d-->
+                            <option value=5>Suspand</option>
+                            <!--rule 115.2e-->
+                            <option value=6>Planechase</option>
+                            <!--rule 115.2f-->
+                        </select>
+                        <input id="send_attempt" type="button" value="Send attempt" />&nbsp;
+                        <div id="choices_area"></div>
+                    </div>
+                </div>
+
+                <div class="create_room">
+                    <form>
+                        <label>Choose deck</label>
+                        <select id="deck" name="deck">
+                            <option value="1">Rosso Nero</option>
+                            <option value="2">Blu Bianco </option>
+                            <option value="3">Mono Verde</option>
+                            <option value="4">Solo Creature</option>
+                        </select>
+                        <label>Choose sideboard</label>
+                        <select id="sideboard" name="sideboard">
+                            <option value="1">SideBoard1</option>
+                            <option value="2">SideBoard2</option>
+                        </select>
+
+                    </form>
+                    <br>
+                </div>
+                <!-- AGGIUNTO -->
+
+                <!-- FINE AGGIUNTO -->
+            </div>
+        </div>
+        <div id="under_area">
+            <div id="row2" class="in_room">
+                <div id="container" >
+                    <div class="zoom">
+                        <button class="zoom_in" onclick="zoom_in();">
+                            <img class="img_zoom" src="./images/zoom_piu.png"  />
+                            ZOOM IN
+                        </button>
+                        <button class="zoom_in" onclick="zoom_out();">
+                            <img class="img_zoom" src="./images/zoom_meno.png"  />
+                            ZOOM OUT
+                        </button>
+                        <br>
+                    </div>
+                    <div id="game">
+                        <div id="opponent-team">
+                            <!--  primo team avversario   -->
+                            <div id="op-team1">
+                                <span class="dot" id="opponentDOT1"></span>
+                                <div id="active-si-no-op1"></div>
+                                <div id="lp-op1"></div>
+                                <div id="pc-op1"></div>
+                                <div id="op-player1">
+                                    <!--  primo player avversario   -->
+                                    <div id="avatar-op1" class="avatar"></div>
+                                    <div id="mp-op1" class="mana row"></div>
+                                    <div id="priorita-si-no-op1" class="priorita-op"></div>
+                                    <div id="hand-op1" class="hand-op content"></div>
+                                    <div id="library-op1" class="library-op"></div>
+                                    <div id="grave-op1" class="grave-op"></div>
+                                </div>
+                                <div id="op-player2" hidden>
+                                    <!--  secondo player avversario   -->
+                                    <div id="avatar-op2" class="avatar"></div>
+                                    <div id="mp-op2" class="mana"></div>
+                                    <div id="priorita-si-no-op2" class="priorita-op"></div>
+                                    <div id="hand-op2" class="hand-op"></div>
+                                    <div id="library-op2" class="library-op"></div>
+                                    <div id="grave-op2" class="grave-op"></div>
+                                </div>
+                            </div>
+                            <div id="op-team2" hidden>
+                                <!--  secondo team avversario   -->
+                                <div id="active-si-no-op2"></div>
+                                <div id="lp-op2"></div>
+                                <div id="pc-op2"></div>
+                                <div id="op-player3" hidden>
+                                    <!--  terzo player avversario   -->
+                                    <div id="avatar-op3" class="avatar"></div>
+                                    <div id="mp-op3" class="mana"></div>
+                                    <div id="priorita-si-no-op3" class="priorita-op"></div>
+                                    <div id="hand-op3" class="hand-op"></div>
+                                    <div id="library-op3" class="library-op"></div>
+                                    <div id="grave-op3" class="grave-op"></div>
+                                </div>
+                                <div id="op-player4" hidden>
+                                    <!--  quarto player avversario -->
+                                    <div id="avatar-op4" class="avatar"></div>
+                                    <div id="mp-op4" class="mana"></div>
+                                    <div id="priorita-si-no-op4" class="priorita-op"></div>
+                                    <div id="hand-op4" class="hand-op"></div>
+                                    <div id="library-op4" class="library-op"></div>
+                                    <div id="grave-op4" class="grave-op"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="command_area" class="command_area">Cmd
+                            <div class="content"></div>
+                        </div>
+                        <div id="exile_area" class="exile_area">Exile
+                            <div class="content"></div>
+                        </div>
+                        <div id="battlefield_area" class="battlefield_area">
+                            <div id="shared_bf" class="content"></div>
+                            <div id="combat" class="content"></div>
+                        </div>
+                        <div id="ante_area" class="ante_area">Ante
+                            <div class="content"></div>
+                        </div>
+                        <div id="stack_area" class="stack_area">Stack
+                            <div class="content"></div>
+                        </div>
+                        <div id="my-team">
+                            <div id="my-team1">
+                                <span class="dot" id="myDOT"></span>
+                                <!--  il tuo team   -->
+                                <div id="active-si-no-my1"></div>
+                                <div id="lp-my1"></div>
+                                <div id="pc-my1"></div>
+                                <div id="my-player1">
+                                    <!--  player principale   -->
+                                    <div id="avatar-my1" class="avatar"></div>
+                                    <div id="mp-my1" class="mana content"></div>
+                                    <div id="priorita-si-no-my1"></div>
+                                    <div id="hand-my1" class="content">
+                                    </div>
+                                    <div id="library-my1"></div>
+                                    <div id="grave-my1" class="content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="turn_phase_step">
+                    <div class="tps_title">Turno</div>
+                    <ul class="PrimaryNav" id="turn_box">
+                        <li class="turn_element" id="player1"></li>
+                        <li class="turn_element" id="player2">Player2</li>
+                    </ul>
+                    <div class="tps_title">Fase</div>
+                    <ul class="PrimaryNav" id="phase_box">
+                        <li class="phase_element" id="beginning">Beginning</li>
+                        <li class="phase_element" id="precombat_main">Precombat</li>
+                        <li class="phase_element" id="phase_combat">Combat</li>
+                        <li class="phase_element" id="postcombat_main">Postcombat</li>
+                        <li class="phase_element" id="ending">Ending</li>
+                    </ul>
+                    <div class="tps_title">Step</div>
+                    <div id="step"></div>
+
+                    </ul>
+                </div>
+            </div>
+            <div id="row3">
+                <div id="wrapper" class="create_room">
+                    <form>
+                        <fieldset>
+                            <legend>Choose gametype</legend>
+                            <div id="gt_select">
+                                <input type="radio" id="tp" value="1" name="gametype" checked>
+                                <label for="tp">Two players</label>
+
+                                <input type="radio" id="mp" value="0" name="gametype">
+                                <label for="mp">Multiplayer</label>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <label>Insert nickname</label>
+                    <input id="nickname" type="text" name="usrname" autofocus required />
+                    <button id="clicknickname" onclick="showPannel()">Ok</button>
+
+                    <div id="aside_buttons" style="display: none;">
+                        <input id="connect" class="create_room" type="button" value="Join to the room" />
+                        <span id="send_p_data" hidden>
+                                <input id="conf_mp" class="create_room" type="button" name="conf" value="Send Player Data">
+                                <input id="conf_2p" class="create_room" type="button" name="conf" value="Send Player Data">
+                            </span>
+                    </div>
+
+                    <form>
+                        <div id="languages">
+                            <!-- value in ISO 639-1, Label in ISO 639-2 -->
+                            <input type="radio" id="lng_it" name="lng" value="it" checked>
+                            <label for="lng_it">ITA</label>
+                            <input type="radio" id="lng_en" name="lng" value="en">
+                            <label for="lng_en">ENG</label>
+                            <input type="radio" id="lng_es" name="lng" value="es">
+                            <label for="lng_es">SPA</label>
+                            <input type="radio" id="lng_ja" name="lng" value="ja">
+                            <label for="lng_ja">JPN</label>
+                        </div>
+                    </form>
+                    <div id="2p_var_opt" style="display: none; text-align: left;">
+                        <form>
+                            <fieldset>
+                                <legend>Casual Variants</legend>
+                                <div id="2p_cvar">
+                                    <input type="radio" value="1" name="casual_var">
+                                    <label>Planechase</label>
+                                    <br>
+                                    <input type="radio" value="2" name="casual_var">
+                                    <label>Vanguard</label>
+                                    <br>
+                                    <input type="radio" value="3" name="casual_var">
+                                    <label>Commander</label>
+                                    <br>
+                                    <input type="radio" value="4" name="casual_var">
+                                    <label>Archenemy</label>
+                                    <br>
+                                    <input type="radio" value="5" name="casual_var">
+                                    <label>Conspiracy Draft</label>
+                                    <br>
+                                </div>
+                                <input type="reset" value="Uncheck">
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div id="multi_var_opt" style="display: none;">
+                        <form>
+                            <label for="team_name">Team Name:</label>
+                            <input id="team_name" type="text" maxlength="20">
+                            <br>
+                            <label for="nop">Player number:</label>
+                            <input id="nop" type="number" value="3">
+                            <fieldset>
+                                <legend>Choose a variant</legend>
+                                <div id="multi_var">
+                                    <input id="mv1" type="radio" value="1" name="gametype" checked required>
+                                    <label for="mv1">Free For All</label>
+                                    <br>
+                                    <input id="mv2" type="radio" value="2" name="gametype" required>
+                                    <label for="mv2">Grand Melee</label>
+                                    <br>
+                                    <input id="mv3" type="radio" value="3" name="gametype" required>
+                                    <label for="mv3">Team vs Team</label>
+                                    <br>
+                                    <input id="mv4" type="radio" value="4" name="gametype" required>
+                                    <label for="mv4">Emperor</label>
+                                    <br>
+                                    <input id="mv5" type="radio" value="5" name="gametype" required>
+                                    <label for="mv5">Two Headed Giant</label>
+                                    <br>
+                                    <input id="mv6" type="radio" value="6" name="gametype" required>
+                                    <label for="mv6">Alternate Teams</label>
+                                    <br>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <form>
+                            <fieldset>
+                                <legend>Choose an option</legend>
+                                <div id="multi_opt">
+                                    <input id="lroi" type="checkbox" value="20" name="gametype">
+                                    <label for="lroi">Limited range of influence</label>
+                                    <br>
+                                    <input type="number" id="roi" name="roi">
+                                    <br>
+
+                                    <input id="amp" type="checkbox" value="21" name="gametype">
+                                    <label for="amp">Attack multiple players</label>
+                                    <br>
+
+                                    <input id="dc" type="checkbox" value="22" name="gametype">
+                                    <label for="dc">Deploy Creatures</label>
+                                    <br>
+
+                                    <input id="stt" type="checkbox" value="23" name="gametype">
+                                    <label for="stt">Shared Team Turns</label>
+                                    <br>
+
+                                    <input id="al" type="checkbox" value="30" name="gametype">
+                                    <label for="al">Attack Left</label>
+                                    <br>
+
+                                    <input id="ar" type="checkbox" value="31" name="gametype">
+                                    <label for="ar">Attack Right</label>
+                                    <br>
+                                </div>
+                            </fieldset>
+                        </form>
+                        <form>
+                            <fieldset>
+                                <legend>Casual Variants</legend>
+                                <div id="multi_cvar">
+                                    <input id="pch" type="radio" value="1" name="casual_var">
+                                    <label for="pch">Planechase</label>
+                                    <br>
+                                    <input id="vngd" type="radio" value="2" name="casual_var">
+                                    <label for="vngd">Vanguard</label>
+                                    <br>
+                                    <input id="cmdr" type="radio" value="3" name="casual_var">
+                                    <label for="cmdr">Commander</label>
+                                    <br>
+                                    <input id="arche" type="radio" value="4" name="casual_var">
+                                    <label for="arche">Archenenmy</label>
+                                    <br>
+                                    <input id="cdrft" type="radio" value="5" name="casual_var">
+                                    <label for="cdrft">Conspiracy Draft</label>
+                                </div>
+                                <input type="reset" value="Uncheck">
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+	
+        <!-- visualizza il campo da gioco senza che ci sia il server avviato
+        <input id="fake_load" type="button" value="DummyLoad" />
+        -->
+
+        <script src="script/socket.io.js?ver=15"></script>
+        <script src="script/config.js?ver=15"></script>
+        <script src="script/clientL.js?ver=15"></script>
+    </body>
+</html>

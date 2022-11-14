@@ -1,0 +1,26 @@
+id choice diventano costanti, sincronizzare con html
+dentro card andrà un oggetto dbcard preso pari pari dal database
+flip split e double faced hanno due facce, tutte le altre una (la seconda faccia è vuota)
+
+Ogni giocatore deve sapere chi deve scegliere anche in TYPE1
+
+Verificare che le choices vengono inviate TUTTE correttamente!
+
+il secondo mulligan non parte, perché?
+
+GALT: manca ManaCost nel json
+
+aggiungere sottotipo a sendtonode per gestire 700.2 o simili
+riceve una lista di opzioni invece di un solo elemento
+
+cast: da 601.2
+
+gestione splice con un boolean isSplice
+addictional cost: lista di costi addizionali
+alternative cost: lista di costi alternativi
+niente boolean, si controlla se le liste sono piene
+quelli che scegliamo restano nella lista, gli altri vengono cancellati
+
+In futuro:
+Lista di abilità non dovrà essere una lista di stringhe ma una lista di oggetti abilità con caratteristiche, mana ability ecc...
+

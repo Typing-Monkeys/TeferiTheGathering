@@ -1,0 +1,1022 @@
+body{
+    margin: 0 auto;
+    font-family: "Arial", "Times new Roman";
+    color: black;
+}
+
+h3{
+    width: 300px;
+}
+
+#svg_container{
+    z-Index: 2;
+}
+
+#nomePlayer{
+    /*background-color: white;*/
+}
+
+#ubody{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+fieldset{
+    width:15em;
+}
+
+#upper_area, #under_area{
+    padding-left: 1em;
+}
+
+#choices_area{
+    margin: .5em 0 -.5em .5em;
+    min-height: 1.5em;
+    width: inherit;
+}
+
+#gt_select{
+    font-size: .8em;
+}
+
+#multi_var_opt input[type='radio'],#multi_var_opt label{
+    display:inline-block;
+}
+
+#priority_button, #start_game{
+    border-radius: 7px;
+    width: 12em;
+    background-color: rgba(99, 204, 99, 1);
+    color: white;
+    height: 3em;
+    font-size: 14px;
+    z-Index: 10;
+    /*
+    border-radius: 5px;
+    width: 10em;
+    height: 3em;
+    background-color: rgba(2, 150, 2, 0.51);
+    color: whitesmoke;
+    */
+}
+
+#send_attempt{
+    border-radius: 5px;
+    width: 10em;
+    height: 3em;
+    background-color: rgba(255, 255, 255, .4);
+}
+
+#message{
+    border-radius: 5px;
+    border-color: cadetblue;
+    height: 150px;
+}
+
+#connect{
+    border-radius: 7px;
+    width: 12em;
+    background-color: rgba(99, 204, 99, 1);
+    color: white;
+    height: 3em;
+    font-size: 14px;
+}
+
+#conf_mp{
+    border-radius: 7px !important;
+    width: 12em !important;
+    background-color: rgba(99, 204, 99, 1) !important;
+    color: white !important;
+    height: 3em !important;
+    font-size: 14px;
+}
+
+#conf_2p{
+    border-radius: 7px !important;
+    width: 12em !important;
+    background-color: rgba(99, 204, 99, 1) !important;
+    color: white !important;
+    height: 3em !important;
+    font-size: 14px;
+}
+
+#disconnect{
+    border-radius: 5px;
+    width: 10em;
+    height: 3em;
+    background-color: rgba(255, 255, 255, .4);
+}
+
+
+#aside_buttons{
+    padding: 1em;
+}
+
+.in_room{
+    margin: .5em .5em;
+}
+
+#visualizer{
+    height: 40em;
+    width: auto;
+    margin: 1% 1% 1% 0;
+    background-color: whitesmoke;
+}
+
+#text_disc{
+    display: inline-flex;
+
+}
+
+#row0{
+    position: absolute;
+    margin-left: 40em;
+}
+
+#row3{
+    display: flex;
+    flex-flow: row nowrap;
+    text-align: center;
+}
+#nickname{margin: .5em;}
+#team_name{margin-bottom: .5em;}
+#nop{margin-bottom: .5em;}
+/*
+#row2{display: flex; flex-flow: row nowrap; justify-content: flex-start;}
+UBUNTU style
+textarea{font-family: monospace; color: aliceblue; background-color: #5e0081;}
+*/
+textarea{align-self: flex-end;}
+
+#row1{
+    display: flex;
+    flex-flow: column nowrap;
+    min-height: 5em;
+}
+
+#row2{
+    display: inline-flex;
+}
+
+#in_room_buttons{
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#row1sub1{
+    display: flex;
+    flex-flow: row nowrap;
+    width: 620px;
+}
+
+.gen-overlay-background{
+    background: rgba(255, 255, 255, .4);
+    border-radius: .2em;
+    align-self: center;
+}
+
+#card-overlay-background {
+    background: rgba(255, 255, 255, .6) none repeat scroll 0% 0%;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 90;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+ }
+
+#card-overlay {
+    max-height: 96%;
+    max-width: 40%;
+    background: antiquewhite;
+    border-radius: 1em;
+    /*border: 2px solid purple;
+
+    z-index: 100;*/
+}
+
+#blob-card{
+    border-radius: .8em;
+    max-height: 800px;
+    max-width: 600px;
+}
+
+#blob-card img{
+    border-radius: .8em;
+    width: 100%;
+}
+
+/* MOD Liceo*/
+
+html{
+    height: 100%;
+}
+
+body{
+    background-image:url(../images/terra.jpg);
+    background-repeat: repeat;
+    background-size: 100% 100%;
+    height: auto;
+    width: 100%;
+}
+
+.avatar{ border-radius: 2em; }
+
+.mana{ border-radius: 2em;
+    height: 1em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+.priorita-op{ border-radius: 2em;
+height: 1em;
+width: 1em;
+border: 2px solid #00F;
+margin-left: 1em;
+    margin-top: 0.8em;}
+
+.hand-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;
+    margin-left: 4em;
+    margin-top: -6.5em;
+
+    background-position: center center;
+    background-size: contain;
+}
+
+.library-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;margin-left: 4em;
+    background-position: center center;
+    background-size: contain;
+    margin-top: 0.5em;
+
+
+}
+
+.grave-op{
+    height: 3em;
+    width: 2em;
+    border: 2px solid #1313a7;
+    border-radius: 5px;
+    margin-left: 7em;
+
+    background-position: center center;
+    background-size: contain;
+    margin-top: -3.25em;
+
+}
+
+#library-my1{
+    width: 4.063em;
+    margin-left: 10.5em;
+    margin-top: -14.250em;
+    /*position: absolute;*/
+}
+
+#hand-my1{
+    margin-top: 6em;
+    margin-left: 0.625em;
+    margin-right: 0.625em;
+    border-radius: 7px;
+
+    padding-left: 1.5em;
+
+    display: flex;
+    flex-flow: row nowrap;
+    border: 1px solid green;
+}
+
+#hand-my1 span img{
+    /*Cards images*/
+    width: 100%;
+    border-radius: 0.2em;
+}
+
+.card faceDown_true{
+    margin-top: 2.375em;
+}
+
+#shared_bf{
+    /*margin-left: 0.625em;
+    margin-top: 0.625em;*/
+    display: flex;
+    flex-direction: row;
+    padding-left: 0.625em;
+    padding-top: 0.625em;
+    position: relative;
+}
+
+#grave-my1{
+    margin-left: 12em;
+    margin-top: -3.25em;
+}
+
+.class{opacity: 0.5;
+	transition: opacity .25s ease-in-out;}
+
+
+.rotate{
+    transition: 1s;
+    transform-style: preserve-3d;
+    transform:rotate(90deg);
+
+
+}
+
+.face{
+    transform: rotateY(180deg);
+background-image: url(back.JPG) !important;
+ background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;}
+
+.flip{
+
+    transition: 1s;
+    transform-style: preserve-3d;
+ transform:rotate(180deg);
+}
+
+
+.fade {
+   opacity: 0.5;
+	transition: opacity .25s ease-in-out;}
+
+.tapface{
+
+    transform: rotateY(180deg) rotate(90deg);
+background-image: url(back.JPG) !important;
+ background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;}
+
+.move{transition: 1s;
+    transform-style: preserve-3d;
+    transform: translate(0em, -20em);}
+
+
+
+
+#container{height: 54em;}
+
+
+#game {
+    height: 56.5em;
+    width: 58em;
+    border: 2px solid #555555;;
+    border-radius: 17px;
+        margin-top: 0.625em;
+
+}
+#opponent-team {
+    border: 2px solid #555555;
+    height: 10em;
+    width: 56.5em;
+    margin: auto;
+    margin-top: 0.5em;
+    background-color: #cccccc !important;
+    border-radius: 15px;
+}
+#op-team1 {
+    border: 2px solid #9e5151;
+    height: 9em;
+    width: 27.25em;
+    margin-top: 0.4em;
+    border-radius: 15px;
+    margin-left: 25%;
+    background-color: #c5b5b2;
+}
+#active-si-no-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 0.1em;
+    border-radius: 5px;
+    margin-left: 3%;
+}
+#lp-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 3%;
+    border-radius: 5px;
+
+}
+#pc-op1 {
+    height: 2em;
+    width: 2.5em;
+    border: 2px solid #4a4a9e;
+    margin-top: 1em;
+    margin-left: 3%;
+    border-radius: 5px;
+
+}
+#op-player1 {
+    height: 8em;
+    width: 10.5em;
+    border: 2px solid #069e1e;
+    margin-top: -8.5em;
+    margin-left: 28%;
+    border-radius: 5px;
+    background-color: rgba(0, 128, 0, 0.24);
+}
+#avatar-op1 {
+    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+#op-player2{
+    height: 8em;
+width: 10.5em;
+border: 2px solid #1E3;
+margin-top: -8.25em;
+margin-left: 15.5em;
+
+}
+
+#avatar-op2{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+#op-team2{border: 2px solid #F00;
+height: 9em;
+width: 27.25em;
+margin-left: 28.5em;
+margin-top: -9.3em;}
+
+#active-si-no-op2{height: 2em;
+width: 2.5em;
+border: 2px solid #00F;
+margin-top: 0.1em;
+margin-left: 0.1em;}
+
+#lp-op2{height: 2em;
+width: 2.5em;
+border: 2px solid #00F;
+margin-top: 1em;
+margin-left: 0.1em;}
+
+#pc-op2{height: 2em;
+width: 2.5em;
+border: 2px solid #00F;
+margin-top: 1em;
+margin-left: 0.1em;}
+
+#op-player3{
+    height: 8em;
+width: 10.5em;
+border: 2px solid #1E3;
+margin-top: -8.5em;
+margin-left: 4.1em;
+
+}
+
+#avatar-op3{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+#op-player4{
+    height: 8em;
+width: 10.5em;
+border: 2px solid #1E3;
+margin-top: -8.25em;
+margin-left: 15.5em;
+
+}
+
+#avatar-op4{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+#command_area{
+    height: 20em;
+    width: 3em;
+    border: 2px solid #3131b3;
+    border-radius: 4px;
+    margin-top: 1.5em;
+    margin-left: 0.5em;
+}
+
+#cmd{
+    padding-top: 150px;
+    padding-bottom: 150px;
+    text-align: center;
+}
+#exile{
+    padding-top: 150px;
+    padding-bottom: 150px;
+    text-align: center;
+}
+
+#ante{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+}
+
+#stack{
+    padding-top: 118px;
+    padding-bottom: 118px;
+    text-align: center;
+}
+
+#exile_area{
+    height: 20em;
+    width: 3em;
+    border: 2px solid #3131b3;
+    border-radius: 4px;
+    margin-left: 4.2em;
+    margin-top: -20.25em;
+}
+
+#battlefield_area{
+    height: 20em;
+    width: 42em;
+    border: 2px solid #b30808;
+    border-radius: 5px;
+    margin-top: -20.25em;
+    margin-left: 8em;
+    background-color: rgba(255, 0, 0, 0.12);
+}
+
+.tapped_true{
+    transform: rotate(90deg);
+}
+
+#combat_area{   height: 8em;
+width: 43em;
+margin: 6em auto auto;
+background-image: url("images/combat.png");
+background-repeat: no-repeat;
+background-position: center center;
+}
+
+#ante_area{
+    height: 3em;
+    width: 5.5em;
+    border: 2px solid #3131b3;
+    border-radius: 4px;
+    margin-top: -20.25em;
+    margin-left: 50.9em;
+}
+
+#stack_area{
+    height: 16em;
+    width: 5.5em;
+    border: 2px solid #3131b3;
+    border-radius: 4px;
+    margin-top: 0.75em;
+    margin-left: 50.9em;
+}
+
+#stack_area span img{
+    width: 100%;
+    border-radius: 0.2em;
+}
+
+#my-team{
+    border: 2px solid #555555;
+    height: 23em;
+    width: 56.5em;
+    margin: 0.5em auto auto;
+    background-color: #cccccc;
+    border-radius: 15px;
+}
+
+#my-team1{
+    border: 2px solid #9e5151;
+    height: 22em;
+    width: 37.25em;
+    margin-top: 0.4em;
+    margin-left: 13%;
+    margin-right: 13%;
+    border-radius: 15px;
+    background-color: #c5b5b2;
+}
+
+#active-si-no-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 1.1em;
+    margin-top: 2em;
+}
+
+#lp-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 6.1em;
+    margin-top: -2.3em;
+}
+
+#pc-my1{
+    height: 2em;
+    width: 2.5em;
+    border-radius: 5px;
+    border: 2px solid #4a4a9e;
+    margin-left: 11.1em;
+    margin-top: -2.2em;
+}
+
+#my-player1{
+    height: 16.5em !important;
+    border: 2px solid #069e1e;
+    margin-top: 0.625em;
+    margin-left: 0.7em;
+    margin-right: 0.7em;
+
+    border-radius: 5px;
+    background-color: rgba(0, 128, 0, 0.24);
+
+}
+
+#avatar-my1{    height: 4em;
+    width: 4em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+#mp-my1{
+    height: 1.2em;
+    width: 4em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 1.8em;}
+
+#priorita-si-no-my1{
+    border-radius: 2em;
+height: 1em;
+width: 1em;
+border: 2px solid #00F;
+margin-left: 6em;
+margin-top: -6.2em;}
+
+
+
+#my-player2{
+    border: 2px solid #1E3;
+margin-top: -15.25em;
+height: 6em;
+width: 21em;
+    margin-left: 15.2em;}
+
+#avatar-my2{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+.card.faceDown_false{
+    width: 4.375em;
+
+}
+
+#my-team2{
+    border: 2px solid #F00;
+margin-left: 39em;
+width: 16.8em;
+margin-top: -16.25em;
+height: 16em;}
+
+#active-si-no-my2{height: 2em;
+width: 2.5em;
+border: 2px solid #00F;
+margin-top: 0.2em;
+margin-left: 12.7em;}
+
+#lp-my2{height: 2em;
+width: 2.5em;
+border: 2px solid #00F;
+margin-top: -2.25em;
+margin-left: 7.5em;}
+
+#pc-my2{    height: 2em;
+    width: 2.5em;
+    border: 2px solid #00F;
+    margin-top: -2.25em;
+    margin-left: 2.23em;
+}
+
+#my-player3{
+   border: 2px solid #1E3;
+height: 5.75em;
+margin-top: 0.6em;
+width: 15.6em;
+margin-left: 0.5em;
+}
+
+#avatar-my3{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+
+#my-player4{
+    border: 2px solid #1E3;
+margin-left: 0.5em;
+height: 5.75em;
+width: 15.6em;
+margin-top: 0.3em;
+
+}
+
+#avatar-my4{    height: 2em;
+    width: 2em;
+    border: 2px solid #00F;
+    margin-left: 1em;
+    margin-top: 0.8em;
+}
+
+/* END MOD*/
+
+.card{
+    background-size: 100%;
+    position: relative;
+    margin: .2em;
+    cursor: pointer;
+    height: 6em;
+    width: 4em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid black;
+}
+
+.attach{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.noborder.gen-overlay-background.round{
+    text-align: center;
+    width: 20px;
+}
+
+.faceDown_true{
+    background-image: url(../images/carte.jpg);
+    background-color: #693a04;
+    padding: 0;
+    cursor: default;
+}
+.faceDown_false{
+    /*border: 0;*/
+}
+.round{
+    width: 100%;
+    background-size: cover;
+}
+
+#game_status_viewer{
+    flex-flow: row wrap;
+    border-color: #aaaaaa;
+    border-style: double;
+    height: 50px;
+}
+
+#languages{
+    margin-bottom: .5em;
+    font-size: .8em;
+}
+
+
+.img_zoom{
+    width:20px;
+}
+
+.zoom_in{
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .6);
+}
+
+
+        /*	OTHERS	*/
+
+[id^=choices]{margin-left: .5em;}
+
+.spacer_w1{width: 1em;}
+#game_status_viewer div {padding:.1em .2em .1em .2em;}
+
+.flex-start{align-self: flex-start;}
+
+.playerID1{
+    border:2pt solid blue;
+    color: blue;
+}
+
+.playerID2{
+    border:2pt solid green;
+    color: green;
+}
+.playerID3{
+    border:2pt solid orange;
+    color: orange;
+}
+.playerID4{
+    border:2pt solid yellow;
+    color: yellow;
+}
+.playerID5{
+    border:2pt solid red;
+    color: red;
+}
+.playerID6{
+    border:2pt solid brown;
+    color: brown;
+}
+
+.line{
+  position:absolute;
+  width:1px;
+  background-color:red;
+}
+/*target popup*/
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 200px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -65px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity:1 ;}
+}
+.dot {
+    height: 35px;
+    width: 35px;
+    background-color: #09e96e;
+    border-radius: 50%;
+    display: inline-block;
+    float: right;
+    margin-right: 60px;
+    margin-top: 20px;
+}
+
+/*fine popup!!! */
+
+.playerdotID1{
+    background-color: blue;
+}
+
+.playerdotID2{
+    background-color: green;
+}
+.playerdotID3{
+    background-color: orange;
+}
+.playerdotID4{
+    background-color: yellow;
+}
+.playerdotID5{
+    background-color: red;
+}
+.playerdotID6{
+    background-color: brown;
+}
+
+/* INDICATORE TURN - PHASE - STEP */
+.PrimaryNav{
+    list-style: none;
+    display: block;
+}
+
+.phase_element{
+    float: left;
+    border-radius: 20px;
+    margin: 2px 2px 2px 2px;
+    height: 25px;
+    text-align: center;
+    padding: 10px 5px 5px 5px;
+    background-color: dimgray;
+    color: white;
+
+}
+
+.turn_element{
+    float: left;
+    border-radius: 20px;
+    margin: 2px 2px 2px 2px;
+    width: 100px;
+    height: 25px;
+    text-align: center;
+    padding-top: 10px;
+    background-color: dimgray;
+    color: white;
+
+}
+
+.pass{
+    font-family: "DIN Condensed";
+    display: inline-flex;
+    font-size: 20pt;
+    margin: 30px 2px 2px 2px;
+    border-radius: 25px;
+    float: right;
+    cursor: pointer;
+    background-color: #4CAF50;
+    text-align: center;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px 15px;
+}
+
+.tps_title{
+    padding-left: 30px;
+    font-size: 20pt;
+    display: block;
+
+}
+
+#turn_box{
+    display: inline-flex;
+}
+
+#phase_box{
+    display: grid;
+    width: 180px;
+}
+
+#step{
+    margin-left: 50px;
+    margin-top: 20px;
+    font-size: 16pt;
+}
+
+/* ---------------------------------- */

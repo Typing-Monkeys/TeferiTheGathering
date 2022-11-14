@@ -1,0 +1,2 @@
+Creare oggetto da mandare ai player con lo stato del gioco (zone ecc).
+Anche per spettatori.

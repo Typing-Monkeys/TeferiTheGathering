@@ -1,0 +1,57 @@
+ability : 
+il controllore di un activated ability sullo stack e' il player che l'ha attivata
+il controllore di un triggered ability sullo stack e' il player controlla la source dell'abilita quando triggered (se non ha controller si usa owner)  (112.7)
+per il controllore di una delayed triggered ability vedi regola 603.7d-f
+Se viene creata una delayed triggered ability da una spell il suo controllore e' il giocatore che controllava la spell
+Se viene creata una delayed triggered ability da una ability o triggered ability il suo controllore e' il giocatore che controllava l'altra abilita' mentre si stava risolvendo
+
+
+
+card :
+l'owner di una card e' il giocatore che ha cominciato il gioco con quella carta nel suo deck. Se portata nel gioco da fuori il proprietario e' il giocatore che l'ha portata nel gioco. Se comincia in una command zone il proprietario e' colui che l'ha messa nella command zone (108.3)
+una carta non ha controller a meno che non rappresenti un permanent o una spell. In questi casi rispetta le regole per spell e permanent (108.4) Se viene chiesto il controller di una carta che non ne ha si usa owner
+
+
+
+copy :  non definito nel librone? Forse segue le regole di card
+
+
+
+
+token : un token e' posseduto e controllato dal giocatore sotto il cui e entrato nel battlefield (110.5a)
+
+
+
+
+spell : 
+l'owner e' lo stesso della card da cui e' rappresentata a meno che non sia una copia.
+Il controller di una spell e' il giocatore che l'ha messa messa nello stack
+Se e' una copia di una spell il proprietario e' il player che l'ha messa nello stack
+Ogni spell ha un controller.  (111.2)
+
+
+
+
+permanent : owner e' lo stesso owner della carta che lo rappresenta , il controller e' il giocatore sotto il controllo di cui e' entrato in battaglia (110.2)
+
+
+
+
+emblem : un emblema e' controllato e posseduto dal player che lo mette nella command zone (113.2)
+
+
+
+
+
+
+
+solo gli oggetti sullo stack o su battlefield hanno controller (109.4)
+
+eccezioni:
+emblemi
+plane o phenomenon card
+vanguard
+archenemy
+conspiracy card
+
+La parole "tu" o "tuo" su un oggetto si riferiscono al controllore o al proprietario se non ha controllore (109.5)

@@ -1,0 +1,8 @@
+Implementare lato server che assieme alla richiesta di TakeMulligan invii un
+TYPE3 per aggiornare le zone (e quindi il giocatore può vedere le sue carte automaticamente)
+
+Inserire nel TYPE3 le phases di gioco - da essere poi visualizzabili ad ogni cambiamento
+
+Per ogni opponent-player dovrà essere specificato Graveyard, Library e LP
+	-ingrandire il visualizer per contenere tali aree
+	-battlefield più grande

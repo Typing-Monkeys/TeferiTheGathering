@@ -1,0 +1,3 @@
+typeOfGame diventa variant, e bisogna definire le costant per le variant.
+Sistemare Game
+Dire ai client worker di gestire varianti e options

@@ -1,0 +1,67 @@
+V Inserire get e set in game
+
+********************************************************** PER CLIENT *******
+
+Lato client: mettere opzioni scelta gioco (two multy), teamgame (yes no), variant,  casual variant, opzioni
+Lato interfaccia: 
+-Definire un json che invia dal server ai client gli oggetti presenti in ogni zona
+-Interpretare il messaggio json (gli oggetti public in broadcast, Hidden ai rispettivi player
+
+-Fare un div per ogni zona che visualizza gli oggetti ricevuti
+
+********************************************************** PER CLIENT *******
+
+
+
+V -Implementare 400.1 nell'agenda inizialization (come è stato fatto per i nomi delle fasi) Do i nomi alle zone, creo oggetti zona su player e su game (a seconda se privati o shared), 
+V 400.2 settare se una zona è pubblic o hidden
+
+V MagicObject aggiungere proprietà owner 
+V 109.3 inserire tutte le caratteristiche nella classe MagicObject
+Pensare se va nella classe o inserire in regole
+
+V 109.4 aggiungere controllore
+
+V Classe permanent deriva da MagicObject
+V aggiungere 110.6, quattro stati boolean. 
+
+Costruttore setta i booleani quando la spell diventa un permanente (alla creazione)
+face_down :da non confondere con proprietà faceDown delle card
+
+-Implementare 108.3: 
+V Alla creazione del deck ogni carta ottiene owner
+
+V inizialization: 401.2 per tutte le carte nella library (settare face-down)
+
+V Aggiungere classe Spell e Permanent  Ability figli di MagicObject
+
+Il controllore va dentro MagicObject, settato sempre a null tranne che quando l'oggetto è Spell, Permanent, Ability o eccezioni 109.4
+
+400.7. An object that moves from one zone to another becomes a new object with no memory of, or relation to, its previous existence. There are seven exceptions to this rule:
+
+
+Draw sposta oggetto da libreria a mano
+cast: da una zona (solitamente mano) a stack
+da stack a battlefield se permanente
+altrimenti da stack a graveyard
+
+
+
+
+
+
+ESEMPIO:
+Non bisogna spostare, bisogna creare un nuovo oggetto nella nuova zona
+cast dalla mano allo stack: 
+-crea un oggetto Spell nello stack prendendo come parametro del costruttore la card
+-Card viene deleted
+
+se il cast va bene
+-si crea un oggetto permanente in battlefield prendendo come parametro del costruttore la card dentro spell
+-si distrugge spell dallo stack
+
+se il cast è di una Spell non permanente
+-si crea un oggetto card nel graveyard prendendo come parametro del costruttore di Card la Card dentro la Spell
+-si distrugge la Spell
+
+NB la Card va "tenuta in memoria" sia nella spell che nel permanente

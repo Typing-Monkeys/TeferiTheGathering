@@ -1,0 +1,60 @@
+Progetto Magic 2017-2018 						Fortunelli Martina – Perri Damiano
+
+Lato: Java-Drools
+    1. Gestione delle abilità:
+        a. E’ stata realizzata la classe .java “Ability”. Ogni abilità presente nella carta è un’istanza della classe Ability, le carte contengono una LinkedList di ability, una per ogni faccia della carta.
+La classe contiene le caratteristiche principali di una abilità: booleani per definire il tipo (static triggered activated spell), booleano se è targetted, booleano se è un as a sorcery, il testo dell’abilità, keywordAbility, loyaltyAbility
+Generati i relativi metodi get, set, tostring, hash, equals
+Inserita funzione setManaCostSymbols per il costo del mana di ogni abilità.
+
+        b. Ogni abilità creata viene controllata all’inizio del gioco, starting stage, settando tutte le variabili con il parsing del testo, seguendo le rispettive regole
+Inoltre vengono settate anche alcune keyword ability: Equip, Fortify ed Enchant
+
+        c. Creazione di un’ulteriore classe .java “AbilityOnTheStack” figlia di MagicObject. Contiene le stesse proprietà della classe Ability con aggiunta di owner, controller e source (la carta che contiene Ability corrispondente) e idStack. 
+Le ability on the stack vengono costruite solo quando viene lanciata la regola che permette di attivare le abilità.
+
+    2. Gestione Target
+        a. Gestione dei target per quanto riguarda le spell (Aura) vengono proposti i target possibili presenti in tutte le aree del tipo voluto (settato precedentemente all’inizio del gioco).
+Vengono gestiti target di tipo: magicobject, player, zone.
+        b. Gestione dei target per quanto riguarda le abilità attivate allo stesso modo delle spell
+
+    3. Lancio di Abilità
+        a. Gestione dell’attempt di Activated Ability prendendo le abilità presenti nel battlefield e proposte al player, gestione dell’attivazione secondo le rispettive regole (come sulla cast delle spell).
+        b. Gestione del pagamento del costo delle abilità attivate solo del mana.
+
+
+REGOLE MODIFICATE/AGGIUNTE:
+	Riconoscere activated-ability
+		Rule 112.3b
+	Riconoscere triggered-ability
+		Rule 112.3c
+	Riconoscere targetted-ability
+		Rule 114
+Per generare il mana con il tap delle terre:
+Rule 116.1d, Rule 116.1d answearHandler
+	Per la gestione dei target delle spell:
+Rule 601.2c fasi, Rule 601.2cfase1, Rule 601.2cfase2, Rule 601.2h
+	Per riconoscere le diverse parti delle activated ability, costo-effetto-istruzioni:
+		Rule 602.1
+	Per l’attivazione delle abilità e gestione dei target delle abilità:
+Rule 602.2, Rule 602.2a answearHandler, Rule 602.2 fasi , Rule 602.2cfase1, Rule 602.2cfase2, Rule 602.2f, Rule 602.2g, Rule 602.2g answearHandlerNo, Rule 602.2g answearHandlerMultiple, Rule 602.2h, Rule 602.2h answearHandler & 602.2i
+	Per riconoscere le diverse parti delle triggered ability:
+		Rule 603.1
+	Per riconoscere le manaAbility
+		Rule 605.1a
+	Per riconoscere le loyalty ability
+		Rule 606.1
+Controllo delle spell con target (aurea) per implementare la diversa risoluzione, devono completare Pietro e Nicola
+Rule 608.3, Rule 608.3a
+	Per riconoscere le tre keyword ability: enchant, equip, fortify
+Rule 702.5a, Rule 702.6a, Rule 702.66a
+	Per riconoscere le abilità as a sorcery
+Rule sorcery
+
+LatoClient: Javascript-HTML
+    1. Spostata la console in alto nell’HTML
+    2. Inserita la classe .css per colorare i bordi delle carte a seconda del proprietario della carta. Inserito un “pallino” per indicare il proprio colore ed anche un riquadro intorno al nome del player.
+Il tutto inserito dinamicamente nel .js 
+    3. Inserita la rappresentazione del target tramite una freccia (linea+triangolo) nel .js e relativa classe .css
+    4. Gestione degli id univoci nell’HTML per ogni oggetto inserito nell’interfaccia
+    5. Salvataggio nella locale del browser di alcune informazioni relative ai dati scaricati da normandy (vedere la funzione per il download delle immagini)

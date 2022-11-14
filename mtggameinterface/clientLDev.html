@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <!--Test Magic-->
+        <title>MAGIC: DEBUGGER</title>
+        <meta charset="UTF-8" />
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js?ver=7"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js?ver=7"></script>
+   
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css?ver=7">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css?ver=7">
+
+        <link rel="stylesheet" href="./css/playerLDev.css?ver=7">
+
+    </head>
+    <body>
+        <div class="container">
+            <div class="container" id="card-overlay-background" hidden="">
+            <div id="card-overlay">
+                <div id="blob-card"></div>
+            </div>
+        </div>
+            <div class="container" id="upper_area">
+            <div id="row1">
+                <h3 id='nomePlayer'></h3>
+                <div id="in_room_buttons" class="in_room">
+                    
+                    <input id="DebugButton" onClick="debugOnOff();" type="button" value="Debug Off" />
+                </div>
+                <div id="row1sub1">
+                    <div class="in_room">
+                        <!--<label for="option_button">Select command</label>
+                        <select id="option" name="option">
+                            <option value=0>&nbsp;</option>
+                            <option value=1>Pass Priority</option>
+                            <option value=2>Cast Instant Spell</option>
+                            <option value=3>Cast Non Instant Spell</option>
+                            <option value=4>Activate Ability</option>
+                            <option value=5>Activate Mana Ability</option>
+                            <option value=6>Take Special Action</option>
+                        </select>
+                        <input id="option2_button" type="button" value="Select option"/>&nbsp;
+                        <select id="option2" name="option" hidden="true">
+                            <option value=0>&nbsp;</option>
+                            <option value=1>Play Land</option>
+                             
+                            <option value=2>Face up</option>
+                               
+                            <option value=3>Later Action</option>
+                            
+                            <option value=4>Ignore Ability</option>
+                             
+                            <option value=5>Suspand</option>
+                             
+                            <option value=6>Planechase</option>
+                             
+                        </select>
+                        <input id="send_attempt" type="button" value="Send attempt" />&nbsp;
+                        <div id="choices_area"></div>-->
+                    </div>
+                </div>
+
+                <div class="create_room">
+                    <form>
+                        <!-- <label>Choose deck</label>
+                        <select id="deck" name="deck">
+                            <option value="1">Deck1</option>
+                            <option value="2">Deck2</option>
+                        </select>
+                        <label>Choose sideboard</label>
+                        <select id="sideboard" name="sideboard">
+                            <option value="1">SideBoard1</option>
+                            <option value="2">SideBoard2</option>
+                        </select> -->
+                    </form>
+                    <br>
+                </div>
+            </div>
+        </div>
+            <div class="container" id="under_area">
+                <div class="container" id="row2" class="in_room">
+                    <div class="container">
+                        <div id="game">
+                            <!-------- "OPPONENT" -------->
+                            <div class="container">
+                                <div class="row" id ='playersList'></div>                                  
+                            </div>
+
+                            <!--------CORPOCOMANDI-------->
+                            <div class="container" id="corpo_comandi">
+                                <div class="row" id="command_area"></div>
+                            </div>
+                            
+                            <!--------COMMAND FOR PLAYER-------->
+                            <div class="container" id="corpo_comandi_player">
+                                <div class="row" id="command_players"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container" id="row0">
+                <div id="game_status_viewer" class="in_room gen-overlay-background">
+                    <div>
+                        <div id="game_phase" class="content"></div>
+                        <div id="game_step" class="content"></div>
+                    </div>
+                </div>
+                <textarea id='message' cols="70" rows="4" class="in_room" readonly></textarea>
+                <input id="disconnect" class="in_room create_room" type="button" value="Disconnect" />
+                <input id="connect" class="create_room" type="button" value="Join to the room" />
+            </div>
+        </div>
+        <!-- visualizza il campo da gioco senza che ci sia il server avviato
+            <input id="fake_load" type="button" value="DummyLoad" />
+        -->
+        
+        <div id='theCardModal'>
+            
+        </div>
+        <script src="script/socket.io.js?ver=7"></script>
+        <script src="script/config.js?ver=7"></script>
+        <script src="script/clientLDev.js?ver=7"></script>
+    </body>
+</html>
