@@ -8,7 +8,7 @@
 	<classpathentry exported="true" kind="con" path="DROOLS/Drools"/>
 	<classpathentry kind="src" path="src/main/resources"/>
 	<classpathentry kind="src" path="src/main/java"/>
-	<classpathentry exported="true" kind="lib" path="lib/gson-2.2.4-javadoc.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/gson-2.2.4.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/gson-2.2.4.jar"/>
 	<classpathentry kind="output" path="target"/>
 </classpath>
