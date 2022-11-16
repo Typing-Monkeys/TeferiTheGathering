@@ -1,5 +1,3 @@
-com/
-rules/
-META-INF/
-classes/
-test-classes/
+/META-INF/
+/com/
+/rules/
