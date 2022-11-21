@@ -1,0 +1,4258 @@
+{
+  "2161": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2161,
+      "alternateCardName": "",
+      "cardName": "Armor of Thorns",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 382848
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "flash"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Armor of Thorns",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "you may cast armor of thorns as though it had flash. if you cast it any time a sorcery couldn't have been cast, the controller of the permanent it becomes sacrifices it at the beginning of the next cleanup step.",
+        "enchant nonblack creature",
+        "enchanted creature gets +2/+2."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1067": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1067,
+      "alternateCardName": "",
+      "cardName": "Mountain",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 2763
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Mountain"
+      ],
+      "supertypes": [
+        "basic"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Mountain",
+      "loyalty": "0",
+      "types": [
+        "land"
+      ],
+      "abilities": [
+        "R"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2197": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2197,
+      "alternateCardName": "",
+      "cardName": "Benthic Behemoth",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 4690
+    },
+    "face1": {
+      "keywordAbilities": [
+        "islandwalk ",
+        "landwalk"
+      ],
+      "toughness": "6",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Serpent"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{5}{U}{U}{U}",
+      "levelerCard": false,
+      "power": "7",
+      "faceName": "Benthic Behemoth",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "islandwalk (this creature can't be blocked as long as defending player controls an island.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2186": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2186,
+      "alternateCardName": "",
+      "cardName": "Genju of the Falls",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 74582
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "flying"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Falls",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant island",
+        "{2}: enchanted island becomes a 3/2 blue spirit creature with flying until end of turn. it's still a land.",
+        "when enchanted island is put into a graveyard, you may return genju of the falls from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1958": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1958,
+      "alternateCardName": "",
+      "cardName": "Aggression",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 2605
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "first strike",
+        "trample"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{R}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Aggression",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant non-wall creature",
+        "enchanted creature has first strike and trample.",
+        "at the beginning of the end step of enchanted creature's controller, destroy that creature if it didn't attack this turn."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2190": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2190,
+      "alternateCardName": "",
+      "cardName": "Genju of the Realm",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 75364
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "trample"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "black",
+        "blue",
+        "green",
+        "red",
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [
+        "legendary"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{W}{U}{B}{R}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Realm",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant land",
+        "{2}: enchanted land becomes a legendary 8/12 spirit creature with trample until end of turn. it's still a land.",
+        "when enchanted land is put into a graveyard, you may return genju of the realm from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2169": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2169,
+      "alternateCardName": "",
+      "cardName": "Encase in Ice",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 394564
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "flash"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Encase in Ice",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "flash (you may cast this spell any time you could cast an instant.)",
+        "enchant red or green creature",
+        "when encase in ice enters the battlefield, tap enchanted creature.",
+        "enchanted creature doesn't untap during its controller's untap step."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1068": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1068,
+      "alternateCardName": "",
+      "cardName": "Forest",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 2748
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Forest"
+      ],
+      "supertypes": [
+        "basic"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Forest",
+      "loyalty": "0",
+      "types": [
+        "land"
+      ],
+      "abilities": [
+        "G"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1710": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1710,
+      "alternateCardName": "",
+      "cardName": "Canyon Wildcat",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 4807
+    },
+    "face1": {
+      "keywordAbilities": [
+        "mountainwalk"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Cat"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{R}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Canyon Wildcat",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "mountainwalk (this creature can't be blocked as long as defending player controls a mountain.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1049": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1049,
+      "alternateCardName": "",
+      "cardName": "True-Faith Censer",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 410035
+    },
+    "face1": {
+      "keywordAbilities": [
+        "equip",
+        "vigilance"
+      ],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Equipment"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "True-Faith Censer",
+      "loyalty": "0",
+      "types": [
+        "artifact"
+      ],
+      "abilities": [
+        "equipped creature gets +1/+1 and has vigilance.",
+        "as long as equipped creature is a human, it gets an additional +1/+0.",
+        "equip {2} ({2}: attach to target creature you control. equip only as a sorcery.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2199": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2199,
+      "alternateCardName": "",
+      "cardName": "Zodiac Rooster",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 10506
+    },
+    "face1": {
+      "keywordAbilities": [
+        "plainswalk"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Bird"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{G}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Zodiac Rooster",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "plainswalk (this creature can't be blocked as long as defending player controls a plains.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1418": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1418,
+      "alternateCardName": "",
+      "cardName": "Armament Master",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 190420
+    },
+    "face1": {
+      "keywordAbilities": [
+        "equip"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Kor",
+        "Soldier"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{W}{W}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Armament Master",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "other kor creatures you control get +2/+2 for each equipment attached to armament master."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2177": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2177,
+      "alternateCardName": "",
+      "cardName": "Uncontrolled Infestation",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 46614
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{R}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Uncontrolled Infestation",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant nonbasic land",
+        "when enchanted land becomes tapped, destroy it."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2194": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2194,
+      "alternateCardName": "",
+      "cardName": "Boggart Brute",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 398606
+    },
+    "face1": {
+      "keywordAbilities": [
+        "menace"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Warrior"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{R}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Boggart Brute",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "menace (this creature can't be blocked except by two or more creatures.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1064": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1064,
+      "alternateCardName": "",
+      "cardName": "Plains",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 2773
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Plains"
+      ],
+      "supertypes": [
+        "basic"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Plains",
+      "loyalty": "0",
+      "types": [
+        "land"
+      ],
+      "abilities": [
+        "W"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2168": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2168,
+      "alternateCardName": "",
+      "cardName": "Coral Net",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 19696
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Coral Net",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant green or white creature",
+        "enchanted creature has \"at the beginning of your upkeep, sacrifice this creature unless you discard a card.\""
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2160": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2160,
+      "alternateCardName": "",
+      "cardName": "Indestructibility",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 370673
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "indestructible"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{W}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Indestructibility",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant permanent",
+        "enchanted permanent has indestructible. (effects that say \"destroy\" don't destroy that permanent. a creature with indestructible can't be destroyed by damage.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2173": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2173,
+      "alternateCardName": "",
+      "cardName": "Psychic Possession",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 107254
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{U}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Psychic Possession",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant opponent",
+        "skip your draw step.",
+        "whenever enchanted opponent draws a card, you may draw a card."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1083": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1083,
+      "alternateCardName": "",
+      "cardName": "Jace, Unraveler of Secrets",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 409812
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Jace"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N2": "",
+        "N1": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{U}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Jace, Unraveler of Secrets",
+      "loyalty": "5",
+      "types": [
+        "planeswalker"
+      ],
+      "abilities": [
+        "+1: scry 1, then draw a card.",
+        "\u22122: return target creature to its owner's hand.",
+        "\u22128: you get an emblem with \"whenever an opponent casts his or her first spell each turn, counter that spell.\""
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N2": "",
+        "N1": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2175": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2175,
+      "alternateCardName": "",
+      "cardName": "Spellweaver Volute",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 136032
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{U}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Spellweaver Volute",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant instant card in a graveyard",
+        "whenever you cast a sorcery spell, copy the enchanted instant card. you may cast the copy without paying its mana cost. if you do, exile the enchanted card and attach spellweaver volute to another instant card in a graveyard."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2187": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2187,
+      "alternateCardName": "",
+      "cardName": "Genju of the Fens",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 74035
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{B}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Fens",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant swamp",
+        "{2}{B}: until end of turn, enchanted swamp becomes a 2/2 black spirit creature with \"",
+        "when enchanted swamp is put into a graveyard, you may return genju of the fens from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2166": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2166,
+      "alternateCardName": "",
+      "cardName": "Decomposition",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 3381
+    },
+    "face1": {
+      "keywordAbilities": [
+        "cumulative upkeep",
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Decomposition",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant black creature",
+        "enchanted creature has \"cumulative upkeep\u2014pay 1 life.\" (at the beginning of its controller's upkeep, that player puts an age counter on it, then sacrifices it unless he or she pays its upkeep cost for each age counter on it.)",
+        "when enchanted creature dies, its controller loses 2 life."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1511": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1511,
+      "alternateCardName": "",
+      "cardName": "Frontier Guide",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 180361
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "1",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Elf",
+        "Scout"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{G}",
+      "levelerCard": false,
+      "power": "1",
+      "faceName": "Frontier Guide",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "{3}{G}, {T}: search your library for a basic land card and put it onto the battlefield tapped. then shuffle your library."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2189": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2189,
+      "alternateCardName": "",
+      "cardName": "Genju of the Cedars",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 74424
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Cedars",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant forest",
+        "{2}: enchanted forest becomes a 4/4 green spirit creature until end of turn. it's still a land.",
+        "when enchanted forest is put into a graveyard, you may return genju of the cedars from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2171": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2171,
+      "alternateCardName": "",
+      "cardName": "Glimmerdust Nap",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 139436
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Glimmerdust Nap",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant tapped creature",
+        "enchanted creature doesn't untap during its controller's untap step."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1065": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1065,
+      "alternateCardName": "",
+      "cardName": "Island",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 2768
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Island"
+      ],
+      "supertypes": [
+        "basic"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N2": "",
+        "N1": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Island",
+      "loyalty": "0",
+      "types": [
+        "land"
+      ],
+      "abilities": [
+        "U"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N2": "",
+        "N1": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2192": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2192,
+      "alternateCardName": "",
+      "cardName": "Barbarian General",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 10574
+    },
+    "face1": {
+      "keywordAbilities": [
+        "horsemanship"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Human",
+        "Barbarian",
+        "Soldier"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{4}{R}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Barbarian General",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "horsemanship (this creature can't be blocked except by creatures with horsemanship.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1673": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1673,
+      "alternateCardName": "",
+      "cardName": "Commander Greven il-Vec",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 397539
+    },
+    "face1": {
+      "keywordAbilities": [
+        "fear"
+      ],
+      "toughness": "5",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Human",
+        "Warrior"
+      ],
+      "supertypes": [
+        "legendary"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{B}{B}{B}",
+      "levelerCard": false,
+      "power": "7",
+      "faceName": "Commander Greven il-Vec",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "fear (this creature can't be blocked except by artifact creatures and/or black creatures.)",
+        "when commander greven il-vec enters the battlefield, sacrifice a creature."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2183": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2183,
+      "alternateCardName": "",
+      "cardName": "Convincing Mirage",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 190161
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Convincing Mirage",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant land",
+        "as convincing mirage enters the battlefield, choose a basic land type.",
+        "enchanted land is the chosen type."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2159": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2159,
+      "alternateCardName": "",
+      "cardName": "Artificer's Hex",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 370634
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "equip"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{B}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Artificer's Hex",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant equipment",
+        "at the beginning of your upkeep, if enchanted equipment is attached to a creature, destroy that creature."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "911": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 911,
+      "alternateCardName": "",
+      "cardName": "Crow of Dark Tidings",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 409852
+    },
+    "face1": {
+      "keywordAbilities": [
+        "flying"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Zombie",
+        "Bird"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{B}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Crow of Dark Tidings",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "flying",
+        "when crow of dark tidings enters the battlefield or dies, put the top two cards of your library into your graveyard."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1459": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1459,
+      "alternateCardName": "",
+      "cardName": "Welkin Tern",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 191353
+    },
+    "face1": {
+      "keywordAbilities": [
+        "flying",
+        "reach"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Bird"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{U}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Welkin Tern",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "flying (this creature can't be blocked except by creatures with flying or reach.)",
+        "welkin tern can block only creatures with flying."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2164": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2164,
+      "alternateCardName": "",
+      "cardName": "Mind Harness",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 3349
+    },
+    "face1": {
+      "keywordAbilities": [
+        "cumulative upkeep",
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Mind Harness",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant red or green creature",
+        "{1}cumulative upkeep  (at the beginning of your upkeep, put an age counter on this permanent, then sacrifice it unless you pay its upkeep cost for each age counter on it.)",
+        "you control enchanted creature."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2198": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2198,
+      "alternateCardName": "",
+      "cardName": "Bayou Dragonfly",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 4749
+    },
+    "face1": {
+      "keywordAbilities": [
+        "flying",
+        "swampwalk"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Insect"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{G}",
+      "levelerCard": false,
+      "power": "1",
+      "faceName": "Bayou Dragonfly",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "flying; swampwalk (this creature can't be blocked as long as defending player controls a swamp.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2162": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2162,
+      "alternateCardName": "",
+      "cardName": "Call to Serve",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 240081
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "flying"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{W}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Call to Serve",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant nonblack creature",
+        "enchanted creature gets +1/+2, has flying, and is an angel in addition to its other types."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2176": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2176,
+      "alternateCardName": "",
+      "cardName": "Suppression Bonds",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 398602
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{W}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Suppression Bonds",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant nonland permanent",
+        "enchanted permanent can't attack or block, and its activated abilities can't be activated."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1460": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1460,
+      "alternateCardName": "",
+      "cardName": "Bala Ged Thief",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 197402
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "2",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Human",
+        "Rogue",
+        "Ally"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{B}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Bala Ged Thief",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "whenever bala ged thief or another ally enters the battlefield under your control, target player reveals a number of cards from his or her hand equal to the number of allies you control. you choose one of them. that player discards that card."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1201": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1201,
+      "alternateCardName": "",
+      "cardName": "Llanowar Elves",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 189878
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "1",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Elf",
+        "Druid"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{G}",
+      "levelerCard": false,
+      "power": "1",
+      "faceName": "Llanowar Elves",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "{T}{G}: add {G} to your mana pool."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2167": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2167,
+      "alternateCardName": "",
+      "cardName": "Controlled Instincts",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 183053
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Controlled Instincts",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant red or green creature",
+        "enchanted creature doesn't untap during its controller's untap step."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2170": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2170,
+      "alternateCardName": "",
+      "cardName": "Entangling Vines",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 189901
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Entangling Vines",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant tapped creature",
+        "enchanted creature doesn't untap during its controller's untap step."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2165": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2165,
+      "alternateCardName": "",
+      "cardName": "Consuming Ferocity",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 3437
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{R}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Consuming Ferocity",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant non-wall creature",
+        "enchanted creature gets +1/+0.",
+        "at the beginning of your upkeep, put a +1/+0 counter on enchanted creature. if that creature has three or more +1/+0 counters on it, it deals damage equal to its power to its controller, then destroy that creature and it can't be regenerated."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1487": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1487,
+      "alternateCardName": "",
+      "cardName": "Goblin Guide",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 170987
+    },
+    "face1": {
+      "keywordAbilities": [
+        "haste"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Goblin",
+        "Scout"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{R}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Goblin Guide",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "haste",
+        "whenever goblin guide attacks, defending player reveals the top card of his or her library. if it's a land card, that player puts it into his or her hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1678": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1678,
+      "alternateCardName": "",
+      "cardName": "Dauthi Horror",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 397594
+    },
+    "face1": {
+      "keywordAbilities": [
+        "shadow"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Dauthi",
+        "Horror"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{B}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Dauthi Horror",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "shadow (this creature can block or be blocked by only creatures with shadow.)",
+        "dauthi horror can't be blocked by white creatures."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2163": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2163,
+      "alternateCardName": "",
+      "cardName": "Carry Away",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 48572
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "equip"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Carry Away",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant equipment",
+        "when carry away enters the battlefield, unattach enchanted equipment.",
+        "you control enchanted equipment."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2172": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2172,
+      "alternateCardName": "",
+      "cardName": "Krovikan Plague",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 3081
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{B}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Krovikan Plague",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant non-wall creature you control",
+        "when krovikan plague enters the battlefield, draw a card at the beginning of the next turn's upkeep.",
+        "enchant"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1169": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1169,
+      "alternateCardName": "",
+      "cardName": "Flight",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 401
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant",
+        "flying"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Flight",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant creature",
+        "enchanted creature has flying."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2196": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2196,
+      "alternateCardName": "",
+      "cardName": "Heartwood Treefolk",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 4767
+    },
+    "face1": {
+      "keywordAbilities": [
+        "forestwalk"
+      ],
+      "toughness": "4",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Treefolk"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{G}{G}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Heartwood Treefolk",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "forestwalk (this creature can't be blocked as long as defending player controls a forest.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2179": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2179,
+      "alternateCardName": "",
+      "cardName": "Steal Enchantment",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 4729
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{U}{U}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Steal Enchantment",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant enchantment",
+        "you control enchanted enchantment."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2174": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2174,
+      "alternateCardName": "",
+      "cardName": "Soul Tithe",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 265372
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{W}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Soul Tithe",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant nonland permanent",
+        "{variable colorless}at the beginning of the upkeep of enchanted permanent's controller, that player sacrifices it unless he or she pays , where x is its converted mana cost."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2191": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2191,
+      "alternateCardName": "",
+      "cardName": "Cao Ren, Wei Commander",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 10712
+    },
+    "face1": {
+      "keywordAbilities": [
+        "horsemanship"
+      ],
+      "toughness": "3",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Human",
+        "Soldier",
+        "Warrior"
+      ],
+      "supertypes": [
+        "legendary"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{B}{B}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Cao Ren, Wei Commander",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "horsemanship (this creature can't be blocked except by creatures with horsemanship.)",
+        "when cao ren, wei commander enters the battlefield, you lose 3 life."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2178": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2178,
+      "alternateCardName": "",
+      "cardName": "Wurmweaver Coil",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 97230
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{4}{G}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Wurmweaver Coil",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant green creature",
+        "enchanted creature gets +6/+6.",
+        "{G}{G}{G}, sacrifice wurmweaver coil: create a 6/6 green wurm creature token."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2188": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2188,
+      "alternateCardName": "",
+      "cardName": "Genju of the Spires",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 74666
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{R}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Spires",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant mountain",
+        "{2}: enchanted mountain becomes a 6/1 red spirit creature until end of turn. it's still a land.",
+        "when enchanted mountain is put into a graveyard, you may return genju of the spires from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2185": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2185,
+      "alternateCardName": "",
+      "cardName": "Genju of the Fields",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 74087
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{W}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Genju of the Fields",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant plains",
+        "{2}: until end of turn, enchanted plains becomes a 2/5 white spirit creature with \"whenever this creature deals damage, its controller gains that much life.\" it's still a land.",
+        "when enchanted plains is put into a graveyard, you may return genju of the fields from your graveyard to your hand."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2180": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2180,
+      "alternateCardName": "",
+      "cardName": "Curse of Death's Hold",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 227075
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "black"
+      ],
+      "subtypes": [
+        "Aura",
+        "Curse"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{B}{B}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Curse of Death's Hold",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant player",
+        "creatures enchanted player controls get -1/-1."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2195": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2195,
+      "alternateCardName": "",
+      "cardName": "Elemental Resonance",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 107369
+    },
+    "face1": {
+      "keywordAbilities": [
+        "enchant"
+      ],
+      "toughness": "",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Aura"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{G}{G}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Elemental Resonance",
+      "loyalty": "0",
+      "types": [
+        "enchantment"
+      ],
+      "abilities": [
+        "enchant permanent",
+        "at the beginning of your precombat main phase, add mana equal to enchanted permanent's mana cost to your mana pool. (mana cost includes color. if a mana symbol has multiple colors, choose one.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2184": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2184,
+      "alternateCardName": "",
+      "cardName": "Darksteel Garrison",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 126211
+    },
+    "face1": {
+      "keywordAbilities": [
+        "fortify",
+        "indestructible"
+      ],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Fortification"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Darksteel Garrison",
+      "loyalty": "0",
+      "types": [
+        "artifact"
+      ],
+      "abilities": [
+        "fortified land has indestructible.",
+        "whenever fortified land becomes tapped, target creature gets +1/+1 until end of turn.",
+        "fortify {3} ({3}: attach to target land you control. fortify only as a sorcery. this card enters the battlefield unattached and stays on the battlefield if the land leaves.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "1066": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 1066,
+      "alternateCardName": "",
+      "cardName": "Swamp",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 397467
+    },
+    "face1": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [
+        "Swamp"
+      ],
+      "supertypes": [
+        "basic"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "",
+      "levelerCard": false,
+      "power": "",
+      "faceName": "Swamp",
+      "loyalty": "0",
+      "types": [
+        "land"
+      ],
+      "abilities": [
+        "B"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "880": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 880,
+      "alternateCardName": "",
+      "cardName": "Forgotten Creation",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 409806
+    },
+    "face1": {
+      "keywordAbilities": [
+        "skulk"
+      ],
+      "toughness": "3",
+      "colorIndicator": [
+        "blue"
+      ],
+      "subtypes": [
+        "Zombie",
+        "Horror"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{U}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Forgotten Creation",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "skulk (this creature can't be blocked by creatures with greater power.)",
+        "at the beginning of your upkeep, you may discard all the cards in your hand. if you do, draw that many cards."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2881": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2881,
+      "alternateCardName": "",
+      "cardName": "Bladetusk Boar",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 380379
+    },
+    "face1": {
+      "keywordAbilities": [
+        "intimidate"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Boar"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{R}",
+      "levelerCard": false,
+      "power": "3",
+      "faceName": "Bladetusk Boar",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Intimidate (This creature can't be blocked except by artifact creatures and/or creatures that share a color with it.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2882": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2882,
+      "alternateCardName": "",
+      "cardName": "Marsh Threader",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 194718
+    },
+    "face1": {
+      "keywordAbilities": [
+        "landwalk", "swampwalk"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Kor", "Scout"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{W}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Marsh Threader",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Swampwalk (This creature can't be blocked as long as defending player controls a Swamp.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },  
+  "2883": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2883,
+      "alternateCardName": "",
+      "cardName": "Canyon Wildca",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 397566
+    },
+    "face1": {
+      "keywordAbilities": [
+        "landwalk", "mountainwalk"
+      ],
+      "toughness": "1",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Cat"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{R}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Canyon Wildca",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Mountainwalk (This creature can't be blocked as long as defending player controls a Mountain.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2884": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2884,
+      "alternateCardName": "",
+      "cardName": "Elite Cat Warrior",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 221917
+    },
+    "face1": {
+      "keywordAbilities": [
+        "landwalk", "forestwalk"
+      ],
+      "toughness": "3",
+      "colorIndicator": [
+        "green"
+      ],
+      "subtypes": [
+        "Cat", "Warrior"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{2}{G}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Elite Cat Warrior",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Forestwalk (This creature can't be blocked as long as defending player controls a Forest.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2885": {
+    "card": {
+      "doublefacedCard": true,
+      "cardID": 2885,
+      "alternateCardName": "",
+      "cardName": "Archangel Avacyn",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 409741
+    },
+    "face1": {
+      "keywordAbilities": [
+        "Flying", "Vigilance", "Transform", "Flash"
+      ],
+      "toughness": "4",
+      "colorIndicator": [
+        "white"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "supertypes": [
+        "legendary"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}{W}{W}",
+      "levelerCard": false,
+      "power": "4",
+      "faceName": "Archangel Avacyn",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Flash \n Flying, vigilance \n When Archangel Avacyn enters the battlefield, creatures you control gain indestructible until end of turn. \n When a non-Angel creature you control dies, transform Archangel Avacyn at the beginning of the next upkeep"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [
+        "flying"
+      ],
+      "toughness": "5",
+      "colorIndicator": [
+        "red"
+      ],
+      "subtypes": [
+        "Angel"
+      ],
+      "supertypes": [
+        "legendary"
+      ],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "6",
+      "faceName": "Avacyn, the Purifier",
+      "loyalty": "",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Flying \n When this creature transforms into Avacyn, the Purifier, it deals 3 damage to each other creature and each opponent."
+      ],
+      "color": []
+    }
+  },
+  "2886": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2886,
+      "alternateCardName": "",
+      "cardName": "Immerwolf",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 262700
+    },
+    "face1": {
+      "keywordAbilities": [
+        "Intimidate"
+      ],
+      "toughness": "2",
+      "colorIndicator": [
+        "green", "red"
+      ],
+      "subtypes": [
+        "Wolf"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{1}{R}{G}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Immerwolf",
+      "loyalty": "0",
+      "types": [
+        "creature"
+      ],
+      "abilities": [
+        "Intimidate (This creature can't be blocked except by artifact creatures and/or creatures that share a color with it.) \n Each other creature you control that's a Wolf or a Werewolf gets +1/+1. \n Non-Human Werewolves you control can't transform."
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  },
+  "2887": {
+    "card": {
+      "doublefacedCard": false,
+      "cardID": 2887,
+      "alternateCardName": "",
+      "cardName": "Armory Automaton",
+      "splitCard": false,
+      "flipCard": false,
+      "multiverseid": 420668
+    },
+    "face1": {
+      "keywordAbilities": [ ],
+      "toughness": "2",
+      "colorIndicator": [ ],
+      "subtypes": [
+        "Construct"
+      ],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "manaCost": "{3}",
+      "levelerCard": false,
+      "power": "2",
+      "faceName": "Armory Automaton",
+      "loyalty": "0",
+      "types": [
+        "creature",
+        "artifact"
+      ],
+      "abilities": [
+        "Whenever Armory Automaton enters the battlefield or attacks, you may attach any number of target Equipment to it. (Control of the Equipment doesn't change.)"
+      ],
+      "color": []
+    },
+    "face2": {
+      "keywordAbilities": [],
+      "toughness": "",
+      "colorIndicator": [],
+      "subtypes": [],
+      "supertypes": [],
+      "levelerAbilities": {
+        "toughness": "",
+        "N1": "",
+        "N2": "",
+        "power": "",
+        "abilities": []
+      },
+      "levelerCard": false,
+      "power": "",
+      "faceName": "",
+      "loyalty": "",
+      "types": [],
+      "abilities": [],
+      "color": []
+    }
+  }
+}
