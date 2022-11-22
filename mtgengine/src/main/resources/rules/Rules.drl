@@ -4887,7 +4887,28 @@ end
 
 rule "514.1"
 /*
-November 19, 2021
+November 22, 2022
+First, if the active player�s hand contains more cards than his or her 
+maximum hand size (normally seven), he or she discards enough cards to reduce 
+his or her hand size to that number. This turn-based action doesn�t use the 
+stack.*/
+agenda-group "general"
+salience 100
+dialect "mvel"
+when 
+	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	eval($g.currentStep.getObject().name=="cleanup")
+	//Mettere > ora sta in debugmode
+	$p : Player(hand.size > maxHandSize) from $ac.object	
+then
+	//il giocatore sceglie quale carta scartare
+	$p.discardToMaxHandSize = true;
+	System.out.println("discrdToMaxHandSize started");
+end
+
+rule "514.1 selectHandler"
+/*
+November 22, 2022
 First, if the active player�s hand contains more cards than his or her 
 maximum hand size (normally seven), he or she discards enough cards to reduce 
 his or her hand size to that number. This turn-based action doesn�t use the 
@@ -4895,13 +4916,49 @@ stack.*/
 agenda-group "general"
 salience 200
 dialect "mvel"
-when 
-	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
-	eval($g.currentStep.getObject().name=="cleanup")	
-	$p : Player(hand.size < maxHandSize) from $ac.object	
+when
+	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	$p : Player(discardToMaxHandSize) from $ac.object
 then
 	//il giocatore sceglie quale carta scartare
-	GameEngine.sendToNode("Il giocatore: " + $p.nickname + " sceglie quali carte scartare");
+	MakeChoice choice = new MakeChoice();
+	choice.idChoice = Game.DISCARD_TO_MAXHANDSIZE;
+	choice.choiceText = "Choose " + ($p.getHand().size() - $p.getMaxHandSize()) + " card/s to discard";
+	//choice.setChoiceOptions($p.getHand());
+	//controllare come aggiungere direttamente la lista
+	for(Card card : $p.hand) {
+		choice.addOption(card.magicTargetId, card.getNameAsString());
+	}
+	GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $p.id);
+	//$p.discardToMaxHandSize = false;
+	//update($g);
+end
+
+rule "514.1 answerHandler"
+/*
+November 22, 2022
+First, if the active player�s hand contains more cards than his or her 
+maximum hand size (normally seven), he or she discards enough cards to reduce 
+his or her hand size to that number. This turn-based action doesn�t use the 
+stack.*/
+agenda-group "general"
+salience 300
+dialect "mvel"
+when
+	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	$p : Player(discardToMaxHandSize) from $ac.object
+	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
+then
+	//Cerco e rimuovo le carte dalla mano del giocatore
+	for(Card card : $p.hand){
+		if(card.magicTargetId == $ca.getIdOptions().get(0)){
+			$p.hand.remove(card);
+			$ca.getIdOptions().removeFirst();
+		}
+	}
+	$p.discardToMaxHandSize = false;
+	retract($ca);
+	update($g);
 end
 
 rule "514.2"
