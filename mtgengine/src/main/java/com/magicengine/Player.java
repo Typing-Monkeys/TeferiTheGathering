@@ -143,27 +143,22 @@ public class Player implements Target {
 		}	
 	}
 	
-	public void discard(MagicObject card) {
-	/** Rimuove dalla mano del giocatore la carta specificata (se presente)
-	 * e la posiziona in fondo alla libreria
+	/**
+	 * @author Nicolò Posta, Tommaso Romani, Nicolò Vescera
 	 * 
-	 * N.B.: questa regola vale solo per il mulligan !!
+	 * Rimuove dalla mano del giocatore la carta specificata (se presente)
+	 * e la posiziona in fondo alla libreria
+	 *  N.B.: questa regola viene utilizzata (per ora) solo per il mulligan !!
+	 *
+	 * @param card la carta da mettere in fondo la mazzo
 	 */
+	public void sendToBottomLibrary(MagicObject card) {
 		boolean discarded = this.hand.remove(card);
 		if (discarded) {
 			this.library.add(card);
 		}
-		
 	}
 	
-	public void discard(int card_index) {
-	/** Rimuove dalla mano del giocatore la carta corrispondente 
-	 * all'indice specificato e la posiziona in fondo alla libreria
-	 */
-		MagicObject discarded = this.hand.remove(card_index);
-		this.library.add(discarded);
-	}
-
 	public String getNickname() {
 		return nickname;
 	}

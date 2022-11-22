@@ -704,7 +704,7 @@ dialect "mvel"
 		card = $p.hand.get(card_idx);
 		System.out.println("103.4 part 3c mulligan LONDON discard answer-> Player " + pid + "discarded " + card.getNameAsString());
 		// Scarto
-		$p.discard(card);
+		$p.sendToBottomLibrary(card);
 		$p.discarding = false;
 		retract($ca)
 		update($p)
