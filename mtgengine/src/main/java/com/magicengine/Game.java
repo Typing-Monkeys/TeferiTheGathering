@@ -97,6 +97,7 @@ public class Game {
 	public static final int CHOOSE_STARTING_PLAYER = 1;
 	public static final int TAKE_MULLIGAN = 2;
 	public static final int TAKE_SCRY = 3;
+	public static final int DISCARD_TO_MAXHANDSIZE = 4;
 	
 	// MULLIGAN TYPES
 	public static final int VANCOUVER_MULLIGAN = 1;
