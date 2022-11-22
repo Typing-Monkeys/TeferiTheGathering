@@ -142,6 +142,8 @@ public class Player implements Target {
 	public void discard(MagicObject card) {
 	/** Rimuove dalla mano del giocatore la carta specificata (se presente)
 	 * e la posiziona in fondo alla libreria
+	 * 
+	 * N.B.: questa regola vale solo per il mulligan !!
 	 */
 		boolean discarded = this.hand.remove(card);
 		if (discarded) {
