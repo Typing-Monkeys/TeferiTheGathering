@@ -120,15 +120,33 @@ function onClientDisconnect(){
 		return;
 	}
 	
-	console.log("Player has disconnected " + this.id);	
-		
-	//send request "close stream" to java server
+    // inizializzo il messaggio di avviso disconnessione
+    var msg = `Player has disconnected ${this.id}`;
+	
+    console.debug(socket2player[this.id]);
+    
+    //send request "close stream" to java server
 	var playerRoom = socket2player[this.id].room;
 	jSocket = room2jsocket[playerRoom];
-	jSocket.sendMessage({"exit": removePlayerId});
+
+    // player disconnection
+    this.leave(room);
+    
+    // special message and killing debugger 
+    if (this.id === idDebugger) {
+        idDebugger = null;
+        msg = 'Debugger has disconnected';
+    }
+
+    // emit the message
+    console.log(msg);
+    io.sockets.in(room).emit('messaggio', msg);
 
 	//delete player from maps
 	delete socket2player[this.id];
+
+    //if (numconn <= 0) jSocket.sendMessage({"exit": removePlayerId});
+
 };
 
 // Client send Attemtp message
@@ -163,7 +181,8 @@ function onNewDebugger(numPlayer){ //Max num player parameter from CreateRoom.ht
     //var roomSize = getSizeRoom(room.toString());
     socket2player[this.id] = newDebugger;
     idDebugger=this.id;
-    console.log("debugger connected");
+
+    console.log("debugger connected " + this.id);
     io.sockets.in(room).emit('messaggio', "Debugger join to the room...");
     
 };
@@ -339,7 +358,7 @@ function onData(data){
                         }else{
                         */
 				        messages[message.id] = messages[message.id] + message.data;
-				        sendToPlayer(message.idPlayer, messages[message.id]);
+                        sendToPlayer(message.idPlayer, messages[message.id]);
 						delete messages[message.id];
                         
 					}
@@ -790,6 +809,7 @@ function sendToDebugger(data) {
 };
 
 function onClose(){
+    // Dovrebbe chiudere il socket o roba del genere ??
 	console.log('Connection from java closed');
 };
 
