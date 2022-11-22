@@ -704,7 +704,7 @@ dialect "mvel"
 		card = $p.hand.get(card_idx);
 		System.out.println("103.4 part 3c mulligan LONDON discard answer-> Player " + pid + "discarded " + card.getNameAsString());
 		// Scarto
-		$p.discard(card);
+		$p.sendToBottomLibrary(card);
 		$p.discarding = false;
 		retract($ca)
 		update($p)
@@ -8060,8 +8060,8 @@ rule "702.31b"
     A creature with horsemanship can't be blocked by creatures without horsemanship. 
     A creature with horsemanship can block a creature with or without horsemanship.
 
-    se il bloccate ha horsemanship può bloccare creature con o senza horsemanship
-    un attaccante con horsemanship non può essere bloccato da creature senza horsemanship
+    se il bloccate ha horsemanship puï¿½ bloccare creature con o senza horsemanship
+    un attaccante con horsemanship non puï¿½ essere bloccato da creature senza horsemanship
 */
 dialect "mvel"
 no-loop true
@@ -8085,7 +8085,7 @@ agenda-group "general"
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
 					// ... se almeno 1 attaccante ha shadow ...
 					if (attacker.checkKeywordAbility("horsemanship")){
-						// ... il blocco non è valido
+						// ... il blocco non ï¿½ valido
 						System.out.println("Blocco non valido!");
 						$g.blockValid = false;
 					}
@@ -8139,7 +8139,7 @@ agenda-group "general"
 		boolean typeArtifactCreatureFear = false;
 		// Per ogni bloccante ...
 		for (Permanent blocker : $blockers) {
-			// ... se non è di tipo artefatto o non è di colore nero...
+			// ... se non ï¿½ di tipo artefatto o non ï¿½ di colore nero...
 			//if (! blocker.getCardType().toString() == "artifact creature" or ! blocker.getColorIndicator("black")) 
 				// ... controllo le creature che blocca ...
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
