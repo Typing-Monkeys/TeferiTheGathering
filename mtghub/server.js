@@ -142,6 +142,9 @@ function onClientDisconnect(){
     console.log(msg);
     io.sockets.in(room).emit('messaggio', msg);
 
+    // create new room
+    room += '1';
+
 	//delete player from maps
 	delete socket2player[this.id];
 
@@ -201,7 +204,10 @@ function onNewPlayer(numPlayer){ //Max num player parameter from CreateRoom.html
      //ToDO: choice ROOM
      this.join(room);
      //fill the maps
-     var newPlayer = new Player(room,numconn);
+
+    console.debug(room);
+    
+     var newPlayer = new Player(room, numconn);
      socket2player[this.id] = newPlayer;
 
      //ToDo: handle more room
@@ -224,7 +230,6 @@ function onNewPlayer(numPlayer){ //Max num player parameter from CreateRoom.html
         javaSocket.sendMessage(JSON_PLAYERS);
         //fill the map 		
         room2jsocket[room]=javaSocket;
-
     }
 
     if(roomSize>PLAYERS_NUMBER){
@@ -243,6 +248,8 @@ function onReady(data){
 	console.log("id who pressed " + socket2player[this.id].id);
 	data.playerSettings.playerInfo.id = socket2player[this.id].id;
 	console.log("player " + this.id + " is ready to play");
+    
+    console.debug('Room: ' + room);
 	console.log(data);
 	
 	var playerRoom = socket2player[this.id].room;
