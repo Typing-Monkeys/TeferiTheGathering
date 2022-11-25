@@ -321,6 +321,12 @@ window.onload = function() {
         socket.on('messaggio', function(data) {
             onMessage(data);
         });
+
+        socket.on('disconnect', function(data) {
+            disconnectFunction();
+            alert(data);
+            //console.log(data);
+        });
     };
 
     //BUTTON START GAME
@@ -368,7 +374,7 @@ window.onload = function() {
     };
 
     //BUTTON DISCONNECT
-    disconnect.onclick = function() {
+    function disconnectFunction() {
         document.getElementById("message").textContent = "disconnected";
         console.log("DISCONNECTED");
         socket.disconnect();
@@ -376,6 +382,7 @@ window.onload = function() {
         $('.create_room').show();
         $('.in_room').hide();
     }
+    disconnect.onclick = disconnectFunction;
 
     /**************************************************
      **               OTHER FUNCTIONS                 **
