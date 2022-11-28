@@ -142,6 +142,10 @@ function onServerSocketConnection(htmlClient) {
  *      - oltre a fare le stesse cose che fa il debug, avvisa java
  *          di terminare il GameEngine relativo alla partita e
  *          avvisa tutti gli altri client connessi di disconnettersi
+ *  
+ *  Se è un Guest che sta abbandonando:
+ *      - Resetta a null la variabile socketGuest
+ *      - Fa le setesse code del debugger
  * 
  * @author Fabrizio Fagiolo, Nicolò Vescera
  */
@@ -232,16 +236,24 @@ function onNewDebugger(numPlayer) {
 }
 
 // New player has joined
+/**
+ * Funzione che gestisce la connessione di un nuovo Player.
+ *  - Incrementa il numero di connessioni numconn
+ *  - Crea i vari socket
+ *  - Solo quando ci sono 2 player connessi crea la connessione con Java
+ *  - Quando ci sono più di 2 player vengono settati come Guest (può essercene solo 1 credo)
+ * 
+ * @author Fabrizio Fagiolo, Nicolò Vescera
+ * 
+ * @param {*} numPlayer     Max num player parameter from CreateRoom.html
+ */
 function onNewPlayer(numPlayer) {
-    //Max num player parameter from CreateRoom.html
-
     numconn++;
 
-    console.debug(`numconn: ${numconn}`);
-    console.debug("numPlayer: ", typeof numPlayer, numPlayer);
-    console.debug(`PLAYERS_NUMBER: ${PLAYERS_NUMBER}`);
-    console.debug(`JSON_PLAYERS: ${JSON_PLAYERS}`);
-
+    //console.debug(`numconn: ${numconn}`);
+    //console.debug("numPlayer: ", typeof numPlayer, numPlayer);
+    //console.debug(`PLAYERS_NUMBER: ${PLAYERS_NUMBER}`);
+    //console.debug(`JSON_PLAYERS: ${JSON_PLAYERS}`);
 
     //SOLO SE è il PRIMO -- cioè se numConn == 1
     //if PNumber==2 non tocco nulla
@@ -251,15 +263,20 @@ function onNewPlayer(numPlayer) {
     }
 
     //ToDO: choice ROOM
-    this.join(room);
-    //fill the maps
-
     console.debug(room);
+    this.join(room);
 
+    //fill the maps
     var newPlayer = new Player(room, numconn);
     socket2player[this.id] = newPlayer;
 
     //ToDo: handle more room
+    /* 
+     * queste 2 riche non fanno molto,
+     * la gunzione getSizeRoom ritorna il numero di ClientHTML connessi,
+     * basta solo che se ne apre uno (senza compilare nessun campo o premere il botteno Join Room)
+     * per aumentarne il valore.
+     */
     var roomSize = getSizeRoom(room.toString());
     console.log(roomSize + " players in room");
 
