@@ -47,6 +47,33 @@ function init() {
         console.log("listening on: " + SERVER_PORT);
     });
 
+    /**
+     * Quando NodeJs riceve SIGINT (CTRL+C) vengono chiusi
+     * tutti i socket con Java per evitare che questo vada in Loop
+     * 
+     * @author Nicolò Vescera
+     */
+    process.on('SIGINT', function() {
+        console.log("\nDetected SIGINT (CTRL+C) !!");
+        console.log("Closing all Sockets ...");
+
+        for (const [socketRoom, socket] of Object.entries(room2jsocket)) {
+            console.log(`Closing Sockets for Room ${socketRoom}`);
+
+            console.log(`Closing JSocket`);
+            socket.sendMessage({"kill": 0});
+
+            console.log(`Closing ClientHTML connection`);
+            io.sockets.in(socketRoom).emit("disconnect", 'NodeJs server closed');
+
+
+        }
+        
+        console.log("Done :D");
+        process.exit();
+      });
+      
+
     // Start listening for events
     setServerEventHandlers();
 }

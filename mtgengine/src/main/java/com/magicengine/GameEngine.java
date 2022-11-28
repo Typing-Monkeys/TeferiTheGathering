@@ -219,7 +219,7 @@ public class GameEngine extends Thread {
 			}
 		}
 	}
-	
+
 //	/**
 //	 * Questa funzione, quando viene chiamata dal server Node, resetta il gioco
 //	 * dato che un giocatore ha abbandonato la partita.
@@ -432,6 +432,23 @@ public class GameEngine extends Thread {
 					if (received != null) {
 						System.out.println("ricevuto exit");
 						exit(received);
+						break;
+					}
+					
+					/**
+					 * Questo messaggio permette di uccidere il GameEngine
+					 * e viene utilizzato quando NodeJs viene chiuso (SIGINT) per 
+					 * impedire a Java di andare in Loop Infinito
+					 * 
+					 * 	received avrà come valore un numero intero
+					 * 
+					 * @author Nicolò Vescera
+					 */
+					// JSON "KILL"
+					received = getJson(cleanJson, "kill");
+					if (received != null) {
+						System.out.println("ricevuto kill");
+						System.out.println(String.format("Killing Game because NodeJs is closed (exit message %s)", received));
 						break;
 					}
 					
