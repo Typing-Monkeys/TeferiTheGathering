@@ -28,7 +28,7 @@ var JSON_DEBUG_OFF = { debugOff: "true" };
  ** GLOBAL VARIABLES
  **************************************************/
 var numconn = 0; //number of player connected to Node.js
-var socketGuest; //socket of guest player
+var socketGuest = null; //socket of guest player
 var room = "magicRoom"; //room of game
 var jSocket; //java socket
 //maps
@@ -121,11 +121,6 @@ function onServerSocketConnection(htmlClient) {
 function onClientDisconnect() {
     numconn--;
 
-    if (socketGuest && this.id == socketGuest.id) {
-        console.log("Guest Player has disconnected " + this.id);
-        return;
-    }
-
     // se TRUE, un player si sta disconnettendo
     // se FALSe, il debugger si sta disconnettendo
     var isPlayerDisconnecting = true;
@@ -147,6 +142,13 @@ function onClientDisconnect() {
         isPlayerDisconnecting = false;      // indica che il debugger si disconnette
         idDebugger = null;                  // resetta l'idDebugger
         msg = "Debugger has disconnected";  // messagio da mandare ai client
+    }
+
+    // guest disconnecting
+    if (socketGuest !== null && this.id == socketGuest.id) {
+        isPlayerDisconnecting = false;      // indica che il guest si disconnette
+        socketGuest = null
+        msg = `Guest Player has disconnected ${this.id}`;
     }
 
     // emit the message
@@ -221,11 +223,6 @@ function onNewPlayer(numPlayer) {
         JSON_PLAYERS = { playersNumber: PLAYERS_NUMBER };
     }
 
-    /* if (numconn > PLAYERS_NUMBER) {
-      console.debug("Troppi giocatori");
-      return;
-    } */
-
     //ToDO: choice ROOM
     this.join(room);
     //fill the maps
@@ -267,11 +264,13 @@ function onNewPlayer(numPlayer) {
     }
 
     if (numconn > PLAYERS_NUMBER) {
-        console.log("DIOCANE");
+        console.log("Guest connected " + this.id);
+
         //guest player
-        //socketGuest = this;
-        //socketGuest.emit("messaggio", "Connected to the game...");
-        //console.log("Guest connected " + this.id);
+        socketGuest = this;
+        
+        // avvisa tutti gli altri partecipanti della connessione del guest
+        io.sockets.in(room).emit("messaggio", "Guest Player join the room !");
     }
     /*END --------------------------------------------------------------------------------------------------------------------------------*/
 }
@@ -847,9 +846,15 @@ function onClose() {
 
 /**************************************************
  ** HELP FUNCTIONS
+ **
+ ** questa funzione ritorna il numero di Client aperti !!
+ ** Basta solo aprire un client e non fare nulla per
+ ** aumentare la size della Room !!
  **************************************************/
 function getSizeRoom(roomName) {
     var num = io.nsps["/"].adapter.rooms[roomName];
+    //console.debug(`NUMM: ${num}`);
+
     return Object.keys(num).length;
 }
 
