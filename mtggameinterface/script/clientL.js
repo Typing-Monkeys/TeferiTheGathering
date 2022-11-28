@@ -332,8 +332,12 @@ window.onload = function() {
          */
         socket.on('disconnect', function(data) {
             disconnectFunction();
-            alert(data);
+
             //console.log(data);
+            alert(data);
+           
+            // ricarica la pagine per resettare lo stato iniziale del client
+            window.location.reload();
         });
     };
 
