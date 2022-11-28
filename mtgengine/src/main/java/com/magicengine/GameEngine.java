@@ -220,23 +220,6 @@ public class GameEngine extends Thread {
 		}
 	}
 
-//	/**
-//	 * Questa funzione, quando viene chiamata dal server Node, resetta il gioco
-//	 * dato che un giocatore ha abbandonato la partita.
-//	 * @author Nicolò Vescera
-//	 * 
-//	 * @param json Id del giocatore che ha abbandonato il gioco (ricevuto da Node)
-//	 */
-//	void resetGame(String json) {
-//		int idPlayer = gson.fromJson(json, int.class);
-//		for (Player p : game.getPriorityOrder()) {
-//			if (p.getId() != idPlayer) {
-//				sendToNode("player " + p.getNickname() + " has disconnected, Game will be resetted!");
-//				//break;
-//			}
-//		}
-//	}
-
 	void initPlayer(String json) {
 		boolean isNewPlayer = false;
 		int position = 0;
