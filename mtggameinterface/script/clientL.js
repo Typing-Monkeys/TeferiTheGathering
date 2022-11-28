@@ -322,6 +322,14 @@ window.onload = function() {
             onMessage(data);
         });
 
+        /**
+         * Quando il server invia questo messaggio ai client
+         * vuol dire che un client ha abbandonato o il server NodeJs
+         * è stato chiuso. Il client deve tornare allo stato iniziale e
+         * mostra a video il messaggio ricevuto.
+         * 
+         * @author Fabrizio Fagiolo, Nicolò Vescera
+         */
         socket.on('disconnect', function(data) {
             disconnectFunction();
             alert(data);
@@ -374,6 +382,14 @@ window.onload = function() {
     };
 
     //BUTTON DISCONNECT
+    /**
+     * Questa funzione fa disconnettere il client e ritorna allo stato iniziale
+     * Viene avviata quando:
+     *  - il bottone Disconnect viene premuto
+     *  - il server invia un messaggio di disconnect al client
+     * 
+     * @author Fabrizio Fagiolo, Nicolò Vescera
+     */
     function disconnectFunction() {
         document.getElementById("message").textContent = "disconnected";
         console.log("DISCONNECTED");
