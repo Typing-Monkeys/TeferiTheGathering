@@ -330,7 +330,7 @@ window.onload = function() {
          * 
          * @author Fabrizio Fagiolo, Nicolò Vescera
          */
-        socket.on('disconnect', function(data) {
+        socket.on('clientLeave', function(data) {
             disconnectFunction();
 
             //console.log(data);
