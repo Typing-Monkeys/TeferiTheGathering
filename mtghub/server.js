@@ -64,7 +64,7 @@ function init() {
             socket.sendMessage({"kill": 0});
 
             console.log(`Closing ClientHTML connection`);
-            io.sockets.in(socketRoom).emit("disconnect", 'NodeJs server closed');
+            io.sockets.in(socketRoom).emit("clientLeave", 'NodeJs server closed');
 
 
         }
@@ -188,7 +188,7 @@ function onClientDisconnect() {
 
     if (isPlayerDisconnecting) {
         // avvisa tutti i client connessi alla stanza di abbandonare la partita
-        io.sockets.in(playerRoom).emit("disconnect", msg);
+        io.sockets.in(playerRoom).emit("clientLeave", msg);
         jSocket.sendMessage({"exit": playerId });    // avvisa java di resettare il game
         //room += '1';                               // create new room
     }
