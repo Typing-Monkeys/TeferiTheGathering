@@ -38,6 +38,33 @@ var socket2player = {}; //KEYS: html socket, VALUE: player object
 var messages = {}; //save the incoming incomplete messages
 var prevData = "";
 var idDebugger = null;
+
+
+/**
+ * Questa funzione viene lanciata quando i server NodeJs o Java vengono
+ * chiusi di cattiveria. Forzano la disconnessione di tutti i socket
+ * io (quelli tra Node e ClientHTML) e JSocket (tra Node e Java).
+ * @author Fabrizio Fagiolo, Nicolò Vescera
+ * 
+ * @param {string} msg messaggio da mostrare ai ClientHTML
+ */
+function forcedExit(msg="NodeJs server closed") {
+    console.log("Closing all Sockets ...");
+
+    for (const [socketRoom, socket] of Object.entries(room2jsocket)) {
+        console.log(`Closing Sockets for Room ${socketRoom}`);
+
+        console.log(`Closing JSocket`);
+        socket.sendMessage({"kill": 0});
+
+        console.log(`Closing ClientHTML connection`);
+        io.sockets.in(socketRoom).emit("clientLeave", msg);
+    }
+
+    console.log("Done :D");
+};
+
+
 /**************************************************
  ** SERVER INITIALISATION
  **************************************************/
@@ -47,6 +74,23 @@ function init() {
         console.log("listening on: " + SERVER_PORT);
     });
 
+    
+
+    /**
+     * Quando viene lanciata un'eccezione non gestita
+     * viene forzata la chiusura di tutti i Socket (io e JSocket)
+     * ed infine chiuso il server NodeJS
+     *  
+     * @author Fabrizio Fagiolo, Nicolò Vescera
+     */
+    process.on('uncaughtException', (err, origin) => {
+        console.error(`Exception: ${err}`);
+        console.error(`from origin: ${origin}`);
+
+        forcedExit();
+        process.exit(1);
+      });
+
     /**
      * Quando NodeJs riceve SIGINT (CTRL+C) vengono chiusi
      * tutti i socket con Java per evitare che questo vada in Loop
@@ -55,22 +99,8 @@ function init() {
      */
     process.on('SIGINT', function() {
         console.log("\nDetected SIGINT (CTRL+C) !!");
-        console.log("Closing all Sockets ...");
-
-        for (const [socketRoom, socket] of Object.entries(room2jsocket)) {
-            console.log(`Closing Sockets for Room ${socketRoom}`);
-
-            console.log(`Closing JSocket`);
-            socket.sendMessage({"kill": 0});
-
-            console.log(`Closing ClientHTML connection`);
-            io.sockets.in(socketRoom).emit("clientLeave", 'NodeJs server closed');
-
-
-        }
-        
-        console.log("Done :D");
-        process.exit();
+        forcedExit();
+        process.exit(0);
       });
       
 
@@ -261,6 +291,10 @@ function onNewPlayer(numPlayer) {
         PLAYERS_NUMBER = numPlayer.num_player; //toReview
         JSON_PLAYERS = { playersNumber: PLAYERS_NUMBER };
     }
+
+    /* if(numconn%PLAYERS_NUMBER >= JSON_PLAYERS) {
+        room += '1';
+    } */
 
     //ToDO: choice ROOM
     console.debug(room);
@@ -886,6 +920,15 @@ function sendToDebugger(data) {
 function onClose() {
     // Dovrebbe chiudere il socket o roba del genere ??
     console.log("Connection from java closed");
+
+    /**
+     * Quando Java viene chiuso o crasha (?)
+     * vengono chiusi tutti i Socket (io e JSocket) e 
+     * viene inviato il messaggio ai ClientHTML
+     * 
+     * @author Fabrizio Fagiolo, Nicolò Vescera
+     */
+    forcedExit(msg="Java server closed");
 }
 
 /**************************************************
