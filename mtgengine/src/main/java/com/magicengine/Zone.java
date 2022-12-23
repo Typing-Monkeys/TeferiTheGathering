@@ -24,6 +24,12 @@ public class Zone extends LinkedList<MagicObject> implements Target {
 		this.magicTargetId=magicTargetId;
 	}
 	
+	/**
+	 * Rimuove una carta dalla Zona prendendo come parametro il magicTargetId della carta da rimuovere.
+	 * @param magicTargetId Id della carta da rimuovere
+	 * @return true se la carta è stata eliminata, altrimenti false
+	 * @author Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+	 */
 	public boolean remove(String magicTargetId) {
 		int magicTargetIdint = Integer.valueOf(magicTargetId);
 		

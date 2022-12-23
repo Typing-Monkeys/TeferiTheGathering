@@ -71,7 +71,7 @@ public class Game {
 	public static final int DURING_TIME_FRAME = 2;	
 	public static final int END_TIME_FRAME = 0;
 	public static final int ABSENT_TIME_FRAME = -1;
-	public static final int CLEANUP_TIME_FRAME = 3;
+	public static final int CLEANUP_TIME_FRAME = 3; //Frame per aspettare la scelta dell'utente alla regola 514.1
 	
 	// STAGE
 	public static final int STARTING_STAGE 	= 0;
