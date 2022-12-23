@@ -4893,17 +4893,28 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesn�t use the 
 stack.*/
 agenda-group "general"
-salience 100
+salience 300
 dialect "mvel"
 when 
 	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
 	eval($g.currentStep.getObject().name=="cleanup")
+	
 	//Mettere > ora sta in debugmode
-	$p : Player(hand.size > maxHandSize) from $ac.object	
+	//TODO:: Prendere entrambi non solo quello attivo
+	$p : Player(hand.size > maxHandSize) from $ac.object
+	//$p : Player(hand.size <= maxHandSize) from $ac.object
+	//$p : Player($id : id) from $ac.object
+	//eval($p.hand.size < $p.maxHandSize)
 then
 	//il giocatore sceglie quale carta scartare
 	$p.discardToMaxHandSize = true;
-	System.out.println("discrdToMaxHandSize started");
+	$g.stepTimeFrame = Game.CLEANUP_TIME_FRAME;
+	System.out.println("**discrdToMaxHandSize started");
+	System.out.println("**Player attivo" + $p);
+	System.out.println($p.hand.size);
+	System.out.println($p.maxHandSize);
+	System.out.println("**DIO PORCO");
+	update($g);
 end
 
 rule "514.1 selectHandler"
@@ -4917,9 +4928,10 @@ agenda-group "general"
 salience 200
 dialect "mvel"
 when
-	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
-	$p : Player(discardToMaxHandSize) from $ac.object
+	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && discardToMaxHandSize_state) from $ac.object
 then
+	System.out.println("**Creo la MakeChoice");
 	//il giocatore sceglie quale carta scartare
 	MakeChoice choice = new MakeChoice();
 	choice.idChoice = Game.DISCARD_TO_MAXHANDSIZE;
@@ -4930,8 +4942,10 @@ then
 		choice.addOption(card.magicTargetId, card.getNameAsString());
 	}
 	GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $p.id);
+	System.out.println("**Ho mandato la MakeChoice");
+	$p.discardToMaxHandSize_state = false;
 	//$p.discardToMaxHandSize = false;
-	//update($g);
+	update($g);
 end
 
 rule "514.1 answerHandler"
@@ -4942,22 +4956,28 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesn�t use the 
 stack.*/
 agenda-group "general"
-salience 300
+salience 100
 dialect "mvel"
 when
-	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
-	$p : Player(discardToMaxHandSize) from $ac.object
+	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && !discardToMaxHandSize_state) from $ac.object
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
+	System.out.println("**Ho scelto la carta da scartare");
 	//Cerco e rimuovo le carte dalla mano del giocatore
-	for(Card card : $p.hand){
-		if(card.magicTargetId == $ca.getIdOptions().get(0)){
-			$p.hand.remove(card);
-			$ca.getIdOptions().removeFirst();
-		}
+	System.out.println($ca.getIdOptions());
+	System.out.println($ca.getIdOptions().get(0).getClass().getName());
+	for(String elem : $ca.getIdOptions()){
+		System.out.println(elem);
+		$p.hand.remove_elem(Integer.valueOf(elem));
 	}
+	System.out.println("**Sono fuori dal FOR");
 	$p.discardToMaxHandSize = false;
+	System.out.println("**Fine fase di scartamento");
+	$p.discardToMaxHandSize_state = true;
+	$g.stepTimeFrame = Game.BEGIN_TIME_FRAME;
 	retract($ca);
+	update($p);
 	update($g);
 end
 
