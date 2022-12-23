@@ -24,9 +24,16 @@ public class Zone extends LinkedList<MagicObject> implements Target {
 		this.magicTargetId=magicTargetId;
 	}
 	
-	public void remove_elem(int magicTargetId) {
-		MagicObject tmp = new MagicObject(magicTargetId);
-		super.remove(tmp);
+	public boolean remove(String magicTargetId) {
+		int magicTargetIdint = Integer.valueOf(magicTargetId);
+		
+		for (MagicObject card : this) {
+			if (card.getMagicTargetId() == magicTargetIdint) {
+				return remove(card);
+			}
+		}
+
+		return false;
 	}
 
 	public int getMagicTargetId() {
