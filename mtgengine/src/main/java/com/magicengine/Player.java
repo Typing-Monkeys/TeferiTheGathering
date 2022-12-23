@@ -53,6 +53,7 @@ public class Player implements Target {
 	
 	private boolean discarding = false; // true se il giocatore è in fase di scarto
 	private boolean discardToMaxHandSize = false; // true se il giocatore deve scartare fino ad avere 7 carte in mano
+	private boolean discardToMaxHandSize_state = true;
 	
 	private LinkedList<Integer> attached_by;
 	private LinkedList<Permanent> attby_perm;
@@ -505,4 +506,12 @@ public class Player implements Target {
 		this.discardToMaxHandSize = discardToMaxHandSize;
 	}
 
+	public boolean isDiscardToMaxHandSize_state() {
+		return discardToMaxHandSize_state;
+	}
+
+	public void setDiscardToMaxHandSize_state(boolean discardToMaxHandSize_state) {
+		this.discardToMaxHandSize_state = discardToMaxHandSize_state;
+	}
+	
 }
