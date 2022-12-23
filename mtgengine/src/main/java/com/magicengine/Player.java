@@ -51,9 +51,11 @@ public class Player implements Target {
 	//numero dei mulligan usati dal giocatore
 	private int mulliganCounter=0; 
 	
-	private boolean discarding = false; // true se il giocatore è in fase di scarto
+	private boolean discarding = false; // true se il giocatore è in fase di scarto mulligan
+	
+	//Variabili per la gestione della regola 514.1
 	private boolean discardToMaxHandSize = false; // true se il giocatore deve scartare fino ad avere 7 carte in mano
-	private boolean discardToMaxHandSize_state = true;
+	private boolean beginningDiscardingToMaxHandSize = true; // serve per impedire di creare infinite choiceAnswer
 	
 	private LinkedList<Integer> attached_by;
 	private LinkedList<Permanent> attby_perm;
@@ -506,12 +508,12 @@ public class Player implements Target {
 		this.discardToMaxHandSize = discardToMaxHandSize;
 	}
 
-	public boolean isDiscardToMaxHandSize_state() {
-		return discardToMaxHandSize_state;
+	public boolean isBeginningDiscardingToMaxHandSize() {
+		return beginningDiscardingToMaxHandSize;
 	}
 
-	public void setDiscardToMaxHandSize_state(boolean discardToMaxHandSize_state) {
-		this.discardToMaxHandSize_state = discardToMaxHandSize_state;
+	public void setBeginningDiscardingToMaxHandSize(boolean beginningDiscardingToMaxHandSize) {
+		this.beginningDiscardingToMaxHandSize = beginningDiscardingToMaxHandSize;
 	}
 	
 }
