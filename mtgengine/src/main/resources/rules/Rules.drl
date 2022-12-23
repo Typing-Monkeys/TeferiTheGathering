@@ -4896,12 +4896,12 @@ agenda-group "general"
 salience 300
 dialect "mvel"
 when 
-	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	$g:Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.BEGIN_TIME_FRAME)
 	eval($g.currentStep.getObject().name=="cleanup")
 	
 	//Mettere > ora sta in debugmode
 	//TODO:: Prendere entrambi non solo quello attivo
-	$p : Player(hand.size > maxHandSize) from $ac.object
+	$p : Player(hand.size > maxHandSize) from $players
 	//$p : Player(hand.size <= maxHandSize) from $ac.object
 	//$p : Player($id : id) from $ac.object
 	//eval($p.hand.size < $p.maxHandSize)
@@ -4928,8 +4928,8 @@ agenda-group "general"
 salience 200
 dialect "mvel"
 when
-	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
-	$p : Player(discardToMaxHandSize && discardToMaxHandSize_state) from $ac.object
+	$g : Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && discardToMaxHandSize_state) from $players
 then
 	System.out.println("**Creo la MakeChoice");
 	//il giocatore sceglie quale carta scartare
@@ -4959,18 +4959,25 @@ agenda-group "general"
 salience 100
 dialect "mvel"
 when
-	$g : Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
-	$p : Player(discardToMaxHandSize && !discardToMaxHandSize_state) from $ac.object
+	$g : Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && !discardToMaxHandSize_state) from $players
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
 	System.out.println("**Ho scelto la carta da scartare");
 	//Cerco e rimuovo le carte dalla mano del giocatore
 	System.out.println($ca.getIdOptions());
 	System.out.println($ca.getIdOptions().get(0).getClass().getName());
-	for(String elem : $ca.getIdOptions()){
-		System.out.println(elem);
-		$p.hand.remove_elem(Integer.valueOf(elem));
+	
+	// elimina le carte solo se Ã¨ stato scelto il numero corretto di carte
+	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
+		for(String cardId : $ca.getIdOptions()) {
+	        System.out.println(cardId);
+	    	$p.hand.remove(cardId);
+	    }
+	} else {
+		System.out.println("Il giocatore ha scelto un numero errato di carte !!");
 	}
+	
 	System.out.println("**Sono fuori dal FOR");
 	$p.discardToMaxHandSize = false;
 	System.out.println("**Fine fase di scartamento");
@@ -8137,8 +8144,8 @@ rule "702.31b"
     A creature with horsemanship can't be blocked by creatures without horsemanship. 
     A creature with horsemanship can block a creature with or without horsemanship.
 
-    se il bloccate ha horsemanship può bloccare creature con o senza horsemanship
-    un attaccante con horsemanship non può essere bloccato da creature senza horsemanship
+    se il bloccate ha horsemanship puï¿½ bloccare creature con o senza horsemanship
+    un attaccante con horsemanship non puï¿½ essere bloccato da creature senza horsemanship
 */
 dialect "mvel"
 no-loop true
@@ -8162,7 +8169,7 @@ agenda-group "general"
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
 					// ... se almeno 1 attaccante ha shadow ...
 					if (attacker.checkKeywordAbility("horsemanship")){
-						// ... il blocco non è valido
+						// ... il blocco non ï¿½ valido
 						System.out.println("Blocco non valido!");
 						$g.blockValid = false;
 					}
@@ -8216,7 +8223,7 @@ agenda-group "general"
 		boolean typeArtifactCreatureFear = false;
 		// Per ogni bloccante ...
 		for (Permanent blocker : $blockers) {
-			// ... se non è di tipo artefatto o non è di colore nero...
+			// ... se non ï¿½ di tipo artefatto o non ï¿½ di colore nero...
 			//if (! blocker.getCardType().toString() == "artifact creature" or ! blocker.getColorIndicator("black")) 
 				// ... controllo le creature che blocca ...
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
