@@ -321,6 +321,24 @@ window.onload = function() {
         socket.on('messaggio', function(data) {
             onMessage(data);
         });
+
+        /**
+         * Quando il server invia questo messaggio ai client
+         * vuol dire che un client ha abbandonato o il server NodeJs
+         * è stato chiuso. Il client deve tornare allo stato iniziale e
+         * mostra a video il messaggio ricevuto.
+         * 
+         * @author Fabrizio Fagiolo, Nicolò Vescera
+         */
+        socket.on('clientLeave', function(data) {
+            disconnectFunction();
+
+            //console.log(data);
+            alert(data);
+           
+            // ricarica la pagine per resettare lo stato iniziale del client
+            window.location.reload();
+        });
     };
 
     //BUTTON START GAME
@@ -368,7 +386,15 @@ window.onload = function() {
     };
 
     //BUTTON DISCONNECT
-    disconnect.onclick = function() {
+    /**
+     * Questa funzione fa disconnettere il client e ritorna allo stato iniziale
+     * Viene avviata quando:
+     *  - il bottone Disconnect viene premuto
+     *  - il server invia un messaggio di disconnect al client
+     * 
+     * @author Fabrizio Fagiolo, Nicolò Vescera
+     */
+    function disconnectFunction() {
         document.getElementById("message").textContent = "disconnected";
         console.log("DISCONNECTED");
         socket.disconnect();
@@ -376,6 +402,7 @@ window.onload = function() {
         $('.create_room').show();
         $('.in_room').hide();
     }
+    disconnect.onclick = disconnectFunction;
 
     /**************************************************
      **               OTHER FUNCTIONS                 **

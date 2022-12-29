@@ -4887,21 +4887,100 @@ end
 
 rule "514.1"
 /*
-November 19, 2021
-First, if the active playerï¿½s hand contains more cards than his or her 
+November 22, 2022
+First, if the active players hand contains more cards than his or her 
 maximum hand size (normally seven), he or she discards enough cards to reduce 
-his or her hand size to that number. This turn-based action doesnï¿½t use the 
-stack.*/
+his or her hand size to that number. This turn-based action doesnt use the 
+stack.
+
+Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+*/
+agenda-group "general"
+salience 300
+dialect "mvel"
+when 
+	$g:Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	eval($g.currentStep.getObject().name=="cleanup")
+
+	$p : Player(hand.size > maxHandSize) from $players
+then
+	//passa alla fase di scarto delle carte in eccesso
+	$p.discardToMaxHandSize = true;
+	$g.stepTimeFrame = Game.CLEANUP_TIME_FRAME;
+	System.out.println("514.1 -> discrdToMaxHandSize started");
+	update($g);
+end
+
+rule "514.1 selectHandler"
+/*
+November 22, 2022
+First, if the active players hand contains more cards than his or her 
+maximum hand size (normally seven), he or she discards enough cards to reduce 
+his or her hand size to that number. This turn-based action doesnt use the 
+stack.
+
+Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+*/
 agenda-group "general"
 salience 200
 dialect "mvel"
-when 
-	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
-	eval($g.currentStep.getObject().name=="cleanup")	
-	$p : Player(hand.size < maxHandSize) from $ac.object	
+when
+	$g : Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && beginningDiscardingToMaxHandSize) from $players
 then
-	//il giocatore sceglie quale carta scartare
-	GameEngine.sendToNode("Il giocatore: " + $p.nickname + " sceglie quali carte scartare");
+	//crea la MakeChoise da inviare al Node
+	MakeChoice choice = new MakeChoice();
+	choice.idChoice = Game.DISCARD_TO_MAXHANDSIZE;
+	choice.choiceText = "Choose " + ($p.getHand().size() - $p.getMaxHandSize()) + " card/s to discard";
+	for(Card card : $p.hand) {
+		choice.addOption(card.magicTargetId, card.getNameAsString());
+	}
+	
+	//invia la choice al server 
+	GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $p.id);
+	
+	//Impedisce che questa regola venga avviata molteplici volte mentre il giocatore aspetta di fare la scelta
+	$p.beginningDiscardingToMaxHandSize = false;
+	update($g);
+end
+
+rule "514.1 answerHandler"
+/*
+November 22, 2022
+First, if the active players hand contains more cards than his or her 
+maximum hand size (normally seven), he or she discards enough cards to reduce 
+his or her hand size to that number. This turn-based action doesnt use the 
+stack.
+
+Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+*/
+agenda-group "general"
+salience 100
+dialect "mvel"
+when
+	$g : Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.CLEANUP_TIME_FRAME)
+	$p : Player(discardToMaxHandSize && !beginningDiscardingToMaxHandSize) from $players
+	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
+then
+
+	//elimina le carte solo se è stato scelto il numero corretto di carte
+	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
+		for(String cardId : $ca.getIdOptions()) {
+	    	$p.hand.remove(cardId);
+	    }
+	} else {
+		//avvisa il player della scelta errata della carte da scartare
+		System.out.println("514.1 -> Il giocatore ha scelto un numero errato di carte !!");
+		GameEngine.sendToNode("Il giocatore " + $p.nickname + " ha scelto un numero errato di carte !!");
+	}
+	
+	//reset delle varibili allo stato iniziale per passare alle fasi successive del gioco
+	$p.discardToMaxHandSize = false;
+	$p.beginningDiscardingToMaxHandSize = true;
+	$g.stepTimeFrame = Game.BEGIN_TIME_FRAME;
+	retract($ca);
+	update($p);
+	update($g);
 end
 
 rule "514.2"
@@ -8060,8 +8139,8 @@ rule "702.31b"
     A creature with horsemanship can't be blocked by creatures without horsemanship. 
     A creature with horsemanship can block a creature with or without horsemanship.
 
-    se il bloccate ha horsemanship può bloccare creature con o senza horsemanship
-    un attaccante con horsemanship non può essere bloccato da creature senza horsemanship
+    se il bloccate ha horsemanship puï¿½ bloccare creature con o senza horsemanship
+    un attaccante con horsemanship non puï¿½ essere bloccato da creature senza horsemanship
 */
 dialect "mvel"
 no-loop true
@@ -8085,7 +8164,7 @@ agenda-group "general"
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
 					// ... se almeno 1 attaccante ha shadow ...
 					if (attacker.checkKeywordAbility("horsemanship")){
-						// ... il blocco non è valido
+						// ... il blocco non ï¿½ valido
 						System.out.println("Blocco non valido!");
 						$g.blockValid = false;
 					}
@@ -8139,7 +8218,7 @@ agenda-group "general"
 		boolean typeArtifactCreatureFear = false;
 		// Per ogni bloccante ...
 		for (Permanent blocker : $blockers) {
-			// ... se non è di tipo artefatto o non è di colore nero...
+			// ... se non ï¿½ di tipo artefatto o non ï¿½ di colore nero...
 			//if (! blocker.getCardType().toString() == "artifact creature" or ! blocker.getColorIndicator("black")) 
 				// ... controllo le creature che blocca ...
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {

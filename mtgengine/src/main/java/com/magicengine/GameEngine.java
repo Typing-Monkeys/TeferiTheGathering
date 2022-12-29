@@ -213,7 +213,7 @@ public class GameEngine extends Thread {
 	void exit(String json) {
 		int idPlayer = gson.fromJson(json, int.class);
 		for (Player p : game.getPriorityOrder()) {
-			if (p.getId() == idPlayer) {
+			if (p.getId() == idPlayer) {	//TODO: forse questa condizione deve essere invertita
 				sendToNode("player " + p.getNickname() + " has disconnected, VICTORY!");
 				break;
 			}
@@ -417,6 +417,24 @@ public class GameEngine extends Thread {
 						exit(received);
 						break;
 					}
+					
+					/**
+					 * Questo messaggio permette di uccidere il GameEngine
+					 * e viene utilizzato quando NodeJs viene chiuso (SIGINT) per 
+					 * impedire a Java di andare in Loop Infinito
+					 * 
+					 * 	received avrà come valore un numero intero
+					 * 
+					 * @author Nicolò Vescera
+					 */
+					// JSON "KILL"
+					received = getJson(cleanJson, "kill");
+					if (received != null) {
+						System.out.println("ricevuto kill");
+						System.out.println(String.format("Killing Game because NodeJs is closed (exit message %s)", received));
+						break;
+					}
+					
 					// JSON "ATTEMPT"
 					received = getJson(cleanJson, "attempt");
 					if (received != null) {

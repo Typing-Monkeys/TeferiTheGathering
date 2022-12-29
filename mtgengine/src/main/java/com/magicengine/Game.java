@@ -71,6 +71,7 @@ public class Game {
 	public static final int DURING_TIME_FRAME = 2;	
 	public static final int END_TIME_FRAME = 0;
 	public static final int ABSENT_TIME_FRAME = -1;
+	public static final int CLEANUP_TIME_FRAME = 3; //Frame per aspettare la scelta dell'utente alla regola 514.1
 	
 	// STAGE
 	public static final int STARTING_STAGE 	= 0;
@@ -97,6 +98,7 @@ public class Game {
 	public static final int CHOOSE_STARTING_PLAYER = 1;
 	public static final int TAKE_MULLIGAN = 2;
 	public static final int TAKE_SCRY = 3;
+	public static final int DISCARD_TO_MAXHANDSIZE = 4;
 	
 	// MULLIGAN TYPES
 	public static final int VANCOUVER_MULLIGAN = 1;
