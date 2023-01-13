@@ -4893,7 +4893,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by NicolÚ Posta, Tommaso Romani, NicolÚ Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by NicolÔøΩ Posta, Tommaso Romani, NicolÔøΩ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 300
@@ -4919,7 +4919,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by NicolÚ Posta, Tommaso Romani, NicolÚ Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by NicolÔøΩ Posta, Tommaso Romani, NicolÔøΩ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 200
@@ -4952,7 +4952,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by NicolÚ Posta, Tommaso Romani, NicolÚ Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by NicolÔøΩ Posta, Tommaso Romani, NicolÔøΩ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 100
@@ -4963,7 +4963,7 @@ when
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
 
-	//elimina le carte solo se Ë stato scelto il numero corretto di carte
+	//elimina le carte solo se ÔøΩ stato scelto il numero corretto di carte
 	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
 		for(String cardId : $ca.getIdOptions()) {
 	    	$p.hand.remove(cardId);
@@ -7731,7 +7731,39 @@ agenda-group "general"
 end
 
 
+rule "702.2a"
+/**
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicol√≤ Vescera
+**/
+/*Deathtouch is a static ability.*/
+agenda-group "general"
+//no-loop true
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.startsWith("Deathtouch")) from $la
+	then
+		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
+		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
+		update($p)
+end
 
+rule "702.2b"
+/**
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicol√≤ Vescera
+**/
+/*Deathtouch is a static ability.*/
+agenda-group "general"
+	when
+		$g : Game(stage == Game.GAME_STAGE)
+		
+	then
+end
 
 //martina-damiano cerco keyword ability equip tra le abilit√† attivate e setto il booleano 
 rule "702.6a"
