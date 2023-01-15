@@ -1447,11 +1447,11 @@ rule "117.5"
 	
 		LinkedList ruleList = new LinkedList();
 		ruleList.addAll([
-			"702.2b",
 			"704.5a",
 			"704.5b",
 			"704.5c",
 			"704.5f",
+			"702.2b",
 			"704.5g",
 			"704.5i",
 			"704.5j"
@@ -7192,7 +7192,7 @@ it ceases to exist.
 end
 
 
-rule "704.5f"
+rule "704.5f"	//non trigghera :+1
 /*
 November 19, 2021
 704.5f. If a creature has toughness 0 or less, it's put into its owner's graveyard.
@@ -7209,8 +7209,7 @@ Regeneration can't replace this event.
 	then
 		System.out.println("704.5f --> Controlling if there are creature that have toughness lower or equal than zero.");	
 		for (Permanent p : $bf) {
-			// toccata a morte (da Brüno)
-			if(p.isDeathtouched()){
+			if(p.deathtouched){
 				System.out.println(p.getNameAsString + " ha Deathtouch !");
 				System.out.println(p.getNameAsString + " viene distrutta");
 				$g.destroy(p);
@@ -7760,7 +7759,7 @@ agenda-group "general"
 		update($p)
 end
 
-rule "702.2b"
+rule "702.2b.1"
 dialect "mvel"
 salience 500
 no-loop true 
@@ -7771,44 +7770,62 @@ no-loop true
 /*Deathtouch is a static ability.*/
 agenda-group "general"
 	when	
-		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
 		eval($g.currentStep.getObject().name == "combat damage")
 		eval($g.stepCombatDamage.getObject() == "510.1d")
-					//if (! (blocker.checkKeywordAbility("flying") || 
 		
 		$carta: Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch"), $target: target) from $g.attackingCreatures.listReference
-		//for(Permanent attacker : $g.attackingCreatures.listReference){
-		//$g: Game(stage == Game.GAME_STAGE, $bf : battleField, $ap: activePlayer, $pm: priorityMarker, controlStateBasedActions)
-		//$a: Action(option == Game.PASS_PRIORITY)
-		//$pmt: Permanent(
-		//		cardType[0].contains("creature"),
-		//		Integer.parseInt(toughness[0]) > 0
-				//Integer.parseInt(toughness[0]) <= markedDamage
-		//	) from $bf
+
 	then
-		System.out.println("!!!! DIOPORCONE HA DEATH TOUCH!!!");
-		System.out.println($carta.getName());
-		//System.out.println($pmt);
-		System.out.println($target);
-		System.out.println($carta.target);
-		System.out.println($carta.blockedBy);
+		System.out.println("702.2b.1 --> Individuo le carte colpite da Deathtouch");
+		System.out.println("\tLa Carta ATTACCANTE " + $carta.getName() + " ha Deathtouch");
+
+		// ogni carta che blocca l'attaccante viene marchiata con Deathtouch		
 		for (Permanent blk : $carta.blockedBy.listReference) {
-			System.out.println(blk);
-			System.out.println(blk.name);
-			blk.deathtouched = true;	//TODO: questo cambiamento non viene visto dopo l'attivazione di questa regola !!!
+			System.out.println("\tLa Carta BERSAGLIO " + blk.getName() + " viene marchiata con Deathtouch");
+			
+			// trovo l'indice della carta nella lista
+			int blkIndexInBf = $bf.indexOf(blk);
+			
+			// modifico la carta aggiungendo il marchio
+			Permanent toDeathtouched = ((Permanent)$bf.get(blkIndexInBf));
+			toDeathtouched.setDeathtouched(true);
+			
+			// aggiorno la carta nel campo
+			$bf.set(blkIndexInBf, toDeathtouched);
 		}
-		//System.out.println($carta.blockedBy.name);
-		System.out.println("!!!! ----------------------------- !!!");
-		//$carta.blockedBy.deathtouched = true;
-		//Permanent tmp = ((Permanent)$carta.target);
-		//tmp.setDeathtouched(true);
-		//$target.deathtouched = true;
-		//Permanent bersaglioPermanent = $carta.target;
-		//bersaglioPermanent.setDeathtouched(true);
-		//$g.stepCombatDamage.next();
-		update($g)	// con o senza non funziona uguale !!
+
+		update($g)	
 end
 
+
+rule "702.2b"
+dialect "mvel"
+salience 500
+no-loop true 
+/**
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+/*Deathtouched Creatures are destroyed.*/
+agenda-group "general"
+	when
+		$g: Game(stage == Game.GAME_STAGE, $bf : battleField, $ap: activePlayer, $pm: priorityMarker, controlStateBasedActions)
+		$a: Action(option == Game.PASS_PRIORITY)
+		$pmt: Permanent(
+				cardType[0].contains("creature"),
+				deathtouched
+			) from $bf
+			
+	then
+		System.out.println("702.2b --> Morte per Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !");
+		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta");
+
+		$g.destroy($pmt);
+
+		update($g)
+end	
 
 //martina-damiano cerco keyword ability equip tra le abilità attivate e setto il booleano 
 rule "702.6a"
