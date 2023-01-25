@@ -1451,10 +1451,10 @@ rule "117.5"
 			"704.5b",
 			"704.5c",
 			"704.5f",
-			"702.2b",
 			"704.5g",
 			"704.5i",
 			"704.5j"
+			//"702.2b"
 		]);
 		
 		insert(
@@ -7759,45 +7759,6 @@ agenda-group "general"
 		update($p)
 end
 
-rule "702.2b.1"
-dialect "mvel"
-salience 500
-no-loop true 
-/**
-	@date 2022/2023
-	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
-**/
-/*Deathtouch is a static ability.*/
-agenda-group "general"
-	when	
-		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
-		eval($g.currentStep.getObject().name == "combat damage")
-		eval($g.stepCombatDamage.getObject() == "510.1d")
-		
-		$carta: Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch"), $target: target) from $g.attackingCreatures.listReference
-
-	then
-		System.out.println("702.2b.1 --> Individuo le carte colpite da Deathtouch");
-		System.out.println("\tLa Carta ATTACCANTE " + $carta.getName() + " ha Deathtouch");
-
-		// ogni carta che blocca l'attaccante viene marchiata con Deathtouch		
-		for (Permanent blk : $carta.blockedBy.listReference) {
-			System.out.println("\tLa Carta BERSAGLIO " + blk.getName() + " viene marchiata con Deathtouch");
-			
-			// trovo l'indice della carta nella lista
-			int blkIndexInBf = $bf.indexOf(blk);
-			
-			// modifico la carta aggiungendo il marchio
-			Permanent toDeathtouched = ((Permanent)$bf.get(blkIndexInBf));
-			toDeathtouched.setDeathtouched(true);
-			
-			// aggiorno la carta nel campo
-			$bf.set(blkIndexInBf, toDeathtouched);
-		}
-
-		update($g)	
-end
-
 
 rule "702.2b"
 dialect "mvel"
@@ -7809,12 +7770,19 @@ no-loop true
 **/
 /*Deathtouched Creatures are destroyed.*/
 agenda-group "general"
-	when
-		$g: Game(stage == Game.GAME_STAGE, $bf : battleField, $ap: activePlayer, $pm: priorityMarker, controlStateBasedActions)
-		$a: Action(option == Game.PASS_PRIORITY)
+when
+	$g: Game(
+			stage == Game.GAME_STAGE, 
+			$bf : battleField,
+		//	$ap: activePlayer, 
+		//	$pm: priorityMarker, 
+			controlStateBasedActions
+		)
+		//$a: Action(option == Game.PASS_PRIORITY)
+		//$a: Action(option == Game.PASS_PRIORITY)
 		$pmt: Permanent(
 				cardType[0].contains("creature"),
-				deathtouched
+				deathtouched == true
 			) from $bf
 			
 	then
@@ -7826,6 +7794,61 @@ agenda-group "general"
 
 		update($g)
 end	
+
+
+
+rule "702.2c"
+dialect "mvel"
+salience 500
+no-loop true 
+/**
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+/*Deathtouched Creatures are destroyed.*/
+agenda-group "general"
+	when
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
+		eval($g.currentStep.getObject().name == "combat damage")
+		eval($g.stepCombatDamage.getObject() == "510.3")
+		
+		$pmt: Permanent(
+				//$damageOrder: damageAssignmentOrder.listReference,
+				$difensori: blockedBy.listReference,
+				$attaccanti: blockedCreatures.listReference,
+				cardType[0].contains("creature"),
+				Integer.parseInt(toughness[0]) > 0,
+				markedDamage > 0,
+				deathtouched == false
+				//Integer.parseInt(toughness[0]) <= markedDamage,
+			) from $bf
+		//exists (
+		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori || 
+		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti
+		//	)
+		//exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori ) || exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti)
+		
+		exists(
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) 
+				from $attaccanti
+			)
+		
+		//exists ( 
+		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
+		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
+		//)
+		//$aaa: Permanent() from $damageOrder
+			
+	then
+		System.out.println("702.2c --> Marchiamento Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" viene marchiata con Deathtouch !");
+		
+		$pmt.setDeathtouched(true);
+		System.out.println("\t DIOMERDA");
+
+		update($g)
+end	
+
 
 //martina-damiano cerco keyword ability equip tra le abilità attivate e setto il booleano 
 rule "702.6a"
