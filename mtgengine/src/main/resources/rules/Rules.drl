@@ -2327,11 +2327,11 @@ rule "506.1 part 1"
 	dialect "mvel"
 	when 
 		$p: Player() 
-		$ph : Phase(this.isEmpty(), name == "combat") from $p.turn	
+		$ph : Phase(this.isEmpty(), name == "combat") from $p.turn
 	then
 		$ph.add(new Step("beginning of combat",false));		 		
 		$ph.add(new Step("declare attackers",false));
-		$ph.add(new Step("declare blockers",false));	
+		$ph.add(new Step("declare blockers",false));
 		$ph.add(new Step("combat damage",false));
 		$ph.add(new Step("end of combat",false));		
 		System.out.println("Rule 506.1 --> Player:  "+$p.getNickname());
@@ -2355,13 +2355,25 @@ end
 
 rule "506.1 part 3"
 /*
---- November 19, 2021 ---
+Tommaso Romani Nicolò Posta
 There are two combat damage steps if any attacking or blocking creature has first strike 
 (see rule 702.7) or double strike (see rule 702.4).*/
 dialect "mvel"
 when
-	Game(stage == Game.GAME_STAGE);
+/* ci sta almeno una creatura con first o double strike*/
+	$g:Game(stage == Game.GAME_STAGE, $bf : battleField)
+	$p: Player() 
+	$ph : Phase(this.isEmpty(), name == "combat") from $p.turn
+	$c : Card() from $bf
+	$la: LinkedList() from $c.getAbilities()
+	$a : Ability(keyword_ability==false && static_ability==false && 
+	(abilityText.toLowerCase().contains("double strike") || abilityText.toLowerCase().contains("first strike"))) from $la
 then
+/* aggiungo una seconda fase di combat damage nella penultima posizione di add
+	
+	$ph.add($ph.get($ph.size() - 1), new Step("combat damage",false));
+*/
+	System.out.println("Diomerda")
 end
 
 		
@@ -4695,6 +4707,7 @@ end
 
 rule "510.4"
 	/*
+	Tommaso Romani Nicolò Posta
 	November 19, 2021
 	510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
 	only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
@@ -7732,6 +7745,28 @@ end
 
 
 
+rule "702.4a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicolò Posta
+**/
+/*Double Strike is a static ability.*/
+agenda-group "general"
+//no-loop true
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("double strike")) from $la
+	then
+		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
+		System.out.println("702.4a -> Trovato Double Strike: " + $c.getName());
+		update($p)
+end
+
+
 
 //martina-damiano cerco keyword ability equip tra le abilitÃ  attivate e setto il booleano 
 rule "702.6a"
@@ -7756,6 +7791,30 @@ agenda-group "general"
 		update($p)
 end
 //Ã¨ as a sorcery e targetted
+
+
+
+rule "702.7a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicolò Posta
+**/
+/*First Strike is a static ability.*/
+agenda-group "general"
+//no-loop true
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("first strike")) from $la
+	then
+		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
+		System.out.println("702.7a -> Trovato First Strike: " + $c.getName());
+		update($p)
+end
+
 
 
 rule "702.9a"
