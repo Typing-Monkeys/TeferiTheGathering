@@ -1453,8 +1453,8 @@ rule "117.5"
 			"704.5f",
 			"704.5g",
 			"704.5i",
-			"704.5j"
-			//"702.2b"
+			"704.5j",
+			"702.2b"
 		]);
 		
 		insert(
@@ -7752,14 +7752,14 @@ agenda-group "general"
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
 		$a : Ability(keyword_ability==false && static_ability==false && 
-			abilityText.startsWith("Deathtouch")) from $la
+			abilityText.toLowerCase().startsWith("deathtouch")) from $la
 	then
 		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
 		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
 		update($p)
 end
-
-
+	
+	
 rule "702.2b"
 dialect "mvel"
 salience 500
@@ -7793,8 +7793,7 @@ when
 		$g.destroy($pmt);
 
 		update($g)
-end	
-
+end
 
 
 rule "702.2c"
@@ -7808,35 +7807,36 @@ no-loop true
 /*Deathtouched Creatures are destroyed.*/
 agenda-group "general"
 	when
-		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures)
 		eval($g.currentStep.getObject().name == "combat damage")
-		eval($g.stepCombatDamage.getObject() == "510.3")
+		//eval($g.stepCombatDamage.getObject() == "510.3")
 		
 		$pmt: Permanent(
 				//$damageOrder: damageAssignmentOrder.listReference,
-				$difensori: blockedBy.listReference,
-				$attaccanti: blockedCreatures.listReference,
+				$difensori: blockedCreatures.listReference,
+				$attaccanti: blockedBy.listReference,
+				//$difensori: blockedCreatures,
+				//$attaccanti: blockedCreatures,
 				cardType[0].contains("creature"),
 				Integer.parseInt(toughness[0]) > 0,
 				markedDamage > 0,
 				deathtouched == false
 				//Integer.parseInt(toughness[0]) <= markedDamage,
-			) from $bf
+			) from $blk.listReference
 		//exists (
 		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori || 
 		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti
 		//	)
 		//exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori ) || exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti)
 		
-		exists(
-			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) 
-				from $attaccanti
-			)
 		
-		//exists ( 
-		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
-		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
-		//)
+		//Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori.listReference
+			
+		
+		exists ( 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
+		)
 		//$aaa: Permanent() from $damageOrder
 			
 	then
@@ -7844,11 +7844,9 @@ agenda-group "general"
 		System.out.println("\t" + $pmt.getNameAsString+" viene marchiata con Deathtouch !");
 		
 		$pmt.setDeathtouched(true);
-		System.out.println("\t DIOMERDA");
 
 		update($g)
-end	
-
+end
 
 //martina-damiano cerco keyword ability equip tra le abilità attivate e setto il booleano 
 rule "702.6a"
