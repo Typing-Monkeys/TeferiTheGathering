@@ -7756,6 +7756,7 @@ agenda-group "general"
 	then
 		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
 		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
+		
 		update($p)
 end
 	
@@ -7774,22 +7775,22 @@ when
 	$g: Game(
 			stage == Game.GAME_STAGE, 
 			$bf : battleField,
-		//	$ap: activePlayer, 
-		//	$pm: priorityMarker, 
+			$attaccanti: attackingCreatures.listReference,
+			$bloccanti: blockingCreatures.listReference,
 			controlStateBasedActions
 		)
-		//$a: Action(option == Game.PASS_PRIORITY)
-		//$a: Action(option == Game.PASS_PRIORITY)
-		$pmt: Permanent(
+
+   	$alll: ( Permanent() from $attaccanti or Permanent() from $bloccanti)
+    $pmt: Permanent (
 				cardType[0].contains("creature"),
 				deathtouched == true
-			) from $bf
-			
+			) from $alll
+		
 	then
 		System.out.println("702.2b --> Morte per Deathtouch.");
 		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !");
 		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta");
-
+		
 		$g.destroy($pmt);
 
 		update($g)
@@ -7807,37 +7808,24 @@ no-loop true
 /*Deathtouched Creatures are destroyed.*/
 agenda-group "general"
 	when
-		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures)
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
 		eval($g.currentStep.getObject().name == "combat damage")
 		//eval($g.stepCombatDamage.getObject() == "510.3")
 		
+		$allCards: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 		$pmt: Permanent(
-				//$damageOrder: damageAssignmentOrder.listReference,
 				$difensori: blockedCreatures.listReference,
 				$attaccanti: blockedBy.listReference,
-				//$difensori: blockedCreatures,
-				//$attaccanti: blockedCreatures,
 				cardType[0].contains("creature"),
 				Integer.parseInt(toughness[0]) > 0,
 				markedDamage > 0,
 				deathtouched == false
-				//Integer.parseInt(toughness[0]) <= markedDamage,
-			) from $blk.listReference
-		//exists (
-		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori || 
-		//	Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti
-		//	)
-		//exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $difensori ) || exists (Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch") from $attaccanti)
-		
-		
-		//Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori.listReference
-			
+			) from $allCards
 		
 		exists ( 
 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
 		)
-		//$aaa: Permanent() from $damageOrder
 			
 	then
 		System.out.println("702.2c --> Marchiamento Deathtouch.");
