@@ -7780,11 +7780,11 @@ when
 			controlStateBasedActions
 		)
 
-   	$alll: ( Permanent() from $attaccanti or Permanent() from $bloccanti)
+   	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti)
     $pmt: Permanent (
 				cardType[0].contains("creature"),
 				deathtouched == true
-			) from $alll
+			) from $allCardsInCombact
 		
 	then
 		System.out.println("702.2b --> Morte per Deathtouch.");
@@ -7812,7 +7812,7 @@ agenda-group "general"
 		eval($g.currentStep.getObject().name == "combat damage")
 		//eval($g.stepCombatDamage.getObject() == "510.3")
 		
-		$allCards: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 		$pmt: Permanent(
 				$difensori: blockedCreatures.listReference,
 				$attaccanti: blockedBy.listReference,
@@ -7820,7 +7820,7 @@ agenda-group "general"
 				Integer.parseInt(toughness[0]) > 0,
 				markedDamage > 0,
 				deathtouched == false
-			) from $allCards
+			) from $allCardsInCombact
 		
 		exists ( 
 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
