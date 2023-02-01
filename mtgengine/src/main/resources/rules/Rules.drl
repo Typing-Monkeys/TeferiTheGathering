@@ -2325,6 +2325,7 @@ rule "506.1 part 1"
 	combat damage, and end of combat.*/
 	agenda-group "initialization"
 	dialect "mvel"
+	salience 100
 	when 
 		$p: Player() 
 		$ph : Phase(this.isEmpty(), name == "combat") from $p.turn
@@ -2359,21 +2360,23 @@ Tommaso Romani Nicolò Posta
 There are two combat damage steps if any attacking or blocking creature has first strike 
 (see rule 702.7) or double strike (see rule 702.4).*/
 dialect "mvel"
+salience 50
 when
-/* ci sta almeno una creatura con first o double strike*/
-	$g:Game(stage == Game.GAME_STAGE, $bf : battleField)
-	$p: Player() 
-	$ph : Phase(this.isEmpty(), name == "combat") from $p.turn
-	$c : Card() from $bf
-	$la: LinkedList() from $c.getAbilities()
-	$a : Ability(keyword_ability==false && static_ability==false && 
-	(abilityText.toLowerCase().contains("double strike") || abilityText.toLowerCase().contains("first strike"))) from $la
-then
-/* aggiungo una seconda fase di combat damage nella penultima posizione di add
-	
-	$ph.add($ph.get($ph.size() - 1), new Step("combat damage",false));
+/* ci sta almeno una creatura con first o double strike 	$ph : Phase(this.isEmpty(), name == "combat") from $p.turn;
+	$ph: Phase(name == "combat") from $p.turn
+
 */
-	System.out.println("Diomerda")
+	$g:Game(stage == Game.GAME_STAGE, $bf : battleField);
+	$p: Player() ;
+	eval($g.currentPhase.getObject().name == "combat");
+	$c : Card() from $bf;
+	$la: LinkedList() from $c.getAbilities();
+	$a : Ability(abilityText.toLowerCase().contains("double strike") || abilityText.toLowerCase().contains("first strike")) from $la;
+	
+then
+/* aggiungo una seconda fase di combat damage nella penultima posizione di add $ph.add(new Step("combat damage",false));*/
+	
+	System.out.println("Diomerda");
 end
 
 		
