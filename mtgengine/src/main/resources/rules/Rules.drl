@@ -7740,10 +7740,11 @@ end
 
 rule "702.2a"
 /**
+	Deathtouch is a static ability.
+	
 	@date 2022/2023
 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
 **/
-/*Deathtouch is a static ability.*/
 agenda-group "general"
 //no-loop true
 	when
@@ -7762,14 +7763,17 @@ end
 	
 	
 rule "702.2b"
-dialect "mvel"
-salience 500
-no-loop true 
 /**
+	A creature with toughness greater than 0 that s been dealt damage by a source with deathtouch since the 
+	last time state-based actions were checked is destroyed as a state-based action. 
+	See rule 704.
+	
 	@date 2022/2023
 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
 **/
-/*Deathtouched Creatures are destroyed.*/
+dialect "mvel"
+salience 500
+no-loop true 
 agenda-group "general"
 when
 	$g: Game(
@@ -7798,14 +7802,18 @@ end
 
 
 rule "702.2c"
-dialect "mvel"
-salience 500
-no-loop true 
 /**
+	Any nonzero amount of combat damage assigned to a creature by a source with deathtouch is considered to 
+	be lethal damage for the purposes of determining if a proposed combat damage assignment is valid, 
+	regardless of that creature s toughness. 
+	See rules 510.1c-d.
+	
 	@date 2022/2023
 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
 **/
-/*Deathtouched Creatures are destroyed.*/
+dialect "mvel"
+salience 500
+no-loop true 
 agenda-group "general"
 	when
 		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
