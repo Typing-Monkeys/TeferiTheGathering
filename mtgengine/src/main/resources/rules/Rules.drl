@@ -2355,28 +2355,37 @@ end
 
 
 rule "506.1 part 3"
-/*
-Tommaso Romani Nicolò Posta
+/* Tommaso Romani Nicolò Posta
 There are two combat damage steps if any attacking or blocking creature has first strike 
 (see rule 702.7) or double strike (see rule 702.4).*/
 dialect "mvel"
 salience 50
+no-loop true
+agenda-group "general"
 when
-/* ci sta almeno una creatura con first o double strike 	$ph : Phase(this.isEmpty(), name == "combat") from $p.turn;
-	$ph: Phase(name == "combat") from $p.turn
-
-*/
-	$g:Game(stage == Game.GAME_STAGE, $bf : battleField);
-	$p: Player() ;
-	eval($g.currentPhase.getObject().name == "combat");
-	$c : Card() from $bf;
-	$la: LinkedList() from $c.getAbilities();
-	$a : Ability(abilityText.toLowerCase().contains("double strike") || abilityText.toLowerCase().contains("first strike")) from $la;
+	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures, $ph: currentPhase.getObject())
+	eval($g.currentPhase.getObject().name == "combat")
+	//eval($g.stepCombatDamage.getObject() == "510.3")
+	//$ph: $g.currentPhase.getObject()
+	$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+	$pmt: Permanent(
+			$difensori: blockedCreatures.listReference,
+			$attaccanti: blockedBy.listReference,
+			cardType[0].contains("creature")
+		) from $allCardsInCombact
 	
+	exists (
+		Permanent(cardType[0].contains("creature") && (checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))) from $difensori or 
+		Permanent(cardType[0].contains("creature") && (checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))) from $attaccanti
+	)
 then
-/* aggiungo una seconda fase di combat damage nella penultima posizione di add $ph.add(new Step("combat damage",false));*/
 	
-	System.out.println("Diomerda");
+	System.out.println("DIOPORCO");
+	$ph.add($ph.size() - 2,new Step("combat damage",false));
+	//$ph.add(new Step("combat damage",false));
+
+	update($g)
+
 end
 
 		
