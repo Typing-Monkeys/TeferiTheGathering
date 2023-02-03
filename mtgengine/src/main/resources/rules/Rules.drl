@@ -2363,27 +2363,24 @@ salience 50
 no-loop true
 agenda-group "general"
 when
-	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures, $ph: currentPhase.getObject())
+	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $ph: currentPhase.getObject())
 	eval($g.currentPhase.getObject().name == "combat")
 	//eval($g.stepCombatDamage.getObject() == "510.3")
 	//$ph: $g.currentPhase.getObject()
-	$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
-	$pmt: Permanent(
-			$difensori: blockedCreatures.listReference,
-			$attaccanti: blockedBy.listReference,
-			cardType[0].contains("creature")
-		) from $allCardsInCombact
-	
-	exists (
-		Permanent(cardType[0].contains("creature") && (checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))) from $difensori or 
-		Permanent(cardType[0].contains("creature") && (checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))) from $attaccanti
-	)
+	eval($ph.size() <= 5)
+	//TODO: mettere che siano tra gli attaccanti o i bloccanti
+	exists (Permanent(
+			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+		) from $bf)
 then
-	
-	System.out.println("DIOPORCO");
-	$ph.add($ph.size() - 2,new Step("combat damage",false));
+	System.out.println("506.1 part 3 -> Aggiunto combat damage per First/Double strike");
+	//System.out.println("Size prima dell'aggiunta" + $ph.size());
+	$ph.add($ph.size() - 2, new Step("combat damage",true));
+	//System.out.println("Size dopo dell'aggiunta" + $ph.size());
 	//$ph.add(new Step("combat damage",false));
-
+	//for (Step step: $ph){
+	//	System.out.println(step.getName());
+	//}
 	update($g)
 
 end
@@ -4186,13 +4183,15 @@ when
 	$g: Game($scd: stepCombatDamage.listReference)
 	eval($scd.size()==0)
 then
+	$scd.add("510.4 part 1");
+	$scd.add("510.4 part 2");
 	$scd.add("510.1a");
 	$scd.add("510.1bc");
 	$scd.add("510.1d");
 	//$scd.add("510.1e");
 	$scd.add("510.2");
 	$scd.add("510.3");
-	$scd.add("510.4");
+	//$scd.add("510.4");
 	$g.stepCombatDamage.next();
 	update($g);	
 end	
@@ -4717,7 +4716,7 @@ rule "510.3a"
 	
 end
 
-rule "510.4"
+rule "510.4 part 1"
 	/*
 	Tommaso Romani Nicolò Posta
 	November 19, 2021
@@ -4728,12 +4727,64 @@ rule "510.4"
 	double strike. After that step, the phase proceeds to the end of combat step.*/
 	agenda-group "general"
 	dialect "mvel"
+	no-loop true
 	when
-		$g:Game(stage == Game.GAME_STAGE)
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+		eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+		eval($g.stepCombatDamage.getObject() == "510.4 part 1")
+		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		$pmt_att: Permanent(
+				//$difensori: blockedCreatures.listReference,
+				$attaccanti: blockedBy.listReference,
+				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+			) from $allCardsInCombact
+		$pmt_def: Permanent(
+				$difensori: blockedCreatures.listReference,
+				//$attaccanti: blockedBy.listReference,
+				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+			) from $allCardsInCombact
 	then
+		//Mi salvo la lista di tutti gli attaccanti e difensori di prima
+		$g.firstStrikeAttaking = true;
+		$g.stepFirstStikeAttackingCreatures = $atk
+		$g.stepFirstStikeBlockingCreatures = $blk
+		$blk = $pmt_def;
+		$atk = $pmt_att;
 end
 
-
+rule "510.4 part 2"
+	/*
+	Tommaso Romani Nicolò Posta
+	November 19, 2021
+	510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+	only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+	combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+	that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+	double strike. After that step, the phase proceeds to the end of combat step.*/
+	agenda-group "general"
+	dialect "mvel"
+	no-loop true
+	when
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+		eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+		eval($g.stepCombatDamage.getObject() == "510.4 part 2")
+		eval($g.firstStrikeAttaking == true)
+		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		$pmt_att: Permanent(
+				//$difensori: blockedCreatures.listReference,
+				$attaccanti: blockedBy.listReference,
+				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+			) from $allCardsInCombact
+		$pmt_def: Permanent(
+				$difensori: blockedCreatures.listReference,
+				//$attaccanti: blockedBy.listReference,
+				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+			) from $allCardsInCombact
+	then
+		//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
+		//e quelle che hanno già attaccato ma non hanno più First o Double Strike
+		//for controllo se non ha più la statick ability First o Double Strike, se non lo ha più allora va rimossa 
+end
 //END OF COMBAT STEP
 
 rule "511.1"
