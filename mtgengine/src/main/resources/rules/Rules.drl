@@ -4893,7 +4893,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 300
@@ -4919,7 +4919,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 200
@@ -4952,7 +4952,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 100
@@ -4963,7 +4963,7 @@ when
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
 
-	//elimina le carte solo se è stato scelto il numero corretto di carte
+	//elimina le carte solo se ï¿½ stato scelto il numero corretto di carte
 	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
 		for(String cardId : $ca.getIdOptions()) {
 	    	$p.hand.remove(cardId);
@@ -5101,6 +5101,16 @@ then
 			found = true;
 		}
 	}
+	
+	//Todo: sistemare, Ã¨ solo una bozza
+	for(Zona zona: [zona1, zona2, zona3]){
+		for (MagicObject card: zona) {
+			if (card.checkKeyeoabuli(flahs))
+				choice.addOption(card ..);
+				found = true;
+		}
+	}
+	
 	if(found) {
 		GameEngine.sendToNode(choice, Game.CHOICE, Game.ONE_OF_CHOICE, $id);
 		GameEngine.sendToNode("The player " + $p.nickname + " wants cast a spell.");
@@ -7757,7 +7767,29 @@ agenda-group "general"
 end
 //Ã¨ as a sorcery e targetted
 
+rule "702.8a"
+/**
+	 Flash is a static ability
+	 
+	 @author Cristian Cosci, NicolÃ² Vescera
+	 @date 2022/2023
+**/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getKeywordAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			keyword_text.toLowerCase().startsWith("flash")) from $la
+	then
+		$a.setStatic_ability(true);
+		System.out.println("702.8a -> Trovato Flash: " + $c.getName());
 
+		update($p)
+end
 rule "702.9a"
 /*
 	November 19, 2021
