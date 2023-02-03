@@ -204,18 +204,26 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
-    
+   
+    // lightnig Hounds (First strike)
     deck1.push(2889)
     deck1.push(2889)
     deck1.push(2889)
 
+    // Fancing Ace (Double strike)
     deck1.push(2890)
     deck1.push(2890)
     deck1.push(2890)
 
+    // Hired Prisoner (Deathtouch)
     deck1.push(2891)
     deck1.push(2891)
     deck1.push(2891)
+
+    // Flash Ability
+    deck1.push(2161)    // Armor of Thorns (Aura)
+    deck1.push(2169)    // Encase in Ice (Aura)
+    deck1.push(2885)    // Arcangel Avacyn (Angel)
 
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 
