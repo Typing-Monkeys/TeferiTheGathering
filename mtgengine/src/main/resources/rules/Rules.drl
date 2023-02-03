@@ -7746,7 +7746,6 @@ rule "702.2a"
 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
 **/
 agenda-group "general"
-//no-loop true
 	when
 		$g : Game(stage == Game.STARTING_STAGE)
 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
@@ -7755,7 +7754,7 @@ agenda-group "general"
 		$a : Ability(keyword_ability==false && static_ability==false && 
 			abilityText.toLowerCase().startsWith("deathtouch")) from $la
 	then
-		$a.setStatic_ability(true);	//TODO: ricontrollare, potrebbe non essere vero
+		$a.setStatic_ability(true);
 		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
 		
 		update($p)
@@ -7783,7 +7782,8 @@ when
 			$bloccanti: blockingCreatures.listReference,
 			controlStateBasedActions
 		)
-
+	
+	// contiene tutte le carte in combattimento (bloccanti e attaccanti)
    	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti)
     $pmt: Permanent (
 				cardType[0].contains("creature"),
@@ -7795,6 +7795,8 @@ when
 		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !");
 		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta");
 		
+		GameEngine.sendToNode("La carta " + $pmt.getNameAsString + " viene distrutta per Deathtouch!");
+			
 		$g.destroy($pmt);
 
 		update($g)
@@ -7818,8 +7820,8 @@ agenda-group "general"
 	when
 		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
 		eval($g.currentStep.getObject().name == "combat damage")
-		//eval($g.stepCombatDamage.getObject() == "510.3")
 		
+		// contiene tutte le carte in combattimento (bloccanti e attaccanti)
 		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 		$pmt: Permanent(
 				$difensori: blockedCreatures.listReference,
