@@ -198,10 +198,13 @@ public class Game {
 	private ListPointer<Player> defendingPlayers;
 	private ListPointer<Permanent> attackingCreatures;
 	private ListPointer<Permanent> blockingCreatures;
+	private ListPointer<Permanent> stepFirstStikeAttackingCreatures;
+	private ListPointer<Permanent> stepFirstStikeBlockingCreatures;
 	private ListPointer<String> stepDeclareAttackers;
 	private ListPointer<String> stepDeclareBlockers;
 	private ListPointer<String> stepCheckEvasionAbility;
 	private boolean blockValid; // flag di controllo per validità dei blocchi
+	private boolean firstStrikeAttaking = false; // flag per non far fare danni dai bloccnati senza first strike
 	private ListPointer<String> stepCombatDamage;
 	private LinkedList<Target> possibleTarget;
 	// --------------------------------------------------------------------------------------
@@ -947,5 +950,29 @@ public class Game {
 
 	public void setDiscardTurn(boolean discardTurn) {
 		this.discardTurn = discardTurn;
+	}
+
+	public ListPointer<Permanent> getStepFirstStikeAttackingCreatures() {
+		return stepFirstStikeAttackingCreatures;
+	}
+
+	public void setStepFirstStikeAttackingCreatures(ListPointer<Permanent> stepFirstStikeAttackingCreatures) {
+		this.stepFirstStikeAttackingCreatures = stepFirstStikeAttackingCreatures;
+	}
+
+	public ListPointer<Permanent> getStepFirstStikeBlockingCreatures() {
+		return stepFirstStikeBlockingCreatures;
+	}
+
+	public void setStepFirstStikeBlockingCreatures(ListPointer<Permanent> stepFirstStikeBlockingCreatures) {
+		this.stepFirstStikeBlockingCreatures = stepFirstStikeBlockingCreatures;
+	}
+
+	public boolean isFirstStrikeAttaking() {
+		return firstStrikeAttaking;
+	}
+
+	public void setFirstStrikeAttaking(boolean firstStrikeAttaking) {
+		this.firstStrikeAttaking = firstStrikeAttaking;
 	}
 }
