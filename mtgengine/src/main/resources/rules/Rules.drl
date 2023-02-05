@@ -4732,22 +4732,29 @@ rule "510.4 part 1"
 		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
 		eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
 		eval($g.stepCombatDamage.getObject() == "510.4 part 1")
-		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		//$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 		$pmt_att: Permanent(
 				//$difensori: blockedCreatures.listReference,
-				$attaccanti: blockedBy.listReference,
-				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-			) from $allCardsInCombact
-		$pmt_def: Permanent(
-				$difensori: blockedCreatures.listReference,
 				//$attaccanti: blockedBy.listReference,
 				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-			) from $allCardsInCombact
+			) from $atk.listReference
+			//$allCardsInCombact
+		$pmt_def: Permanent(
+				//$difensori: blockedCreatures.listReference,
+				//$attaccanti: blockedBy.listReference,
+				(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+			) from $blk.listReference
+			//$allCardsInCombact
 	then
+		System.out.println("510.4 part 1");
 		//Mi salvo la lista di tutti gli attaccanti e difensori di prima
 		$g.firstStrikeAttaking = true;
+		System.out.println("Tutti gli attaccanti selezionati "+$atk);
+		System.out.println("Tutti i difensori selezionati "+$blk);
 		$g.stepFirstStikeAttackingCreatures = $atk
 		$g.stepFirstStikeBlockingCreatures = $blk
+		System.out.println("Tutti gli attaccanti selezionati con First Strike"+$pmt_def);
+		System.out.println("Tutti i difensori selezionati con First Strike"+$pmt_def);
 		$blk = $pmt_def;
 		$atk = $pmt_att;
 end
