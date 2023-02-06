@@ -2692,6 +2692,12 @@ then
 			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
 			found = true;
 		}
+		if(permanent.idController == $id && permanent.cardType[0].contains("creature") && !permanent.Haste){
+			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
+			System.out.println(permanent.Haste);
+			System.out.println("CONTROLLOOOOOOOOOOOOOOOOOOOOOOOOO");
+			found = true;
+		}
 	}
 	if(found){
 		GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $id);
@@ -7740,7 +7746,44 @@ agenda-group "general"
 		update($g)
 end
 
+rule "702.10a"
+agenda-group "general"	
+dialect "mvel"
+	when 
+		$g:  Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability == false && abilityText.startsWith("haste")) from $la
+		
+		then
+			$a.setStatic_ability(true);
+			System.out.println("Trovato Haste");
+			update($p)
+end
 
+
+rule "702.10b"
+agenda-group "general"	
+no-loop true
+dialect "mvel"
+	when 
+		$g: Game( 
+				stage == Game.GAME_STAGE,
+				$bf: battleField,
+				$attaccanti: attackingCreatures.listReference
+			)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);		
+		$c : Card() from $lib
+		$pmt: Permanent(
+				cardType[0].contains("creature"),
+				Haste == false
+				) from $attaccanti
+		then 
+			System.out.println("Trovata creatura con haste nel battelfied");
+			System.out.println($pmt.Haste);
+			//update($g)
+end
 
 
 rule "702.13.a"
@@ -8060,8 +8103,8 @@ rule "702.31b"
     A creature with horsemanship can't be blocked by creatures without horsemanship. 
     A creature with horsemanship can block a creature with or without horsemanship.
 
-    se il bloccate ha horsemanship può bloccare creature con o senza horsemanship
-    un attaccante con horsemanship non può essere bloccato da creature senza horsemanship
+    se il bloccate ha horsemanship puï¿½ bloccare creature con o senza horsemanship
+    un attaccante con horsemanship non puï¿½ essere bloccato da creature senza horsemanship
 */
 dialect "mvel"
 no-loop true
@@ -8085,7 +8128,7 @@ agenda-group "general"
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
 					// ... se almeno 1 attaccante ha shadow ...
 					if (attacker.checkKeywordAbility("horsemanship")){
-						// ... il blocco non è valido
+						// ... il blocco non ï¿½ valido
 						System.out.println("Blocco non valido!");
 						$g.blockValid = false;
 					}
@@ -8139,7 +8182,7 @@ agenda-group "general"
 		boolean typeArtifactCreatureFear = false;
 		// Per ogni bloccante ...
 		for (Permanent blocker : $blockers) {
-			// ... se non è di tipo artefatto o non è di colore nero...
+			// ... se non ï¿½ di tipo artefatto o non ï¿½ di colore nero...
 			//if (! blocker.getCardType().toString() == "artifact creature" or ! blocker.getColorIndicator("black")) 
 				// ... controllo le creature che blocca ...
 				for (Permanent attacker : blocker.blockedCreatures.listReference) {
