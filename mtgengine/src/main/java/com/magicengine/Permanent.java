@@ -21,7 +21,6 @@ public class Permanent extends MagicObject {
 	private int damageDealt;
 	private int markedDamage;
 	private int damageToAssign;
-	private boolean Haste;
 	private LinkedList <Integer> attached_to;
 	private LinkedList<Integer> attached_by;
 	private LinkedList<Permanent> attby_perm;
@@ -219,17 +218,6 @@ public class Permanent extends MagicObject {
 		this.attby_perm = permanent.attby_perm;
 	}
 	
-	public boolean isHaste() {
-		return Haste;
-	}
-	
-	public boolean getHaste() {
-		return Haste;
-	}
-
-	public void setHaste(boolean Haste) {
-		this.Haste = Haste;
-	}
 	
 	public LinkedList<Permanent> getAttby_perm() {
 		return attby_perm;

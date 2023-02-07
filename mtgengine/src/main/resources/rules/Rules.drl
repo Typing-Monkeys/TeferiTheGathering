@@ -2692,12 +2692,6 @@ then
 			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
 			found = true;
 		}
-		if(permanent.idController == $id && permanent.cardType[0].contains("creature") && !permanent.Haste){
-			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
-			System.out.println(permanent.Haste);
-			System.out.println("CONTROLLOOOOOOOOOOOOOOOOOOOOOOOOO");
-			found = true;
-		}
 	}
 	if(found){
 		GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $id);
@@ -7770,19 +7764,18 @@ dialect "mvel"
 	when 
 		$g: Game( 
 				stage == Game.GAME_STAGE,
-				$bf: battleField,
-				$attaccanti: attackingCreatures.listReference
+				$bf: battleField
 			)
-		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);		
-		$c : Card() from $lib
 		$pmt: Permanent(
 				cardType[0].contains("creature"),
-				Haste == false
-				) from $attaccanti
+				summoningSickness,
+				checkKeywordAbility("haste")
+				) from $bf
 		then 
+			$pmt.summoningSickness=false;
 			System.out.println("Trovata creatura con haste nel battelfied");
-			System.out.println($pmt.Haste);
-			//update($g)
+			
+			update($g)
 end
 
 
