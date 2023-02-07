@@ -2687,10 +2687,23 @@ then
 	choice.choiceText = "Choose which creature will attack";
 	boolean found = false;
 	choice.addOption(-1, "No attack");
+	
+	/*
+	Rule 702.3b. A creature with defender can't attack.
+	*/
 	for(Permanent permanent : $g.battleField) {
 		if(permanent.idController == $id && !permanent.getStatus().isTapped() && !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
-			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
-			found = true;
+			// Defender check of the selected permanent.
+			boolean nodefender = true;
+			for (LIstAbi permanent.getKeywordAbilities()){
+				if(LIstAbi == "defender"){
+					nodefender = false;
+				}			
+			}
+			if (nodefender){
+				choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
+				found = true;
+			}
 		}
 	}
 	if(found){
@@ -4893,7 +4906,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 300
@@ -4919,7 +4932,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 200
@@ -4952,7 +4965,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 100
@@ -4963,7 +4976,7 @@ when
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
 
-	//elimina le carte solo se è stato scelto il numero corretto di carte
+	//elimina le carte solo se ï¿½ stato scelto il numero corretto di carte
 	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
 		for(String cardId : $ca.getIdOptions()) {
 	    	$p.hand.remove(cardId);
@@ -7023,6 +7036,29 @@ To destroy a permanent, move it from the battlefield to its owner's graveyard.
 	then
 		$rpc.next()
 		update($rpc)
+end
+
+
+rule "702.3a"
+/*
+	9th January 2023
+	702.3a. Defender is a static ability.
+*/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender ")) from $la
+	then
+		System.out.println("Trovata Defender");
+		$a.setKeyword_ability(true);	
+		$a.setStatic_ability(true);
+		//$a.setKeyword_text("defender");
+		update($p)
 end
 
 
