@@ -1,12 +1,12 @@
 <!-- TOC ignore:true -->
-# **Teferi The Gatering** :pig: :bikini:
+# <img src="./logo.png" height=30px> **Teferi The Gatering** <img src="./logo.png" height=30px> <!-- TOC ignore:true -->
 
 <!-- TOC ignore:true -->
 ### **Rule index**
 
 <!-- TOC -->
 
-- [**Teferi The Gatering** :pig: :bikini:](#teferi-the-gatering-pig-bikini)
+- [ **Teferi The Gatering**  ](#-teferi-the-gatering--)
     - [**Rule index**](#rule-index)
   - [***702.2 Deathtouch*** :skull:](#7022-deathtouch-skull)
     - [**Descrizione** :mag:](#descrizione-mag)
