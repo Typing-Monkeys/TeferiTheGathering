@@ -26,6 +26,8 @@
   - [***702.10 Haste ⚡***](#70210-haste-)
     - [**Descrizione** :mag:](#descrizione-mag-5)
     - [**Implementazione :computer:**](#implementazione-computer-5)
+      - [1. Trovare haste nei mazzi](#1-trovare-haste-nei-mazzi)
+      - [2. Attivazione di Haste](#2-attivazione-di-haste)
 
 <!-- /TOC -->
 
@@ -112,3 +114,88 @@
 - `.d` Multiple instances of haste on the same creature are redundant.
 
 ### **Implementazione :computer:**
+
+#### 1. Trovare haste nei mazzi
+
+- We go when we generate the cards (*Game.STARTING_STAGE*), we take the player with the particular id selected.
+  
+- From him we take all the cards and from the ability list making sure that the abilities are **set to false** (like static abilities) and that they have the ability called **"Haste"**.
+
+- Once this check is done we go to set **the static ability flag to true** and along with that we go to make a control print. 
+
+- Next we **update the player**
+<br>
+
+```java
+
+/*
+  Febbraio 2023
+  Haste is a static ability.
+*/
+
+rule "702.10a"
+agenda-group "general"	
+dialect "mvel"
+    when 
+        $g:  Game(stage == Game.STARTING_STAGE)
+        $p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+        $c : Card() from $lib
+        $la: LinkedList() from $c.getAbilities()
+        $a : Ability(keyword_ability==false && static_ability == false && abilityText.startsWith("haste")) from $la
+        
+        then
+  	      $a.setStatic_ability(true);
+  	      System.out.println("Trovato Haste");
+  	      update($p)
+end
+```
+
+<br>
+#### 2. Attivazione di Haste
+
+- We **take all the cards present in the battlefield**. 
+  
+- We check if the cards contain the word **"creature"** that have as keyword ability **"haste"** going also **to check "summoningSickness" is set to true.**
+
+- If all this is **verified** we go to **set the summoningSickness to false** since the haste ability goes **to invalidate the summoningSickness.** 
+  
+- Plus we do a small control print. 
+  
+- Finally we **update the game**
+   
+<br>
+
+```java
+/*
+    Febbraio 2023
+
+    If a creature has haste, it can attack even if it hasn't been controlled by its controller continuously since their most recent turn began.
+    (See rule 302.6.)
+    
+    If a creature has haste, its controller can activate its activated abilities whose cost includes the tap symbol or the untap symbol 
+    even if that creature hasn't been controlled by that player continuously since their most recent turn began.(See rule 302.6.)
+    
+    Multiple instances of haste on the same creature are redundant.
+*/
+
+rule "702.10b"
+agenda-group "general"	
+no-loop true
+dialect "mvel"
+    when 
+        $g: Game( 
+  		      stage == Game.GAME_STAGE,
+  		      $bf: battleField
+  	      )
+        $pmt: Permanent(
+  		      cardType[0].contains("creature"),
+  		      summoningSickness,
+  		      checkKeywordAbility("haste")
+  		      ) from $bf
+        then 
+  	      $pmt.summoningSickness=false;
+  	      System.out.println("Trovata creatura con haste nel battelfied");
+  	      
+  	      update($g)
+end
+```
