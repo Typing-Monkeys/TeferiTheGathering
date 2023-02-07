@@ -204,7 +204,9 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
-   
+  
+    deck1.push(2888)
+
     // lightnig Hounds (First strike)
     deck1.push(2889)
     deck1.push(2889)
