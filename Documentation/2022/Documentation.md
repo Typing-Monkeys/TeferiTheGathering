@@ -124,6 +124,7 @@
 - Once this check is done we go to set **the static ability flag to true** and along with that we go to make a control print. 
 
 - Next we **update the player**
+  
 <br>
 
 ```java
@@ -151,6 +152,7 @@ end
 ```
 
 <br>
+
 #### 2. Attivazione di Haste
 
 - We **take all the cards present in the battlefield**. 
