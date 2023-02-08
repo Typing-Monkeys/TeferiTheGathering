@@ -14,6 +14,8 @@
   - [***702.3 Defender*** 🧱](#7023-defender-)
     - [**Descrizione** :mag:](#descrizione-mag-1)
     - [**Implementazione :computer:**](#implementazione-computer-1)
+      - [1. Trovare `Defender` nei mazzi](#1-trovare-defender-nei-mazzi)
+      - [2. Attivazione di `Defender`](#2-attivazione-di-defender)
   - [***702.4 Double Strike*** :bowling: :bowling:](#7024-double-strike-bowling-bowling)
     - [**Descrizione** :mag:](#descrizione-mag-2)
     - [**Implementazione :computer:**](#implementazione-computer-2)
@@ -56,6 +58,43 @@
 - `.c` _Multiple instances of defender on the same creature are redundant._
 
 ### **Implementazione :computer:**
+
+#### 1. Trovare `Defender` nei mazzi
+
+- Quando il **grioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste he nell'`abilityText` la parola `Defender` 
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+
+``` java
+rule "702.3a"
+/*
+	9th January 2023
+	702.3a. Defender is a static ability.
+*/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck, 
+                            $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(
+                    keyword_ability==false && 
+                    abilityText.startsWith("Defender ")
+                  ) from $la
+	then
+		System.out.println("Trovata Defender");
+		$a.setKeyword_ability(true);	
+		$a.setStatic_ability(true);
+		//$a.setKeyword_text("defender");
+		update($p)
+end
+```
+#### 2. Attivazione di `Defender`
+
 La regola `508.1a choice`, responsabile dell'individuazione dei possibili attaccanti, è stata modificata come segue:
 
 - durante il controllo delle creature presenti nel battlefield, queste vengono aggiunte alla lista dei possibili attaccanti solo se non hanno `defender` come abilità (`nodefender == true`).
@@ -73,7 +112,8 @@ dialect "mvel"
 salience 50
 no-loop true
 when
-	$g:Game(stage == Game.GAME_STAGE, $ac : attackingPlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	$g:Game(stage == Game.GAME_STAGE, $ac : attackingPlayer, 
+                stepTimeFrame == Game.BEGIN_TIME_FRAME)
 	eval($g.currentStep.getObject().name == "declare attackers")
 	eval($g.stepDeclareAttackers.getObject() == "508.1a")
 	$p: Player($id : id) from $ac.object
