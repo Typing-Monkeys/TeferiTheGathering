@@ -119,7 +119,7 @@
 
 - Quando generiamo le carte (*Game.STARTING_STAGE*), prendiamo i giocatori (id, nikname, deck, ecc...).
   
-- Da qui prendiamo tutte le carte e dalla lista delle abilità assicurandoci che siano **impostate su false** (anche le abilità statiche) e che abbiano l'abilità chiamata **"Haste"**.
+- Dopo aver preso i giocatori andiamo a selezionare tutte le carte e dalla lista delle abilità ci assicuriamo che siano **impostate su false** (anche le abilità statiche) e che abbiano l'abilità chiamata **"Haste"**.
 
 - Una volta effettuato questo controllo, andiamo ad impostare **il flag di abilità statica su true** e insieme a questo andiamo a fare una stampa di controllo.
 
