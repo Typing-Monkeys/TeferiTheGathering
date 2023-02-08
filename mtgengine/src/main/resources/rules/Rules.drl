@@ -5085,7 +5085,7 @@ The spell remains on the stack until it's countered, it resolves, or an effect m
 agenda-group "general"
 dialect "mvel"
 when 
-	Game(stage == Game.GAME_STAGE, castingSpell == null, $bf: battleField)
+	Game(stage == Game.GAME_STAGE, castingSpell == null)
 	
 	$act: Action($id: id, option == Game.CAST_INSTANT_SPELL)
 	$p: Player(id == $id, $hand: hand)
@@ -5097,31 +5097,31 @@ then
 	boolean found = false;
 	// La ricerca delle carte castabili va fatta in tutte le zone
 	for(Card card : $hand) {
+		boolean foundInHand = false;
+		
 		if( card.cardType.size() > 0 && 
 			card.cardType[0].contains("instant") && 
 			!card.cardType[0].contains("land")) {
 				choice.addOption(card.magicTargetId, card.getNameAsString());
 				found = true;
+				foundInHand = true;
 		}
-	}
-
-	System.out.println("702.8a -> Sto cercando flash tra le varie zone");
-	for(Zone zona: [$hand, $bf]){
-		for (MagicObject card: zona) {
-			if (card.getIdController() == $id) {
-				for (LinkedList abilityList: card.getKeywordAbilities()){
-					for (Ability ability: abilityList){
-						if (ability.hasFlash()) {
-							System.out.println("702.8a -> Carta giocabile con Flash " + card.getNameAsString());
-							choice.addOption(card.magicTargetId, card.getNameAsString());
-							found = true;
-						}
+		
+		if (!foundInHand){
+			System.out.println("702.8a -> Sto cercando flash tra le varie zone");
+			
+			for (LinkedList abilityList: card.getKeywordAbilities()){
+				for (Ability ability: abilityList){
+					if (ability.hasFlash()) {
+						System.out.println("702.8a -> Carta giocabile con Flash " + card.getNameAsString());
+						choice.addOption(card.magicTargetId, card.getNameAsString());
+						found = true;
 					}
 				}
 			}
 		}
 	}
-	
+
 	if(found) {
 		GameEngine.sendToNode(choice, Game.CHOICE, Game.ONE_OF_CHOICE, $id);
 		GameEngine.sendToNode("The player " + $p.nickname + " wants cast a spell.");
@@ -5188,7 +5188,7 @@ The spell remains on the stack until it's countered, it resolves, or an effect m
 agenda-group "general"
 dialect "mvel"
 when
-	$g: Game(stage == Game.GAME_STAGE, $bf: battleField)
+	$g: Game(stage == Game.GAME_STAGE)
 	$act: Action($id: id,$option:option, option == Game.CAST_INSTANT_SPELL || option == Game.CAST_NON_INSTANT_SPELL)
 	$p: Player(id == $id)
 	$ca: ChoiceAnswer(idChoice == 60121, idPlayer == $id)	
@@ -5198,19 +5198,17 @@ then
 			Spell s = new Spell(card, $g.giveMeMyId(), $id, $g.getIdStackCounter());
 			if($option==2){
 				System.out.println("instant spell true");
-				System.out.println(s);
 				s.setInstantSpell(true);
-				System.out.println("Diocane");
 			}else{
 				System.out.println("instant spell false");
 				s.setInstantSpell(false);
 			}
 			s.setIdPlayer($id);
 			$g.castingSpell = s;
-			
-			$p.hand.remove($g.castingSpell.originCard);
 		}
 	}
+	
+	$p.hand.remove($g.castingSpell.originCard);
 
 	GameEngine.sendToNode("The player " + $p.nickname + " choosen to cast " + $g.castingSpell.name);
 	System.out.println("601.2a -> The player " + $p.nickname + " choosen to cast " + $g.castingSpell.name);
@@ -5831,9 +5829,7 @@ then
 		}
 		$spell.payMana($p);
 		System.out.println("ManaPool 2: " + $p.printManaPool());
-		System.out.println($spell);
 		$stack.addFirst($spell);
-		System.out.println("SESSO DURO");
 		$g.setCastingSpell(null);
 		for(Player p : $g.priorityOrder){
 			retract(p.action);
