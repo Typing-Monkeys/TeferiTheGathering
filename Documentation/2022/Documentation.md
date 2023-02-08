@@ -117,13 +117,13 @@
 
 #### 1. Trovare haste nei mazzi
 
-- We go when we generate the cards (*Game.STARTING_STAGE*), we take the player with the particular id selected.
+- Quando generiamo le carte (*Game.STARTING_STAGE*), prendiamo i giocatori (id, nikname, deck, ecc...).
   
-- From him we take all the cards and from the ability list making sure that the abilities are **set to false** (like static abilities) and that they have the ability called **"Haste"**.
+- Da qui prendiamo tutte le carte e dalla lista delle abilità assicurandoci che siano **impostate su false** (anche le abilità statiche) e che abbiano l'abilità chiamata **"Haste"**.
 
-- Once this check is done we go to set **the static ability flag to true** and along with that we go to make a control print. 
+- Una volta effettuato questo controllo, andiamo ad impostare **il flag di abilità statica su true** e insieme a questo andiamo a fare una stampa di controllo.
 
-- Next we **update the player**
+- Successivamente, **aggiorniamo il giocatore**
   
 <br>
 
@@ -155,15 +155,15 @@ end
 
 #### 2. Attivazione di Haste
 
-- We **take all the cards present in the battlefield**. 
+- Per prima cosa andiamo a **prendere tutte le carte presenti sul campo di battaglia**.. 
   
-- We check if the cards contain the word **"creature"** that have as keyword ability **"haste"** going also **to check "summoningSickness" is set to true.**
+- In seguito controlliamo se le carte contengono la parola **"creatura"** e che sia presente l'abilità **"haste"** andando anche **a verificare che "summoningSickness" sia impostato a true.**
 
-- If all this is **verified** we go to **set the summoningSickness to false** since the haste ability goes **to invalidate the summoningSickness.** 
+- Se tutto questo è **verificato** andiamo a **settare la summoningSickness a false** dato che l'abilità **haste** va ad **invalidare la summoningSickness.** 
   
-- Plus we do a small control print. 
+- Inoltre facciamo una piccola stampa di controllo. 
   
-- Finally we **update the game**
+- Infine **aggiorniamo il game**
    
 <br>
 
