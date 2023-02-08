@@ -56,8 +56,67 @@
 - `.c` _Multiple instances of defender on the same creature are redundant._
 
 ### **Implementazione :computer:**
+La regola `508.1a choice`, responsabile dell'individuazione dei possibili attaccanti, è stata modificata come segue:
 
+- durante il controllo delle creature presenti nel battlefield, queste vengono aggiunte alla lista dei possibili attaccanti solo se non hanno `defender` come abilità (`nodefender == true`).
 
+``` java
+rule "508.1a choice"
+/*
+--- November 19, 2021 ---
+508.1a. The active player chooses which creatures that he or she controls, 
+if any, will attack. The chosen creatures must be untapped, and each one must 
+either have haste or have been controlled by the active player continuously since 
+the turn began.*/
+agenda-group "general"
+dialect "mvel"
+salience 50
+no-loop true
+when
+	$g:Game(stage == Game.GAME_STAGE, $ac : attackingPlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	eval($g.currentStep.getObject().name == "declare attackers")
+	eval($g.stepDeclareAttackers.getObject() == "508.1a")
+	$p: Player($id : id) from $ac.object
+then
+	System.out.println("508.1a choice --> Il giocatore sta scegliendo gli attaccanti");
+	MakeChoice choice = new MakeChoice();
+	choice.idChoice = 50811;//ATTENZIONE
+	choice.choiceText = "Choose which creature will attack";
+	boolean found = false;
+	choice.addOption(-1, "No attack");
+	
+	/*
+	Rule 702.3b. A creature with defender can't attack.
+	*/
+	for(Permanent permanent : $g.battleField) {
+		if(permanent.idController == $id && !permanent.getStatus().isTapped() &&
+                   !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
+			// Defender check of the selected permanent.
+			boolean nodefender = true;
+			for (LIstAbi permanent.getKeywordAbilities()){
+				if(LIstAbi == "defender"){
+					nodefender = false;
+				}			
+			}
+			if (nodefender){
+				choice.addOption(
+          permanent.magicTargetId, 
+          permanent.getNameAsString()
+          );
+				found = true;
+			}
+		}
+	}
+	if(found){
+		GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $id);
+	} else {
+		GameEngine.sendToNode("You have not creature to attack.");
+		System.out.println("508.1a --> Il giocatore non ha creature per attaccare");
+		$g.stepDeclareAttackers.next();
+	}
+	update($g);
+end
+```
 <hr>
 
 ## ***702.4 Double Strike*** :bowling: :bowling:
