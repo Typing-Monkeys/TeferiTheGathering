@@ -100,9 +100,9 @@ then
 			}
 			if (nodefender){
 				choice.addOption(
-          permanent.magicTargetId, 
-          permanent.getNameAsString()
-          );
+                                  permanent.magicTargetId, 
+                                  permanent.getNameAsString()
+                                  );
 				found = true;
 			}
 		}
