@@ -31,7 +31,6 @@ import com.magicengine.RulePriorityCounter;
 import java.util.*;
 import org.kie.api.runtime.KieSession;
 
-
 rule "updateClients"
 	dialect "mvel"
 	agenda-group "general"
@@ -2355,7 +2354,7 @@ end
 
 
 rule "506.1 part 3"
-/* Tommaso Romani Nicolò Posta
+/* Tommaso Romani Nicolï¿½ Posta
 There are two combat damage steps if any attacking or blocking creature has first strike 
 (see rule 702.7) or double strike (see rule 702.4).*/
 dialect "mvel"
@@ -2365,8 +2364,6 @@ agenda-group "general"
 when
 	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $ph: currentPhase.getObject())
 	eval($g.currentPhase.getObject().name == "combat")
-	//eval($g.stepCombatDamage.getObject() == "510.3")
-	//$ph: $g.currentPhase.getObject()
 	eval($ph.size() <= 5)
 	//TODO: mettere che siano tra gli attaccanti o i bloccanti
 	exists (Permanent(
@@ -2374,13 +2371,14 @@ when
 		) from $bf)
 then
 	System.out.println("506.1 part 3 -> Aggiunto combat damage per First/Double strike");
-	//System.out.println("Size prima dell'aggiunta" + $ph.size());
-	$ph.add($ph.size() - 2, new Step("combat damage",true));
-	//System.out.println("Size dopo dell'aggiunta" + $ph.size());
-	//$ph.add(new Step("combat damage",false));
-	//for (Step step: $ph){
-	//	System.out.println(step.getName());
-	//}
+	
+	$ph.remove($ph.size());
+	$ph.remove($ph.size());
+	$ph.add(new Step("combat damage",true));
+	$ph.add(new Step("combat damage",false));
+	$ph.add(new Step("end of combat",false));
+	System.out.println("Size prima dell'aggiunta" + $ph.size());
+		
 	update($g)
 
 end
@@ -4183,9 +4181,8 @@ when
 	$g: Game($scd: stepCombatDamage.listReference)
 	eval($scd.size()==0)
 then
-	$scd.add("510.4 part 1a");
-	$scd.add("510.4 part 1b");
-	$scd.add("510.4 part 2");
+	System.out.println("510.1 -> Aggiunti step per il combat damage");
+	// aggiungere prima una regola che controlla se c'ï¿½ o non c'ï¿½ double/first, se c'ï¿½ crea la lista con queste 3 aggiunte	
 	$scd.add("510.1a");
 	$scd.add("510.1bc");
 	$scd.add("510.1d");
@@ -4717,9 +4714,10 @@ rule "510.3a"
 	
 end
 
+
 rule "510.4 part 1a"
 /*
-Tommaso Romani Nicolò Posta
+Tommaso Romani Nicolï¿½ Posta
 November 19, 2021
 510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
 only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
@@ -4729,10 +4727,13 @@ double strike. After that step, the phase proceeds to the end of combat step.*/
 agenda-group "general"
 dialect "mvel"
 no-loop true
+salience 500
 when
 	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures)
 	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
-	eval($g.stepCombatDamage.getObject() == "510.4 part 1a")
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == false)
+	//eval($g.stepCombatDamage.getObject() == "510.4 part 1a")
 	//$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 	$pmt_def: Permanent(
 			$difensori: blockedCreatures.listReference,
@@ -4740,6 +4741,8 @@ when
 			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
 		) from $blk.listReference
 		//$allCardsInCombact
+		
+		// si deve triggerare pe ogni permanente con first strike
 then
 	System.out.println("510.4 part 1a");
 	//Mi salvo la lista di tutti gli attaccanti e difensori di prima
@@ -4747,15 +4750,15 @@ then
 	System.out.println("Tutti i difensori selezionati "+$blk.listReference);
 	$g.stepFirstStikeBlockingCreatures = $blk;
 	System.out.println("Tutti i difensori selezionati con First Strike" + $pmt_def);
-	//$blk = $pmt_def;
+	$blk = $pmt_def.copy();
 	//$atk = $pmt_atk;
-	$g.stepCombatDamage.next();
-	update($g);
+	//$g.stepCombatDamage.next();
+	//update($g);
 end
 
 rule "510.4 part 1b"
 /*
-Tommaso Romani Nicolò Posta
+Tommaso Romani Nicolï¿½ Posta
 November 19, 2021
 510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
 only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
@@ -4765,10 +4768,13 @@ double strike. After that step, the phase proceeds to the end of combat step.*/
 agenda-group "general"
 dialect "mvel"
 no-loop true
+salience 500
 when
 	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $atk: attackingCreatures)
 	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
-	eval($g.stepCombatDamage.getObject() == "510.4 part 1b")
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == false)
+	//eval($g.stepCombatDamage.getObject() == "510.4 part 1b")
 	//$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
 	
 	$pmt_atk: Permanent(
@@ -4785,14 +4791,14 @@ then
 	$g.stepFirstStikeAttackingCreatures = $atk;
 	System.out.println("Tutti gli attaccanti selezionati con First Strike" + $pmt_atk);
 	//$blk = $pmt_def;
-	//$atk = $pmt_atk;
-	$g.stepCombatDamage.next();
+	$atk = $pmt_atk.copy();
+	//$g.stepCombatDamage.next();
 	update($g);
 end
 
-rule "510.4 part 2"
+rule "510.4 part 2a"
 /*
-Tommaso Romani Nicolò Posta
+Tommaso Romani Nicolï¿½ Posta
 November 19, 2021
 510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
 only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
@@ -4802,30 +4808,64 @@ double strike. After that step, the phase proceeds to the end of combat step.*/
 agenda-group "general"
 dialect "mvel"
 no-loop true
+salience 500
 when
 	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
 	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
-	eval($g.stepCombatDamage.getObject() == "510.4 part 2")
+	//eval($g.stepCombatDamage.getObject() == "510.4 part 2")
+	eval($g.stepCombatDamage.getObject() == "510.1a")
 	eval($g.firstStrikeAttaking == true)
-	$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+	
 	$pmt_atk: Permanent(
 			//$difensori: blockedCreatures.listReference,
 			$attaccanti: blockedBy.listReference,
-			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-		) from $allCardsInCombact
+			!checkKeywordAbility("First strike")
+		) from $g.stepFirstStikeAttackingCreatures.listReference
+then
+	System.out.println("510.4 part 2a");
+	$g.firstStrikeAttaking == false;
+	//$g.stepCombatDamage.next();
+	//Lista di tutti gli attaccanti
+	$atk = $pmt_atk.copy();
+	update($g);
+	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
+	//e quelle che hanno giï¿½ attaccato ma non hanno piï¿½ First o Double Strike
+	//for controllo se non ha piï¿½ la statick ability First o Double Strike, se non lo ha piï¿½ allora va rimossa 
+end
+
+rule "510.4 part 2b"
+/*
+Tommaso Romani Nicolï¿½ Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	//eval($g.stepCombatDamage.getObject() == "510.4 part 2")
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == true)
 	$pmt_def: Permanent(
 			$difensori: blockedCreatures.listReference,
 			//$attaccanti: blockedBy.listReference,
-			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-		) from $allCardsInCombact
+			!checkKeywordAbility("First strike")
+		) from $g.stepFirstStikeBlockingCreatures.listReference
 then
-	System.out.println("510.4 part 2");
+	System.out.println("510.4 part 2b");
 	$g.firstStrikeAttaking == false;
-	$g.stepCombatDamage.next();
+	//$g.stepCombatDamage.next();
+	$blk = $pmt_blk.copy();
 	update($g)
 	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
-	//e quelle che hanno già attaccato ma non hanno più First o Double Strike
-	//for controllo se non ha più la statick ability First o Double Strike, se non lo ha più allora va rimossa 
+	//e quelle che hanno giï¿½ attaccato ma non hanno piï¿½ First o Double Strike
+	//for controllo se non ha piï¿½ la statick ability First o Double Strike, se non lo ha piï¿½ allora va rimossa 
 end
 //END OF COMBAT STEP
 
@@ -5011,7 +5051,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 300
@@ -5037,7 +5077,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 200
@@ -5070,7 +5110,7 @@ maximum hand size (normally seven), he or she discards enough cards to reduce
 his or her hand size to that number. This turn-based action doesnt use the 
 stack.
 
-Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci.
+Edited by Nicolï¿½ Posta, Tommaso Romani, Nicolï¿½ Vescera, Fabrizio Fagiolo, Cristian Cosci.
 */
 agenda-group "general"
 salience 100
@@ -5081,7 +5121,7 @@ when
 	$ca: ChoiceAnswer(idChoice == Game.DISCARD_TO_MAXHANDSIZE, idPlayer == $p.id)
 then
 
-	//elimina le carte solo se è stato scelto il numero corretto di carte
+	//elimina le carte solo se ï¿½ stato scelto il numero corretto di carte
 	if ($ca.getIdOptions().size() == ($p.getHand().size() - $p.getMaxHandSize())) {
 		for(String cardId : $ca.getIdOptions()) {
 	    	$p.hand.remove(cardId);
@@ -7853,7 +7893,7 @@ end
 rule "702.4a"
 /**
 	@date 2022/2023
-	@author Tommaso Romani, Nicolò Posta
+	@author Tommaso Romani, Nicolï¿½ Posta
 **/
 /*Double Strike is a static ability.*/
 agenda-group "general"
@@ -7904,7 +7944,7 @@ end
 rule "702.7a"
 /**
 	@date 2022/2023
-	@author Tommaso Romani, Nicolò Posta
+	@author Tommaso Romani, Nicolï¿½ Posta
 **/
 /*First Strike is a static ability.*/
 agenda-group "general"
