@@ -7,29 +7,30 @@
 <!-- TOC -->
 
 - [ **Teferi The Gatering**  ](#-teferi-the-gatering--)
-    - [**Rule index**](#rule-index)
-  - [***702.2 Deathtouch*** :skull:](#7022-deathtouch-skull)
-    - [**Descrizione** :mag:](#descrizione-mag)
-    - [**Implementazione :computer:**](#implementazione-computer)
-  - [***702.3 Defender*** 🧱](#7023-defender-)
-    - [**Descrizione** :mag:](#descrizione-mag-1)
-    - [**Implementazione :computer:**](#implementazione-computer-1)
-      - [1. Trovare `Defender` nei mazzi](#1-trovare-defender-nei-mazzi)
-      - [2. Attivazione di `Defender`](#2-attivazione-di-defender)
-  - [***702.4 Double Strike*** :bowling: :bowling:](#7024-double-strike-bowling-bowling)
-    - [**Descrizione** :mag:](#descrizione-mag-2)
-    - [**Implementazione :computer:**](#implementazione-computer-2)
-  - [***702.7 First Strike*** :bowling:](#7027-first-strike-bowling)
-    - [**Descrizione** :mag:](#descrizione-mag-3)
-    - [**Implementazione :computer:**](#implementazione-computer-3)
-  - [***702.8 Flash*** :flashlight:](#7028-flash-flashlight)
-    - [**Descrizione** :mag:](#descrizione-mag-4)
-    - [**Implementazione :computer:**](#implementazione-computer-4)
-  - [***702.10 Haste ⚡***](#70210-haste-)
-    - [**Descrizione** :mag:](#descrizione-mag-5)
-    - [**Implementazione :computer:**](#implementazione-computer-5)
-      - [1. Trovare haste nei mazzi](#1-trovare-haste-nei-mazzi)
-      - [2. Attivazione di Haste](#2-attivazione-di-haste)
+		- [**Rule index**](#rule-index)
+	- [***702.2 Deathtouch*** :skull:](#7022-deathtouch-skull)
+		- [**Descrizione** :mag:](#descrizione-mag)
+		- [**Implementazione :computer:**](#implementazione-computer)
+			- [1. Trovare `Deathtouch` nei mazzi](#1-trovare-deathtouch-nei-mazzi)
+	- [***702.3 Defender*** 🧱](#7023-defender-)
+		- [**Descrizione** :mag:](#descrizione-mag-1)
+		- [**Implementazione :computer:**](#implementazione-computer-1)
+			- [1. Trovare `Defender` nei mazzi](#1-trovare-defender-nei-mazzi)
+			- [2. Attivazione di `Defender`](#2-attivazione-di-defender)
+	- [***702.4 Double Strike*** :bowling: :bowling:](#7024-double-strike-bowling-bowling)
+		- [**Descrizione** :mag:](#descrizione-mag-2)
+		- [**Implementazione :computer:**](#implementazione-computer-2)
+	- [***702.7 First Strike*** :bowling:](#7027-first-strike-bowling)
+		- [**Descrizione** :mag:](#descrizione-mag-3)
+		- [**Implementazione :computer:**](#implementazione-computer-3)
+	- [***702.8 Flash*** :flashlight:](#7028-flash-flashlight)
+		- [**Descrizione** :mag:](#descrizione-mag-4)
+		- [**Implementazione :computer:**](#implementazione-computer-4)
+	- [***702.10 Haste ⚡***](#70210-haste-)
+		- [**Descrizione** :mag:](#descrizione-mag-5)
+		- [**Implementazione :computer:**](#implementazione-computer-5)
+			- [1. Trovare haste nei mazzi](#1-trovare-haste-nei-mazzi)
+			- [2. Attivazione di Haste](#2-attivazione-di-haste)
 
 <!-- /TOC -->
 
@@ -46,6 +47,167 @@
 
 ### **Implementazione :computer:**
 
+#### 1. Trovare `Deathtouch` nei mazzi
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste ha nell'`abilityText` la parola `Deathtouch` 
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+
+``` java
+rule "702.2a" 
+
+/** 
+ 	@date 2022/2023 
+ 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera 
+ **/ 
+
+ /*Deathtouch is a static ability.*/ 
+ agenda-group "general" 
+ 	when 
+ 		$g : Game(stage == Game.STARTING_STAGE) 
+ 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0); 
+ 		$c : Card() from $lib 
+ 		$la: LinkedList() from $c.getAbilities() 
+ 		$a : Ability(keyword_ability==false && static_ability==false &&  
+ 			abilityText.toLowerCase().startsWith("deathtouch")) from $la 
+ 	then 
+ 		$a.setStatic_ability(true);
+ 		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName()); 
+ 		 
+ 		update($p) 
+ end 
+```
+
+#### 2. Attivazione di `Deathtouch`
+- Quando il **gioco** è nella fase `GAME_STAGE`,
+- andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le liste sia degli **attaccanti** che dei **difensori**.
+- Andando così a creare una lista di tutti le **carte in combattimento**.
+- Dalla **lista** controlliamo che `Deathtouch` sia settata a true nelle carte.
+- Se la carta che ha `Deathtouch` subisce o infligge danno viene distrutta.  
+
+``` java
+ rule "702.2b" 
+ dialect "mvel" 
+ salience 500 
+ no-loop true  
+ /** 
+ 	@date 2022/2023 
+ 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera 
+ **/ 
+ /*Deathtouched Creatures are destroyed.*/ 
+ agenda-group "general" 
+ when 
+ 	$g: Game( 
+ 			stage == Game.GAME_STAGE,  
+ 			$bf : battleField, 
+ 			$attaccanti: attackingCreatures.listReference, 
+ 			$bloccanti: blockingCreatures.listReference, 
+ 			controlStateBasedActions 
+ 		) 
+  
+    	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti) 
+     $pmt: Permanent ( 
+ 				cardType[0].contains("creature"), 
+ 				deathtouched == true 
+ 			) from $allCardsInCombact 
+ 		 
+ 	then 
+ 		System.out.println("702.2b --> Morte per Deathtouch."); 
+ 		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !"); 
+ 		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta"); 
+ 		 
+ 		$g.destroy($pmt); 
+  
+ 		update($g) 
+ end 
+``` 
+#### 3. `Deathtouch` viene aggiunta alle state-base action
+
+- Andiamo ad aggiungere la regola scritta in precedenza alla lista delle `state-base action`
+
+``` java	 
+ LinkedList ruleList = new LinkedList(); 
+ ruleList.addAll([ 
+ 	"704.5a", 
+ 	"704.5b", 
+ 	"704.5c", 
+ 	"704.5f", 
+ 	"704.5g", 
+ 	"704.5i", 
+ 	"704.5j", 
+ 	"702.2b" 
+ ]); 
+```
+#### 4. Le carte distrutte vengono marchiate con `Deathtouch`
+
+- Quando il **gioco** è nella fase `GAME_STAGE`, nello step `BEGIN_TIME_FRAME`
+- andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le creature **bloccanti** e **attacanti**.
+- Successivamente ci assicuriamo di trovarsi nel `"combat damage"`.
+- E come fatto in precedenza andiamo a creare una lista di tutti le **carte in combattimento (attacanti e bloccanti)**, 
+- la lista comprende le carte indipendentemente da dove si trovano.
+- Dalla **lista** controlliamo che la "vita" della carta sia > 0 e che il danno inflitto sia > 0.
+- Se la condizione precedente è soddisfatta e `Deathtouch` risulta **false** (perchè più istanze di Deathtouch sono ridondanti), 
+- la carta viene marchiata con `Deathtouch`
+
+
+``` java	 
+ rule "702.2c" 
+ dialect "mvel" 
+ salience 500 
+ no-loop true  
+ /** 
+ 	@date 2022/2023 
+ 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera 
+ **/ 
+ /*Deathtouched Creatures are destroyed.*/ 
+ agenda-group "general" 
+ 	when 
+ 		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures) 
+ 		eval($g.currentStep.getObject().name == "combat damage")  
+ 		 
+ 		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference) 
+ 		$pmt: Permanent( 
+ 				$difensori: blockedCreatures.listReference, 
+ 				$attaccanti: blockedBy.listReference, 
+ 				cardType[0].contains("creature"), 
+ 				Integer.parseInt(toughness[0]) > 0, 
+ 				markedDamage > 0, 
+ 				deathtouched == false 
+ 			) from $allCardsInCombact 
+ 		 
+ 		exists (  
+ 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or  
+ 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti 
+ 		) 
+ 			 
+ 	then 
+ 		System.out.println("702.2c --> Marchiamento Deathtouch."); 
+ 		System.out.println("\t" + $pmt.getNameAsString+" viene marchiata con Deathtouch !"); 
+ 		 
+ 		$pmt.setDeathtouched(true); 
+  
+ 		update($g) 
+ end 
+```
+#### 4.  Aggiunto flag `Deathtouch` nel `Java`
+- Per i controlli precedenti abbiamo bisogno di inserire all'interno della classe `permanent` il flag `deathtouched`. 
+- Andiamo quindi a dichiarare il flag e successivamente chreiamo il getter e il setter. 
+  
+``` java	 
+ private boolean deathtouched = false; 
+  
+ public boolean isDeathtouched() { 
+ 	return deathtouched; 
+ } 
+  
+ public boolean getDeathtouched() { 
+ 	return deathtouched; 
+ } 
+ public void setDeathtouched(boolean deathtouched) { 
+ 	this.deathtouched = deathtouched; 
+ } 
+```
+
 
 <hr>
 
@@ -61,7 +223,7 @@
 
 #### 1. Trovare `Defender` nei mazzi
 
-- Quando il **grioco** è nella fase `STARTING_STAGE`,
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
 - prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
 - controlliamo quale di queste he nell'`abilityText` la parola `Defender` 
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
