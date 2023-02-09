@@ -2372,8 +2372,8 @@ when
 then
 	System.out.println("506.1 part 3 -> Aggiunto combat damage per First/Double strike");
 	
-	$ph.remove($ph.size());
-	$ph.remove($ph.size());
+	$ph.remove($ph.size()-1);
+	$ph.remove($ph.size()-1);
 	$ph.add(new Step("combat damage",true));
 	$ph.add(new Step("combat damage",false));
 	$ph.add(new Step("end of combat",false));
@@ -4746,11 +4746,13 @@ when
 then
 	System.out.println("510.4 part 1a");
 	//Mi salvo la lista di tutti gli attaccanti e difensori di prima
-	$g.firstStrikeAttaking = true;
+	//$g.firstStrikeAttaking = true;
 	System.out.println("Tutti i difensori selezionati "+$blk.listReference);
 	$g.stepFirstStikeBlockingCreatures = $blk;
+	System.out.println("Tutti i difensori selezionati dopo averli salvati " + $g.stepFirstStikeBlockingCreatures.listReference);
 	System.out.println("Tutti i difensori selezionati con First Strike" + $pmt_def);
-	$blk = $pmt_def.copy();
+	//$pmt_def.getClass();
+	$blk = $pmt_def;
 	//$atk = $pmt_atk;
 	//$g.stepCombatDamage.next();
 	//update($g);
@@ -4786,13 +4788,51 @@ when
 then
 	System.out.println("510.4 part 1b");
 	//Mi salvo la lista di tutti gli attaccanti e difensori di prima
-	$g.firstStrikeAttaking = true;
+	//$g.firstStrikeAttaking = true;
 	System.out.println("Tutti gli attaccanti selezionati "+$atk.listReference);
 	$g.stepFirstStikeAttackingCreatures = $atk;
+	System.out.println("Tutti gli attaccanti selezionati dopo averli salvati " + $g.stepFirstStikeAttackingCreatures.listReference);
 	System.out.println("Tutti gli attaccanti selezionati con First Strike" + $pmt_atk);
 	//$blk = $pmt_def;
-	$atk = $pmt_atk.copy();
+	$atk = $pmt_atk;
 	//$g.stepCombatDamage.next();
+	//update($g);
+end
+
+rule "510.4 part 1c"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 400
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $atk: attackingCreatures, $blk: blockingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == false)
+
+	$pmt_def: Permanent(
+		$difensori: blockedCreatures.listReference,
+		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	) from $blk.listReference
+
+	$pmt_atk: Permanent(
+		$attaccanti: blockedBy.listReference,
+		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	) from $atk.listReference
+
+	eval($pmt_atk != null || $pmt_def != null)
+
+then
+	System.out.println("510.4 part 1c");
+	$g.firstStrikeAttaking = true;
 	update($g);
 end
 
@@ -4823,11 +4863,11 @@ when
 		) from $g.stepFirstStikeAttackingCreatures.listReference
 then
 	System.out.println("510.4 part 2a");
-	$g.firstStrikeAttaking == false;
+	//$g.firstStrikeAttaking == false;
 	//$g.stepCombatDamage.next();
 	//Lista di tutti gli attaccanti
-	$atk = $pmt_atk.copy();
-	update($g);
+	$atk = $pmt_atk;
+	//update($g);
 	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
 	//e quelle che hanno gi� attaccato ma non hanno pi� First o Double Strike
 	//for controllo se non ha pi� la statick ability First o Double Strike, se non lo ha pi� allora va rimossa 
@@ -4857,16 +4897,62 @@ when
 			//$attaccanti: blockedBy.listReference,
 			!checkKeywordAbility("First strike")
 		) from $g.stepFirstStikeBlockingCreatures.listReference
+	
 then
 	System.out.println("510.4 part 2b");
+	//$g.firstStrikeAttaking == false;
+	//$g.stepCombatDamage.next();
+	$blk = $pmt_def;
+	//update($g)
+	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
+	//e quelle che hanno gi� attaccato ma non hanno pi� First o Double Strike
+	//for controllo se non ha pi� la statick ability First o Double Strike, se non lo ha pi� allora va rimossa 
+end
+
+rule "510.4 part 2c"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 400
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	//eval($g.stepCombatDamage.getObject() == "510.4 part 2")
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == true)
+	$pmt_def: Permanent(
+			$difensori: blockedCreatures.listReference,
+			//$attaccanti: blockedBy.listReference,
+			!checkKeywordAbility("First strike")
+		) from $g.stepFirstStikeBlockingCreatures.listReference
+	$pmt_atk: Permanent(
+			//$difensori: blockedCreatures.listReference,
+			$attaccanti: blockedBy.listReference,
+			!checkKeywordAbility("First strike")
+		) from $g.stepFirstStikeAttackingCreatures.listReference
+	
+	eval($pmt_atk != null || $pmt_def != null)
+
+then
+	System.out.println("510.4 part 2c");
 	$g.firstStrikeAttaking == false;
 	//$g.stepCombatDamage.next();
-	$blk = $pmt_blk.copy();
+	//$blk = $pmt_blk;
 	update($g)
 	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
 	//e quelle che hanno gi� attaccato ma non hanno pi� First o Double Strike
 	//for controllo se non ha pi� la statick ability First o Double Strike, se non lo ha pi� allora va rimossa 
 end
+
+
 //END OF COMBAT STEP
 
 rule "511.1"
