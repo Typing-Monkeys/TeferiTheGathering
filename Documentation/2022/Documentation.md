@@ -30,6 +30,8 @@
 	- [***702.8 Flash*** :flashlight:](#7028-flash-flashlight)
 		- [**Descrizione** :mag:](#descrizione-mag-4)
 		- [**Implementazione :computer:**](#implementazione-computer-4)
+			- [1. Trovare `Flash` nei mazzi](#1-trovare-flash-nei-mazzi)
+			- [2. Attivazione di `Flash`](#2-attivazione-di-flash)
 	- [***702.10 Haste ⚡***](#70210-haste-)
 		- [**Descrizione** :mag:](#descrizione-mag-5)
 		- [**Implementazione :computer:**](#implementazione-computer-5)
@@ -372,6 +374,115 @@ end
 
 ### **Implementazione :computer:**
 
+#### 1. Trovare `Flash` nei mazzi
+
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste ha nel `keyword_text` la parola `flash` 
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+
+
+
+``` java
+rule "702.8a"
+/**
+	 Flash is a static ability
+	 
+	 @author Cristian Cosci, Nicolò Vescera
+	 @date 2022/2023
+**/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getKeywordAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			keyword_text.toLowerCase().startsWith("flash")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setFlash(true);
+		
+		System.out.println("702.8a -> Trovato Flash: " + $c.getName());
+
+		update($p)
+end
+```
+#### 2. Attivazione di `Flash`
+
+E stata modificata la regola che gestisce le instant nel seguente modo:
+
+- Per ogni carta presente nella mano del player,
+- aggiungo un secondo controllo a quello già esistente che aggiunge la carta alla lista delle possibili carte giocabili se ha tra le sue abilità `Flash`.
+- Questi controlli si escludono a vicenda: se la carta è già stata aggiunta al primo controllo, risulterà inutile controllare
+tutte le sue abilità per poi aggiungerla erroneamente una seconda volta.
+
+``` java
+// Casting Spells
+rule "601.2a instant"
+/* 
+November 19, 2021
+601.2a
+To propose the casting of a spell, a player first moves that card (or that copy of a card) from where it is to the stack. It becomes the topmost 
+object on the stack. It has all the characteristics of the card (or the copy of a card) associated with it, and that player becomes its controller. 
+The spell remains on the stack until it's countered, it resolves, or an effect moves it elsewhere.
+*/
+
+agenda-group "general"
+dialect "mvel"
+when 
+	Game(stage == Game.GAME_STAGE, castingSpell == null)
+	
+	$act: Action($id: id, option == Game.CAST_INSTANT_SPELL)
+	$p: Player(id == $id, $hand: hand)
+
+then
+	MakeChoice choice = new MakeChoice();
+	choice.idChoice = 60121;
+	choice.choiceText = "Choose which card to play";
+	boolean found = false;
+	// La ricerca delle carte castabili va fatta in tutte le zone
+	for(Card card : $hand) {
+		boolean foundInHand = false;
+		
+		if( card.cardType.size() > 0 && 
+			card.cardType[0].contains("instant") && 
+			!card.cardType[0].contains("land")) {
+				choice.addOption(card.magicTargetId, card.getNameAsString());
+				found = true;
+				foundInHand = true;
+		}
+		
+		if (!foundInHand){
+			System.out.println("702.8a -> Sto cercando flash tra le varie zone");
+			
+			for (LinkedList abilityList: card.getKeywordAbilities()){
+				for (Ability ability: abilityList){
+					if (ability.hasFlash()) {
+						System.out.println("702.8a -> Carta giocabile con Flash " + card.getNameAsString());
+						choice.addOption(card.magicTargetId, card.getNameAsString());
+						found = true;
+					}
+				}
+			}
+		}
+	}
+
+	if(found) {
+		GameEngine.sendToNode(choice, Game.CHOICE, Game.ONE_OF_CHOICE, $id);
+		GameEngine.sendToNode("The player " + $p.nickname + " wants cast a spell.");
+		System.out.println("The player " + $p.nickname + " wants cast a spell.");
+	} else {
+		GameEngine.sendToNode("You have not instant spells to cast.");
+		System.out.println("601.2a -> The player " + $p.nickname + "  has not instant spells to cast.");
+		retract($p.action);
+		$p.action = new Action($id,0,0,0);
+		insert($p.action);
+	}
+end
+```
 
 <hr>
 
