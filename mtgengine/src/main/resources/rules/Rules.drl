@@ -2693,13 +2693,14 @@ then
 	*/
 	for(Permanent permanent : $g.battleField) {
 		if(permanent.idController == $id && !permanent.getStatus().isTapped() && !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
-			// Defender check of the selected permanent.
 			boolean nodefender = true;
-			for (LIstAbi permanent.getKeywordAbilities()){
-				if(LIstAbi == "defender"){
-					nodefender = false;
-				}			
-			}
+		
+			// Defender check of the selected permanent.
+			if (permanent.checkKeywordAbility("Defender")){
+				System.out.println("702.3b -> Card has Defender, can't attack !");
+				nodefender = false;
+			}	
+			
 			if (nodefender){
 				choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
 				found = true;
@@ -7049,14 +7050,15 @@ no-loop true
 agenda-group "general"	
 	when
 		$g : Game(stage == Game.STARTING_STAGE)
-		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$p : Player($id : id, $nickname: nickname, $deck: deck, $lib: library, library.size() > 0);
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
-		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender ")) from $la
+		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender")) from $la
 	then
-		System.out.println("Trovata Defender");
+		System.out.println("702.3a -> Trovata Defender");
 		$a.setKeyword_ability(true);	
 		$a.setStatic_ability(true);
+		//$a.setDefender(true);
 		//$a.setKeyword_text("defender");
 		update($p)
 end
