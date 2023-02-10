@@ -12,6 +12,10 @@
 		- [**Descrizione** :mag:](#descrizione-mag)
 		- [**Implementazione :computer:**](#implementazione-computer)
 			- [1. Trovare `Deathtouch` nei mazzi](#1-trovare-deathtouch-nei-mazzi)
+			- [2. Attivazione di `Deathtouch`](#2-attivazione-di-deathtouch)
+			- [3. `Deathtouch` viene aggiunta alle state-base action](#3-deathtouch-viene-aggiunta-alle-state-base-action)
+			- [4. Le carte che subiscono danno vengono marchiate con `Deathtouch`](#4-le-carte-che-subiscono-danno-vengono-marchiate-con-deathtouch)
+			- [4.  Aggiunto flag `deathtouched` nel `Java`](#4--aggiunto-flag-deathtouched-nel-java)
 	- [***702.3 Defender*** 🧱](#7023-defender-)
 		- [**Descrizione** :mag:](#descrizione-mag-1)
 		- [**Implementazione :computer:**](#implementazione-computer-1)
@@ -65,7 +69,8 @@ rule "702.2a"
  agenda-group "general" 
  	when 
  		$g : Game(stage == Game.STARTING_STAGE) 
- 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0); 
+ 		$p : Player($id : id, $nickname: nickname, 
+				$deck: deck; $lib: library, library.size() > 0); 
  		$c : Card() from $lib 
  		$la: LinkedList() from $c.getAbilities() 
  		$a : Ability(keyword_ability==false && static_ability==false &&  
@@ -82,8 +87,8 @@ rule "702.2a"
 - Quando il **gioco** è nella fase `GAME_STAGE`,
 - andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le liste sia degli **attaccanti** che dei **difensori**.
 - Andando così a creare una lista di tutti le **carte in combattimento**.
-- Dalla **lista** controlliamo che `Deathtouch` sia settata a true nelle carte.
-- Se la carta che ha `Deathtouch` subisce o infligge danno viene distrutta.  
+- Dalla **lista** controlliamo quali carte abbiano il flag `deathtouched` impostato a `true`,
+- infine, distruggiamo queste carte.  
 
 ``` java
  rule "702.2b" 
@@ -105,16 +110,17 @@ rule "702.2a"
  			controlStateBasedActions 
  		) 
   
-    	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti) 
-     $pmt: Permanent ( 
- 				cardType[0].contains("creature"), 
- 				deathtouched == true 
- 			) from $allCardsInCombact 
+    	$allCardsInCombact: (Permanent() from $attaccanti or 
+			     Permanent() from $bloccanti) 
+     	$pmt: Permanent ( 
+ 			cardType[0].contains("creature"), 
+ 			deathtouched == true 
+ 		) from $allCardsInCombact 
  		 
  	then 
  		System.out.println("702.2b --> Morte per Deathtouch."); 
- 		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !"); 
- 		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta"); 
+ 		System.out.println("\t"+$pmt.getNameAsString+" subisce Deathtouch"); 
+ 		System.out.println("\t"+$pmt.getNameAsString+" viene distrutta"); 
  		 
  		$g.destroy($pmt); 
   
@@ -138,16 +144,16 @@ rule "702.2a"
  	"702.2b" 
  ]); 
 ```
-#### 4. Le carte distrutte vengono marchiate con `Deathtouch`
+#### 4. Le carte che subiscono danno vengono marchiate con `Deathtouch`
 
 - Quando il **gioco** è nella fase `GAME_STAGE`, nello step `BEGIN_TIME_FRAME`
 - andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le creature **bloccanti** e **attacanti**.
 - Successivamente ci assicuriamo di trovarsi nel `"combat damage"`.
-- E come fatto in precedenza andiamo a creare una lista di tutti le **carte in combattimento (attacanti e bloccanti)**, 
+- E come fatto in precedenza andiamo a creare una lista di tutte le **carte in combattimento (attacanti e bloccanti)**, 
 - la lista comprende le carte indipendentemente da dove si trovano.
-- Dalla **lista** controlliamo che la "vita" della carta sia > 0 e che il danno inflitto sia > 0.
-- Se la condizione precedente è soddisfatta e `Deathtouch` risulta **false** (perchè più istanze di Deathtouch sono ridondanti), 
-- la carta viene marchiata con `Deathtouch`
+- Dalla **lista** controlliamo che la carta sia ancora in vita (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`) (perchè più istanze di Deathtouch sono ridondanti), 
+- se le precedenti condizioni risultano vere e se esiste almeno una carta che abbia `Deathtouch` tra i "bloccanti" o i "bloccati" (rispettivamente le liste `blockedCreatures` e `blockedBy`),
+- la carta viene marchiata con `Deathtouch` (`deathtouched = true`)
 
 
 ``` java	 
@@ -162,10 +168,16 @@ rule "702.2a"
  /*Deathtouched Creatures are destroyed.*/ 
  agenda-group "general" 
  	when 
- 		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures) 
+ 		$g:Game(
+			stage == Game.GAME_STAGE, 
+			stepTimeFrame == Game.BEGIN_TIME_FRAME, 
+			$blk: blockingCreatures, 
+			$atk: attackingCreatures
+			) 
  		eval($g.currentStep.getObject().name == "combat damage")  
  		 
- 		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference) 
+ 		$allCardsInCombact: ( Permanent() from $atk.listReference or
+				      Permanent() from $blk.listReference) 
  		$pmt: Permanent( 
  				$difensori: blockedCreatures.listReference, 
  				$attaccanti: blockedBy.listReference, 
@@ -176,8 +188,12 @@ rule "702.2a"
  			) from $allCardsInCombact 
  		 
  		exists (  
- 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or  
- 			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti 
+ 			Permanent(
+				cardType[0].contains("creature") &&
+				checkKeywordAbility("Deathtouch")) from $difensori or  
+ 			Permanent(
+				cardType[0].contains("creature") && 
+				checkKeywordAbility("Deathtouch")) from $attaccanti 
  		) 
  			 
  	then 
@@ -189,7 +205,8 @@ rule "702.2a"
  		update($g) 
  end 
 ```
-#### 4.  Aggiunto flag `Deathtouch` nel `Java`
+
+#### 4.  Aggiunto flag `deathtouched` nel `Java`
 - Per i controlli precedenti abbiamo bisogno di inserire all'interno della classe `permanent` il flag `deathtouched`. 
 - Andiamo quindi a dichiarare il flag e successivamente chreiamo il getter e il setter. 
   
@@ -199,10 +216,7 @@ rule "702.2a"
  public boolean isDeathtouched() { 
  	return deathtouched; 
  } 
-  
- public boolean getDeathtouched() { 
- 	return deathtouched; 
- } 
+
  public void setDeathtouched(boolean deathtouched) { 
  	this.deathtouched = deathtouched; 
  } 
