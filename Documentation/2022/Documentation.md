@@ -255,19 +255,14 @@ no-loop true
 agenda-group "general"	
 	when
 		$g : Game(stage == Game.STARTING_STAGE)
-		$p : Player($id : id, $nickname: nickname, $deck: deck, 
-                            $lib: library, library.size() > 0);
+		$p : Player($id : id, $nickname: nickname, $deck: deck, $lib: library, library.size() > 0);
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
-		$a : Ability(
-                    keyword_ability==false && 
-                    abilityText.startsWith("Defender ")
-                  ) from $la
+		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender")) from $la
 	then
-		System.out.println("Trovata Defender");
+		System.out.println("702.3a -> Trovata Defender");
 		$a.setKeyword_ability(true);	
 		$a.setStatic_ability(true);
-		//$a.setKeyword_text("defender");
 		update($p)
 end
 ```
@@ -275,7 +270,7 @@ end
 
 La regola `508.1a choice`, responsabile dell'individuazione dei possibili attaccanti, è stata modificata come segue:
 
-- durante il controllo delle creature presenti nel battlefield, queste vengono aggiunte alla lista dei possibili attaccanti solo se non hanno `defender` come abilità (`nodefender == true`).
+- durante il controllo delle creature presenti nel battlefield, se all'interno del battlefield quindi viene trovata una carta con abilità `Defender` questà non **attaccherà** e setteremo il boleano `nodefender=false`, nel caso in cui la carta non avesse l'abilità `Defender` potrà attaccare come in un normale combattimento e avremmo che il boolenao `nodefender` resterà a `true`.
 
 ``` java
 rule "508.1a choice"
@@ -290,8 +285,7 @@ dialect "mvel"
 salience 50
 no-loop true
 when
-	$g:Game(stage == Game.GAME_STAGE, $ac : attackingPlayer, 
-                stepTimeFrame == Game.BEGIN_TIME_FRAME)
+	$g:Game(stage == Game.GAME_STAGE, $ac : attackingPlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
 	eval($g.currentStep.getObject().name == "declare attackers")
 	eval($g.stepDeclareAttackers.getObject() == "508.1a")
 	$p: Player($id : id) from $ac.object
@@ -307,20 +301,17 @@ then
 	Rule 702.3b. A creature with defender can't attack.
 	*/
 	for(Permanent permanent : $g.battleField) {
-		if(permanent.idController == $id && !permanent.getStatus().isTapped() &&
-                   !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
-			// Defender check of the selected permanent.
+		if(permanent.idController == $id && !permanent.getStatus().isTapped() && !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
 			boolean nodefender = true;
-			for (LIstAbi permanent.getKeywordAbilities()){
-				if(LIstAbi == "defender"){
-					nodefender = false;
-				}			
-			}
+		
+			// Defender check of the selected permanent.
+			if (permanent.checkKeywordAbility("Defender")){
+				System.out.println("702.3b -> Card has Defender, can't attack !");
+				nodefender = false;
+			}	
+			
 			if (nodefender){
-				choice.addOption(
-                                  permanent.magicTargetId, 
-                                  permanent.getNameAsString()
-                                  );
+				choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
 				found = true;
 			}
 		}
@@ -380,7 +371,6 @@ end
 - prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
 - controlliamo quale di queste ha nel `keyword_text` la parola `flash` 
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
-
 
 
 ``` java
