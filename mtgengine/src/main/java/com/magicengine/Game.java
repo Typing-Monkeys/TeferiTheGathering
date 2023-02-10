@@ -205,6 +205,7 @@ public class Game {
 	private ListPointer<String> stepCheckEvasionAbility;
 	private boolean blockValid; // flag di controllo per validità dei blocchi
 	private boolean firstStrikeAttaking = false; // flag per non far fare danni dai bloccnati senza first strike
+	private boolean notRedoDamage = true;
 	private ListPointer<String> stepCombatDamage;
 	private LinkedList<Target> possibleTarget;
 	// --------------------------------------------------------------------------------------
@@ -975,4 +976,13 @@ public class Game {
 	public void setFirstStrikeAttaking(boolean firstStrikeAttaking) {
 		this.firstStrikeAttaking = firstStrikeAttaking;
 	}
+
+	public boolean getNotRedoDamage() {
+		return notRedoDamage;
+	}
+
+	public void setNotRedoDamage(boolean notRedoDamage) {
+		this.notRedoDamage = notRedoDamage;
+	}
+
 }
