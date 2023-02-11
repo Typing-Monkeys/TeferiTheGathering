@@ -88,9 +88,9 @@ rule "702.2a"
 #### 2. Attivazione di `Deathtouch`
 - Quando il **gioco** è nella fase `GAME_STAGE`,
 - andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le liste sia degli **attaccanti** che dei **difensori**.
-- Andando così a creare una lista di tutti le **carte in combattimento**.
+- Andando così a creare una lista di tutte le **carte in combattimento**.
 - Dalla **lista** controlliamo quali carte abbiano il flag `deathtouched` impostato a `true`,
-- infine, distruggiamo queste carte.  
+- infine, **distruggiamo** le carte selezionate.  
 
 ``` java
  rule "702.2b" 
@@ -128,10 +128,12 @@ rule "702.2a"
   
  		update($g) 
  end 
-``` 
+```
+ 
 #### 3. `Deathtouch` viene aggiunta alle state-base action
 
 - Andiamo ad aggiungere la regola scritta in precedenza alla lista delle `state-base action`
+
 
 ``` java	 
  LinkedList ruleList = new LinkedList(); 
@@ -146,15 +148,17 @@ rule "702.2a"
  	"702.2b" 
  ]); 
 ```
+
 #### 4. Le carte che subiscono danno vengono marchiate con `Deathtouch`
 
 - Quando il **gioco** è nella fase `GAME_STAGE`, nello step `BEGIN_TIME_FRAME`
 - andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le creature **bloccanti** e **attacanti**.
-- Successivamente ci assicuriamo di trovarsi nel `"combat damage"`.
+- Successivamente ci assicuriamo di trovarsi nello step `"combat damage"`.
 - E come fatto in precedenza andiamo a creare una lista di tutte le **carte in combattimento (attacanti e bloccanti)**, 
-- la lista comprende le carte indipendentemente da dove si trovano.
-- Dalla **lista** controlliamo che la carta sia ancora in vita (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`) (perchè più istanze di Deathtouch sono ridondanti), 
-- se le precedenti condizioni risultano vere e se esiste almeno una carta che abbia `Deathtouch` tra i "bloccanti" o i "bloccati" (rispettivamente le liste `blockedCreatures` e `blockedBy`),
+- la lista comprende tutte le carte indipendentemente da dove si trovano.
+- Dalla **lista** controlliamo che la abbia una "vita" maggiore di 0 (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`). 
+- `deathtouched == false` viene settato perchè più istanze di Deathtouch `sono ridondanti`. 
+- Quindi se le precedenti condizioni risultano vere e se esiste almeno una carta che abbia `Deathtouch` tra le creature che bloccano (rispettivamente le liste `blockedCreatures` e `blockedBy`),
 - la carta viene marchiata con `Deathtouch` (`deathtouched = true`)
 
 
@@ -224,7 +228,6 @@ rule "702.2a"
  } 
 ```
 
-
 <hr>
 
 ## ***702.3 Defender*** 🧱
@@ -243,6 +246,7 @@ rule "702.2a"
 - prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
 - controlliamo quale di queste he nell'`abilityText` la parola `Defender` 
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+
 
 ``` java
 rule "702.3a"
@@ -266,11 +270,13 @@ agenda-group "general"
 		update($p)
 end
 ```
+
 #### 2. Attivazione di `Defender`
 
-La regola `508.1a choice`, responsabile dell'individuazione dei possibili attaccanti, è stata modificata come segue:
+La regola `508.1a choice`, responsabile dell'individuazione **dei possibili attaccanti**, è stata modificata come segue:
 
-- durante il controllo delle creature presenti nel battlefield, se all'interno del battlefield quindi viene trovata una carta con abilità `Defender` questà non **attaccherà** e setteremo il boleano `nodefender=false`, nel caso in cui la carta non avesse l'abilità `Defender` potrà attaccare come in un normale combattimento e avremmo che il boolenao `nodefender` resterà a `true`.
+- se all'interno del campo di battaglia viene trovata una carta con abilità `Defender` questà non **attaccherà** e setteremo il boleano `nodefender=false`, nel caso in cui la carta non avesse l'abilità `Defender` potrà attaccare come in un normale combattimento e avremmo che il boolenao `nodefender` resterà settato a `true`.
+
 
 ``` java
 rule "508.1a choice"
@@ -326,6 +332,7 @@ then
 	update($g);
 end
 ```
+
 <hr>
 
 ## ***702.4 Double Strike*** :bowling: :bowling:
@@ -369,7 +376,7 @@ end
 
 - Quando il **gioco** è nella fase `STARTING_STAGE`,
 - prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
-- controlliamo quale di queste ha nel `keyword_text` la parola `flash` 
+- controlliamo quale di queste ha nel `keyword_text` la parola `flash`.
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
 
 
@@ -400,14 +407,17 @@ agenda-group "general"
 		update($p)
 end
 ```
+
+
 #### 2. Attivazione di `Flash`
 
-E stata modificata la regola che gestisce le instant nel seguente modo:
+La regola che gestisce le instant è stata modificata nel seguente modo:
 
-- Per ogni carta presente nella mano del player,
-- aggiungo un secondo controllo a quello già esistente che aggiunge la carta alla lista delle possibili carte giocabili se ha tra le sue abilità `Flash`.
-- Questi controlli si escludono a vicenda: se la carta è già stata aggiunta al primo controllo, risulterà inutile controllare
-tutte le sue abilità per poi aggiungerla erroneamente una seconda volta.
+- Per ogni carta presente **nella mano del player**,
+- aggiungo un secondo controllo a quello già esistente che aggiunge la carta alla lista delle **possibili carte giocabili** se ha tra le sue abilità `Flash`.
+- Quindi così i controlli andranno ad **"escludersi" a vicenda**:
+- se la carta è già stata aggiunta al primo controllo, risulterà inutile controllare tutte le sue abilità per poi aggiungerla erroneamente una seconda volta.
+
 
 ``` java
 // Casting Spells
@@ -493,15 +503,15 @@ end
 
 #### 1. Trovare haste nei mazzi
 
-- Quando generiamo le carte (*Game.STARTING_STAGE*), prendiamo i giocatori (id, nikname, deck, ecc...).
-  
-- Dopo aver preso i giocatori andiamo a selezionare tutte le carte e dalla lista delle abilità ci assicuriamo che siano **impostate su false** (anche le abilità statiche) e che abbiano l'abilità chiamata **"Haste"**.
 
-- Una volta effettuato questo controllo, andiamo ad impostare **il flag di abilità statica su true** e insieme a questo andiamo a fare una stampa di controllo.
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste ha nel `keyword_text` la parola `haste`.
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
 
-- Successivamente, **aggiorniamo il giocatore**
-  
+
 <br>
+
 
 ```java
 
@@ -531,17 +541,13 @@ end
 
 #### 2. Attivazione di Haste
 
-- Per prima cosa andiamo a **prendere tutte le carte presenti sul campo di battaglia**.. 
-  
-- In seguito controlliamo se le carte contengono la parola **"creatura"** e che sia presente l'abilità **"haste"** andando anche **a verificare che "summoningSickness" sia impostato a true.**
+- Per prima cosa andiamo a **prendere tutte le carte** presenti sul `campo di battaglia`.
+- In seguito controlliamo se le carte contengono la parola **"creatura"** e che sia presente l'abilità `haste` andando anche a verificare che `summoningSickness sia true`.
+- Se tutto questo è **verificato** settiamo `summoningSickness=false` dato che l'abilità `haste` va ad **invalidare la summoningSickness.** 
 
-- Se tutto questo è **verificato** andiamo a **settare la summoningSickness a false** dato che l'abilità **haste** va ad **invalidare la summoningSickness.** 
-  
-- Inoltre facciamo una piccola stampa di controllo. 
-  
-- Infine **aggiorniamo il game**
-   
+
 <br>
+
 
 ```java
 /*
