@@ -198,8 +198,9 @@ public class Game {
 	private ListPointer<Player> defendingPlayers;
 	private ListPointer<Permanent> attackingCreatures;
 	private ListPointer<Permanent> blockingCreatures;
-	private ListPointer<Permanent> stepFirstStikeAttackingCreatures;
-	private ListPointer<Permanent> stepFirstStikeBlockingCreatures;
+	private LinkedList<Permanent> stepFirstStikeAttackingCreatures; 
+	private LinkedList<Permanent> stepFirstStikeBlockingCreatures;
+	private LinkedList<Permanent> auxiliaryListFirstStrike;
 	private ListPointer<String> stepDeclareAttackers;
 	private ListPointer<String> stepDeclareBlockers;
 	private ListPointer<String> stepCheckEvasionAbility;
@@ -272,6 +273,9 @@ public class Game {
 		this.defendingPlayers = new ListPointer<Player>(new LinkedList<Player>());
 		this.attackingCreatures = new ListPointer<Permanent>(new LinkedList<Permanent>());
 		this.blockingCreatures = new ListPointer<Permanent>(new LinkedList<Permanent>());
+		this.stepFirstStikeAttackingCreatures = new LinkedList<Permanent>();
+		this.stepFirstStikeBlockingCreatures = new LinkedList<Permanent>();
+		this.auxiliaryListFirstStrike = new LinkedList<Permanent>();
 		this.stepDeclareAttackers = new ListPointer<String>(new LinkedList<String>());
 		this.stepDeclareBlockers = new ListPointer<String>(new LinkedList<String>());
 		this.stepCheckEvasionAbility = new ListPointer<String>(new LinkedList<String>());
@@ -953,21 +957,6 @@ public class Game {
 		this.discardTurn = discardTurn;
 	}
 
-	public ListPointer<Permanent> getStepFirstStikeAttackingCreatures() {
-		return stepFirstStikeAttackingCreatures;
-	}
-
-	public void setStepFirstStikeAttackingCreatures(ListPointer<Permanent> stepFirstStikeAttackingCreatures) {
-		this.stepFirstStikeAttackingCreatures = stepFirstStikeAttackingCreatures;
-	}
-
-	public ListPointer<Permanent> getStepFirstStikeBlockingCreatures() {
-		return stepFirstStikeBlockingCreatures;
-	}
-
-	public void setStepFirstStikeBlockingCreatures(ListPointer<Permanent> stepFirstStikeBlockingCreatures) {
-		this.stepFirstStikeBlockingCreatures = stepFirstStikeBlockingCreatures;
-	}
 
 	public boolean isFirstStrikeAttaking() {
 		return firstStrikeAttaking;
@@ -983,6 +972,30 @@ public class Game {
 
 	public void setNotRedoDamage(boolean notRedoDamage) {
 		this.notRedoDamage = notRedoDamage;
+	}
+
+	public List<Permanent> getStepFirstStikeAttackingCreatures() {
+		return stepFirstStikeAttackingCreatures;
+	}
+
+	public void setStepFirstStikeAttackingCreatures(LinkedList<Permanent> stepFirstStikeAttackingCreatures) {
+		this.stepFirstStikeAttackingCreatures = stepFirstStikeAttackingCreatures;
+	}
+
+	public List<Permanent> getStepFirstStikeBlockingCreatures() {
+		return stepFirstStikeBlockingCreatures;
+	}
+
+	public void setStepFirstStikeBlockingCreatures(LinkedList<Permanent> stepFirstStikeBlockingCreatures) {
+		this.stepFirstStikeBlockingCreatures = stepFirstStikeBlockingCreatures;
+	}
+
+	public LinkedList<Permanent> getAuxiliaryListFirstStrike() {
+		return auxiliaryListFirstStrike;
+	}
+
+	public void setAuxiliaryListFirstStrike(LinkedList<Permanent> auxiliaryListFirstStrike) {
+		this.auxiliaryListFirstStrike = auxiliaryListFirstStrike;
 	}
 
 }
