@@ -1,12 +1,12 @@
 <!-- TOC ignore:true -->
-# <img src="./logo.png" height=30px> **Teferi The Gatering** <img src="./logo.png" height=30px> <!-- TOC ignore:true -->
+# <img src="./logo.png" height=30px> **Teferi The Gathering** <img src="./logo.png" height=30px> <!-- TOC ignore:true -->
 
 <!-- TOC ignore:true -->
 ### **Rule index**
 
 <!-- TOC -->
 
-- [ **Teferi The Gatering**  ](#-teferi-the-gatering--)
+- [ **Teferi The Gathering**  ](#-teferi-the-gathering--)
 		- [**Rule index**](#rule-index)
 	- [***702.2 Deathtouch*** :skull:](#7022-deathtouch-skull)
 		- [**Descrizione** :mag:](#descrizione-mag)
@@ -55,7 +55,7 @@
 
 #### 1. Trovare `Deathtouch` nei mazzi
 - Quando il **gioco** è nella fase `STARTING_STAGE`,
-- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- prendiamo tutti i player in gioco e per ognuno otteniamo tutte le **abilità** di ogni carta che hanno nel mazzo,
 - controlliamo quale di queste ha nell'`abilityText` la parola `Deathtouch` 
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
 
@@ -112,12 +112,12 @@ rule "702.2a"
  			controlStateBasedActions 
  		) 
   
-    	$allCardsInCombact: (Permanent() from $attaccanti or 
+    	$allCardsInCombat: (Permanent() from $attaccanti or 
 			     Permanent() from $bloccanti) 
      	$pmt: Permanent ( 
  			cardType[0].contains("creature"), 
  			deathtouched == true 
- 		) from $allCardsInCombact 
+ 		) from $allCardsInCombat 
  		 
  	then 
  		System.out.println("702.2b --> Morte per Deathtouch."); 
@@ -152,12 +152,12 @@ rule "702.2a"
 #### 4. Le carte che subiscono danno vengono marchiate con `Deathtouch`
 
 - Quando il **gioco** è nella fase `GAME_STAGE`, nello step `BEGIN_TIME_FRAME`
-- andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le creature **bloccanti** e **attacanti**.
+- andiamo ad analizzare le carte presenti nel **campo di battaglia** prendendo le creature **bloccanti** e **attaccanti**.
 - Successivamente ci assicuriamo di trovarsi nello step `"combat damage"`.
-- E come fatto in precedenza andiamo a creare una lista di tutte le **carte in combattimento (attacanti e bloccanti)**, 
+- E come fatto in precedenza andiamo a creare una lista di tutte le **carte in combattimento (attaccanti e bloccanti)**, 
 - la lista comprende tutte le carte indipendentemente da dove si trovano.
-- Dalla **lista** controlliamo che la abbia una "vita" maggiore di 0 (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`). 
-- `deathtouched == false` viene settato perchè più istanze di Deathtouch `sono ridondanti`. 
+- Dalla **lista** controlliamo che questa sia ancora in vita (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`). 
+- viene eseguito il controllo `deathtouched == false` perché più istanze di Deathtouch `sono ridondanti`. 
 - Quindi se le precedenti condizioni risultano vere e se esiste almeno una carta che abbia `Deathtouch` tra le creature che bloccano (rispettivamente le liste `blockedCreatures` e `blockedBy`),
 - la carta viene marchiata con `Deathtouch` (`deathtouched = true`)
 
@@ -182,7 +182,7 @@ rule "702.2a"
 			) 
  		eval($g.currentStep.getObject().name == "combat damage")  
  		 
- 		$allCardsInCombact: ( Permanent() from $atk.listReference or
+ 		$allCardsInCombat: ( Permanent() from $atk.listReference or
 				      Permanent() from $blk.listReference) 
  		$pmt: Permanent( 
  				$difensori: blockedCreatures.listReference, 
@@ -191,7 +191,7 @@ rule "702.2a"
  				Integer.parseInt(toughness[0]) > 0, 
  				markedDamage > 0, 
  				deathtouched == false 
- 			) from $allCardsInCombact 
+ 			) from $allCardsInCombat 
  		 
  		exists (  
  			Permanent(
@@ -213,8 +213,8 @@ rule "702.2a"
 ```
 
 #### 4.  Aggiunto flag `deathtouched` nel `Java`
-- Per i controlli precedenti abbiamo bisogno di inserire all'interno della classe `permanent` il flag `deathtouched`. 
-- Andiamo quindi a dichiarare il flag e successivamente chreiamo il getter e il setter. 
+- Per i controlli precedenti abbiamo bisogno di inserire all'interno della classe `Permanent` il flag `deathtouched`. 
+- Andiamo quindi a dichiarare il flag e successivamente creiamo il getter e il setter. 
   
 ``` java	 
  private boolean deathtouched = false; 
@@ -244,7 +244,7 @@ rule "702.2a"
 
 - Quando il **gioco** è nella fase `STARTING_STAGE`,
 - prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
-- controlliamo quale di queste he nell'`abilityText` la parola `Defender` 
+- controlliamo quale di queste ha nell'`abilityText` la parola `Defender` 
 - Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
 
 
@@ -275,7 +275,7 @@ end
 
 La regola `508.1a choice`, responsabile dell'individuazione **dei possibili attaccanti**, è stata modificata come segue:
 
-- se all'interno del campo di battaglia viene trovata una carta con abilità `Defender` questà non **attaccherà** e setteremo il boleano `nodefender=false`, nel caso in cui la carta non avesse l'abilità `Defender` potrà attaccare come in un normale combattimento e avremmo che il boolenao `nodefender` resterà settato a `true`.
+- se all'interno del campo di battaglia viene trovata una carta con abilità `Defender` questa non **attaccherà** e setteremo il flag `nodefender=false`, nel caso in cui la carta non avesse l'abilità `Defender` potrà attaccare come in un normale combattimento e avremmo che il flag `nodefender` resterà settato a `true`.
 
 
 ``` java
@@ -415,8 +415,7 @@ La regola che gestisce le instant è stata modificata nel seguente modo:
 
 - Per ogni carta presente **nella mano del player**,
 - aggiungo un secondo controllo a quello già esistente che aggiunge la carta alla lista delle **possibili carte giocabili** se ha tra le sue abilità `Flash`.
-- Quindi così i controlli andranno ad **"escludersi" a vicenda**:
-- se la carta è già stata aggiunta al primo controllo, risulterà inutile controllare tutte le sue abilità per poi aggiungerla erroneamente una seconda volta.
+- Quindi così i controlli andranno ad **"escludersi" a vicenda**: se la carta è già stata aggiunta al primo controllo, risulterà inutile controllare tutte le sue abilità per poi aggiungerla erroneamente una seconda volta.
 
 
 ``` java
@@ -541,9 +540,9 @@ end
 
 #### 2. Attivazione di Haste
 
-- Per prima cosa andiamo a **prendere tutte le carte** presenti sul `campo di battaglia`.
-- In seguito controlliamo se le carte contengono la parola **"creatura"** e che sia presente l'abilità `haste` andando anche a verificare che `summoningSickness sia true`.
-- Se tutto questo è **verificato** settiamo `summoningSickness=false` dato che l'abilità `haste` va ad **invalidare la summoningSickness.** 
+- Per prima cosa andiamo a **prendere tutte le carte** presenti nel `campo di battaglia`.
+- In seguito selezioniamo solo le carte di tipo _Creatura_ (`cardType[0] == "creature"`), che abbiano l'abilità `Haste` e con il flag `summoningSickness = true`.
+- Infine, per ogni Carta risultante dalla precedente selezione, impostiamo il flag `summoningSickness=false` dato che l'abilità `Haste` va ad **invalidare la summoningSickness.** 
 
 
 <br>
@@ -578,7 +577,7 @@ dialect "mvel"
   		      ) from $bf
         then 
   	      $pmt.summoningSickness=false;
-  	      System.out.println("Trovata creatura con haste nel battelfied");
+  	      System.out.println("Trovata creatura con haste nel battlefield");
   	      
   	      update($g)
 end
