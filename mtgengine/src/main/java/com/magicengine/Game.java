@@ -207,6 +207,7 @@ public class Game {
 	private boolean blockValid; // flag di controllo per validità dei blocchi
 	private boolean firstStrikeAttaking = false; // flag per non far fare danni dai bloccnati senza first strike
 	private boolean notRedoDamage = true;
+	private boolean updateDamage = false;
 	private ListPointer<String> stepCombatDamage;
 	private LinkedList<Target> possibleTarget;
 	// --------------------------------------------------------------------------------------
@@ -996,6 +997,14 @@ public class Game {
 
 	public void setAuxiliaryListFirstStrike(LinkedList<Permanent> auxiliaryListFirstStrike) {
 		this.auxiliaryListFirstStrike = auxiliaryListFirstStrike;
+	}
+
+	public boolean isUpdateDamage() {
+		return updateDamage;
+	}
+
+	public void setUpdateDamage(boolean updateDamage) {
+		this.updateDamage = updateDamage;
 	}
 
 }
