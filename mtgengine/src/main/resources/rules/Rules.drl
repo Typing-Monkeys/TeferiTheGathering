@@ -4215,7 +4215,7 @@ then
 	int powerInt = 0;
 
 	for(Permanent attacker : $g.attackingCreatures.listReference){
-		if($g.firstStrikeAttaking == true && (!attacker.checkKeywordAbility("First Strike") || !attacker.checkKeywordAbility("Double Strike"))){
+		if($g.firstStrikeAttaking == true && !((!attacker.checkKeywordAbility("First strike") && attacker.checkKeywordAbility("Double strike"))||((attacker.checkKeywordAbility("First strike") && !attacker.checkKeywordAbility("Double strike"))))){
 			attacker.damageToAssign = 0;
 			System.out.println(attacker.getNameAsString()+" non fa danni perchè non ha First/Double Strike");
 		} else {
@@ -4231,17 +4231,22 @@ then
 	}
 	
 	for(Permanent blocker : $g.blockingCreatures.listReference){
-		if($g.firstStrikeAttaking == true && (!blocker.checkKeywordAbility("First Strike") || !blocker.checkKeywordAbility("Double Strike"))){
+		if($g.notRedoDamage == false && blocker.checkKeywordAbility("First strike")){
 			blocker.damageToAssign = 0;
-			System.out.println(blocker.getNameAsString()+" non fa danni perchè non ha First/Double Strike");
+			System.out.println(blocker.getNameAsString()+" non fa danni da difensore perchè li ha fatti prima con First Strike");
 		} else {
-			powerInt = Integer.parseInt(blocker.power[0]);
-			if(powerInt<=0){
+			if($g.firstStrikeAttaking == true && !((!blocker.checkKeywordAbility("First strike") && blocker.checkKeywordAbility("Double strike"))||((blocker.checkKeywordAbility("First strike") && !blocker.checkKeywordAbility("Double strike"))))){
 				blocker.damageToAssign = 0;
-				System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				System.out.println(blocker.getNameAsString()+" non fa danni da difensore perchè non ha First/Double Strike");
 			} else {
-				blocker.damageToAssign = powerInt;
-				System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				powerInt = Integer.parseInt(blocker.power[0]);
+				if(powerInt<=0){
+					blocker.damageToAssign = 0;
+					System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				} else {
+					blocker.damageToAssign = powerInt;
+					System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				}
 			}
 		}
 	}
@@ -4802,18 +4807,22 @@ dialect "mvel"
 no-loop true
 salience 500
 when
-	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $atk: attackingCreatures)
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures, $blk: blockingCreatures)
 	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
 	eval($g.stepCombatDamage.getObject() == "510.1a")
 	eval($g.firstStrikeAttaking == false)
 	//eval($g.stepCombatDamage.getObject() == "510.4 part 1b")
 	//$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
-	
+	$allCardsInCombact: (Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+
 	exists(Permanent(
+		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	) from $allCardsInCombact)
+	//exists(Permanent(
 			//$difensori: blockedCreatures.listReference,
 			//$attaccanti: blockedBy.listReference,
-			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-		) from $atk.listReference)
+	//		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	//	) from $atk.listReference)
 		//$allCardsInCombact
 then
 	System.out.println("510.4 part 1b");
@@ -4823,15 +4832,16 @@ then
 	
 
 	// copia della lista
-	$g.stepFirstStikeAttackingCreatures.addAll($atk.listReference);
-	//for(Permanent tmp: $atk.listReference) {
-	//	$g.stepFirstStikeAttackingCreatures.add(tmp);
-	//}
+	//$g.stepFirstStikeAttackingCreatures.addAll($atk.listReference);
+	for(Permanent tmp: $atk.listReference) {
+		$g.stepFirstStikeAttackingCreatures.add(tmp);
+	}
 
 	// ricerca carte first/double strike
 	$atk.listReference.clear();
 	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
-		if (tmp.checkKeywordAbility("First Strike") || tmp.checkKeywordAbility("Double Strike")){
+		if (tmp.checkKeywordAbility("First strike") || tmp.checkKeywordAbility("Double strike")){
+			System.out.println("Trovato FIRST/DOUBLE STRIKE da riaggiungere alla lista degli attaccanti");
 			$atk.listReference.add(tmp);
 		}
 	}
@@ -4926,26 +4936,30 @@ when
 	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
 	eval($g.stepCombatDamage.getObject() == "510.1a")
 	eval($g.firstStrikeAttaking == true)
-	
-	exists(Permanent(
-			!checkKeywordAbility("First strike")
-		) from $g.stepFirstStikeAttackingCreatures)
+	eval($g.notRedoDamage == false)
+	//exists(Permanent(
+	//		!checkKeywordAbility("First strike")
+	//	) from $g.stepFirstStikeAttackingCreatures)
 then
 	System.out.println("510.4 part 2a");
 
 	//LinkedList<Permanent> list_tmp = new LinkedList<Permanent>();
-	$g.auxiliaryListFirstStrike.addAll($atk.listReference);
+	//$g.auxiliaryListFirstStrike.addAll($atk.listReference);
+	for(Permanent tmp: $atk.listReference) {
+		$g.auxiliaryListFirstStrike.add(tmp);
+	
+	}
 	$atk.listReference.clear();
 
 	// double strike
 	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
-		if (tmp.checkKeywordAbility("Double Strike")){
+		if (tmp.checkKeywordAbility("Double strike")){
 			$atk.listReference.add(tmp);
 		}
 	}
 	
 	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
-		if (!tmp.checkKeywordAbility("First Strike") && !tmp.checkKeywordAbility("Double Strike")){
+		if (!tmp.checkKeywordAbility("First strike") && !tmp.checkKeywordAbility("Double strike")){
 			$atk.listReference.add(tmp);
 		}
 	}
@@ -4953,13 +4967,13 @@ then
 	$g.stepFirstStikeAttackingCreatures.clear();
 
 	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
-		if (!tmp.checkKeywordAbility("Double Strike")){
+		if (!tmp.checkKeywordAbility("Double strike")){
 			$g.stepFirstStikeAttackingCreatures.add(tmp);
 		}
 	}
 	$g.auxiliaryListFirstStrike.clear();
 	$g.firstStrikeAttaking = false;
-	$g.notRedoDamage = true;
+	//$g.notRedoDamage = true;
 	update($g);
 	//Rimuovere le carte che hanno first strike dalla lista degli attaccanti
 	//e quelle che hanno gi� attaccato ma non hanno pi� First o Double Strike
@@ -5051,7 +5065,7 @@ then
 	//for controllo se non ha pi� la statick ability First o Double Strike, se non lo ha pi� allora va rimossa 
 end
 */
-rule "510.4 part 2d"
+//rule "510.4 part 2d"
 /*
 Tommaso Romani Nicol� Posta
 November 19, 2021
@@ -5060,7 +5074,7 @@ only creatures that assign combat damage in that step are those with first strik
 combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
 that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
 double strike. After that step, the phase proceeds to the end of combat step.*/
-agenda-group "general"
+/*agenda-group "general"
 dialect "mvel"
 no-loop true
 salience 400
@@ -5070,7 +5084,6 @@ when
 	eval($g.stepCombatDamage.getObject() == "510.1a")
 	eval($g.firstStrikeAttaking == true)
 	exists( Permanent(
-			$difensori: blockedCreatures.listReference,
 			!checkKeywordAbility("First strike")
 		) from $g.stepFirstStikeBlockingCreatures)
 
@@ -5080,7 +5093,7 @@ then
 	$g.notRedoDamage = true;
 	update($g)
 end
-
+*/
 
 rule "510.4 part 3a"
 /*
@@ -5196,6 +5209,10 @@ then
 	$g.stepDeclareAttackers.movePointer(0);
 	$g.stepDeclareBlockers.movePointer(0);
 	$g.stepCombatDamage.movePointer(0);
+
+	$g.auxiliaryListFirstStrike.clear();
+	$g.stepFirstStikeAttackingCreatures.clear();
+	$g.notRedoDamage = true;
 	
 	for(Step step : $g.currentStep.listReference){
 		if(step.name == "declare blockers" || step.name == "combat damage"){
