@@ -345,7 +345,35 @@ end
 - `.e` _Multiple instances of double strike on the same creature are redundant._
 
 ### **Implementazione :computer:**
+#### 1. Trovare `Double Strike` nei mazzi
 
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste ha nel `keyword_text` la parola `Double Strike`.
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+``` java
+rule "702.4a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicolò Posta
+**/
+/*Double Strike is a static ability.*/
+agenda-group "general"
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("double strike")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setKeyword_ability(true);
+		$a.setKeyword_text("double strike");
+		System.out.println("702.4a -> Trovato Double Strike: " + $c.getName());
+		update($p)
+end
+```
 
 <hr>
 
@@ -358,9 +386,285 @@ end
 - `.d` _Multiple instances of first strike on the same creature are redundant._
 
 ### **Implementazione :computer:**
+#### 1. Trovare `First Strike` nei mazzi
 
-
+- Quando il **gioco** è nella fase `STARTING_STAGE`,
+- prendiamo tutti i player in gioco e per ognuno prendiamo tutte le **abilità** di ogni carta che hanno nel mazzo,
+- controlliamo quale di queste ha nel `keyword_text` la parola `First Strike`.
+- Una volta effettuato questo controllo andiamo ad **impostare**, per ogni carta, le proprietà `keyword_ability` e `static_ability` a `true` della rispettiva abilità.
+``` java
+rule "702.7a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicolò Posta
+**/
+/*First Strike is a static ability.*/
+agenda-group "general"
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("first strike")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setKeyword_ability(true);
+		$a.setKeyword_text("first strike");
+		System.out.println("702.7a -> Trovato First Strike: " + $c.getName());
+		update($p)
+end
+```
 <hr>
+
+## ***_510.4 Gestione Turno Bonus_***
+
+### ***Descrizione***
+
+- _If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have double strike. After that step, the phase proceeds to the end of combat step_
+
+
+### ***Implementazione***
+#### 1. Controllare la presenza di creature con ***First/Double Strike*** tra gli attaccanti o i difensori.
+- Se sono presenti creature con `First` o `Double Strike` allora viene aggiunto un `combat damage` step bonus.
+``` java
+rule "506.1 part 3"
+/* Tommaso Romani Nicolò Posta
+There are two combat damage steps if any attacking or blocking creature has first strike 
+(see rule 702.7) or double strike (see rule 702.4).*/
+dialect "mvel"
+salience 50
+no-loop true
+agenda-group "general"
+when
+	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $ph: currentPhase.getObject())
+	eval($g.currentPhase.getObject().name == "combat")
+	eval($ph.size() <= 5)
+	//TODO: mettere che siano tra gli attaccanti o i bloccanti
+	exists (Permanent(
+			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+		) from $bf)
+then
+	System.out.println("506.1 part 3 -> Aggiunto combat damage per First/Double strike");
+	
+	$ph.remove($ph.size()-1);
+	$ph.remove($ph.size()-1);
+	$ph.add(new Step("combat damage",true));
+	$ph.add(new Step("combat damage",false));
+	$ph.add(new Step("end of combat",false));
+
+	update($g)
+
+end
+```
+#### ***2. Controllo se ci sono creature con Fist o Double strike tra gli attaccanti o i difensori quandi ci si trova nel combat damage step***
+- Se ci si trova nel `Combat Damage Step` aggiuntivo allora mi salvo tutte le creature in una lista ausiliaria.
+- Pulisco la lista degli attacker e ci riaggiungo le creature con `First/Double Strike`.
+- Aggiorno la variabile booleana `firstStrikeAttacking` a `true` per informare che le creature con `First/Double Strike` stanno per attaccare.
+
+``` java
+rule "510.4 part 1a"
+/*
+Tommaso Romani Nicolò Posta
+February 3, 2022/2023
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures, $blk: blockingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == false)
+	$allCardsInCombact: (Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+
+	exists(Permanent(
+		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	) from $allCardsInCombact)
+	
+then
+	System.out.println("510.4 part 1a");
+	//Mi salvo la lista di tutti gli attaccanti e difensori di prima
+	System.out.println("Tutti gli attaccanti selezionati "+$atk.listReference);
+	
+
+	// copia della lista
+	for(Permanent tmp: $atk.listReference) {
+		$g.stepFirstStikeAttackingCreatures.add(tmp);
+	}
+
+	// ricerca carte first/double strike
+	$atk.listReference.clear();
+	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
+		if (tmp.checkKeywordAbility("First strike") || tmp.checkKeywordAbility("Double strike")){
+			System.out.println("Trovato FIRST/DOUBLE STRIKE da riaggiungere alla lista degli attaccanti");
+			$atk.listReference.add(tmp);
+		}
+	}
+	
+	System.out.println("Tutti gli attaccanti selezionati dopo averli salvati " + $g.stepFirstStikeAttackingCreatures);
+	System.out.println("Tutti gli attaccanti selezionati con First Strike" + $atk.listReference);
+
+	$g.firstStrikeAttaking = true;
+	update($g)
+
+end
+```
+#### ***3. Riporta i puntatori delle liste delgi attaccanti in cima alla lista***
+- Controllo di essere ancora nel turno bonus.
+- Controllo di trovarmi ancora nella fase di attacco delle creature con `First/Double Strike` e che `notRedoDamage` sia `false`.
+- Allora sposto i puntatori in cima alle liste, aggiorni il time frame e il game.
+
+
+``` java
+rule "510.4 part 3a"
+/*
+Tommaso Romani Nicolò Posta
+February 3, 2022/2023
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 400
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.DURING_TIME_FRAME)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+	eval($g.stepCombatDamage.getObject() == "510.3")
+	eval($g.firstStrikeAttaking == true)
+	eval($g.notRedoDamage == true)
+then
+
+	$g.attackingPlayer.toHead();
+	$g.defendingPlayers.toHead();
+	
+	$g.attackingCreatures.toHead();
+	
+	$g.blockingCreatures.toHead();
+
+	$g.stepCombatDamage.movePointer(0);
+	$g.currentStep.next();
+
+	$g.stepTimeFrame = Game.BEGIN_TIME_FRAME;
+	System.out.println("510.4 part 3a");
+
+	$g.notRedoDamage = false;
+	update($g)
+
+end
+```
+#### ***4. Rimetto a posto le liste delgi attaccanti dopo che si è risolto il turno bonus***
+- Controllo che non ci si trovi più nello step di danno bonus, ma che sia ancora vero `firstStrikeAttacking`.
+- Controllo che si sia già triggerata la ***510.4 part 3a*** tramite `notRedoDamage`.
+- Allora rimetto a posto le liste affinchè possa svolgersi correttamente il turno delle creature che non hanno attaccato nel turno bonus.
+
+``` java
+rule "510.4 part 2a"
+/*
+Tommaso Romani Nicolò Posta
+February 3, 2022/2023
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == true)
+	eval($g.notRedoDamage == false)
+then
+	System.out.println("510.4 part 2a");
+
+
+	for(Permanent tmp: $atk.listReference) {
+		$g.auxiliaryListFirstStrike.add(tmp);
+	
+	}
+	$atk.listReference.clear();
+
+	// double strike
+	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
+		if (tmp.checkKeywordAbility("Double strike")){
+			$atk.listReference.add(tmp);
+		}
+	}
+	
+	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
+		if (!tmp.checkKeywordAbility("First strike") && !tmp.checkKeywordAbility("Double strike")){
+			$atk.listReference.add(tmp);
+		}
+	}
+
+	$g.stepFirstStikeAttackingCreatures.clear();
+
+	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
+		if (!tmp.checkKeywordAbility("Double strike")){
+			$g.stepFirstStikeAttackingCreatures.add(tmp);
+		}
+	}
+	$g.auxiliaryListFirstStrike.clear();
+	$g.firstStrikeAttaking = false;
+	update($g);
+
+end
+```
+#### ***5. Aggiorno i danni subiti nel turno bonus e distruggo le eventuali carte che hanno danni maggiori ti toughness***
+- Controllo di essere ancora nel turno bonus all'ultimo step del danno.
+- Controllo che la regola ***120.3e*** si è triggerata aggiornando la variabile `updateDamage`.
+- Controllo che nel battlefield ci sono permanenti che hanno danni maggiori di `toughness`.
+- Allora distruggo quei permanenti.
+
+``` java
+rule "510.4 update_damage"
+/*
+Tommaso Romani Nicolò Posta
+February 3, 2022/2023
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	eval($g.updateDamage == true)
+
+	$pmt: Permanent(
+				cardType[0].contains("creature"),
+				Integer.parseInt(toughness[0]) > 0,
+				Integer.parseInt(toughness[0]) <= markedDamage
+			) from $bf
+then
+	
+	System.out.println("510.4 --> Controlling if there are creatures that have marked damage greater or equal than toughness.");
+	System.out.println($pmt.getNameAsString+" ha toughness "+Integer.parseInt($pmt.toughness[0])+" e danni "+$pmt.markedDamage);
+	System.out.println($pmt.getNameAsString+" viene distrutta");
+	$g.destroy($pmt);
+	System.out.println("----------- TEST 510.4 -----------");
+	$g.updateDamage = false;
+	update($g)
+end
+```
+<hr>
+
 
 ## ***702.8 Flash*** :flashlight:
 
