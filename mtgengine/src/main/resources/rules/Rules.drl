@@ -4788,37 +4788,9 @@ then
 	System.out.println("Tutti gli attaccanti selezionati dopo averli salvati " + $g.stepFirstStikeAttackingCreatures);
 	System.out.println("Tutti gli attaccanti selezionati con First Strike" + $atk.listReference);
 
-end
-
-rule "510.4 part 1b"
-/*
-Tommaso Romani Nicol� Posta
-November 19, 2021
-510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
-only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
-combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
-that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
-double strike. After that step, the phase proceeds to the end of combat step.*/
-agenda-group "general"
-dialect "mvel"
-no-loop true
-salience 400
-when
-	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures, $blk: blockingCreatures)
-	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
-	eval($g.stepCombatDamage.getObject() == "510.1a")
-	eval($g.firstStrikeAttaking == false)
-
-   	$allCardsInCombact: (Permanent() from $atk.listReference or Permanent() from $blk.listReference)
-
-	exists(Permanent(
-		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
-	) from $allCardsInCombact)
-
-then
-	System.out.println("510.4 part 1b");
 	$g.firstStrikeAttaking = true;
 	update($g)
+
 end
 
 
