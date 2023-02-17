@@ -1452,7 +1452,8 @@ rule "117.5"
 			"704.5f",
 			"704.5g",
 			"704.5i",
-			"704.5j"
+			"704.5j",
+			"702.2b"
 		]);
 		
 		insert(
@@ -4202,6 +4203,7 @@ then
 	// aggiungere prima una regola che controlla se c'� o non c'� double/first, se c'� crea la lista con queste 3 aggiunte	
 	$scd.add("510.1a");
 	$scd.add("510.1bc");
+	//$scd.add("702.2b");
 	$scd.add("510.1d");
 	//$scd.add("510.1e");
 	$scd.add("510.2");
@@ -7448,7 +7450,7 @@ it ceases to exist.
 end
 
 
-rule "704.5f"
+rule "704.5f"	//non trigghera :+1
 /*
 November 19, 2021
 704.5f. If a creature has toughness 0 or less, it's put into its owner's graveyard.
@@ -7465,7 +7467,12 @@ Regeneration can't replace this event.
 	then
 		System.out.println("704.5f --> Controlling if there are creature that have toughness lower or equal than zero.");	
 		for (Permanent p : $bf) {
-			if (p.cardType[0].contains("creature") && Integer.parseInt(p.toughness[0]) <= 0) {
+			if(p.deathtouched){
+				System.out.println(p.getNameAsString + " ha Deathtouch !");
+				System.out.println(p.getNameAsString + " viene distrutta");
+				$g.destroy(p);
+			} 
+			else if (p.cardType[0].contains("creature") && Integer.parseInt(p.toughness[0]) <= 0) {
 				System.out.println(p.getNameAsString + " ha toughness minore di 0");
 				System.out.println(p.getNameAsString + " viene distrutta");
 				$g.destroy(p);
@@ -7989,6 +7996,113 @@ agenda-group "general"
 end
 
 
+rule "702.2a"
+/**
+	Deathtouch is a static ability.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+agenda-group "general"
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().startsWith("deathtouch")) from $la
+	then
+		$a.setStatic_ability(true);
+		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
+		
+		update($p)
+end
+	
+	
+rule "702.2b"
+/**
+	A creature with toughness greater than 0 that s been dealt damage by a source with deathtouch since the 
+	last time state-based actions were checked is destroyed as a state-based action. 
+	See rule 704.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+dialect "mvel"
+salience 500
+no-loop true 
+agenda-group "general"
+when
+	$g: Game(
+			stage == Game.GAME_STAGE, 
+			$bf : battleField,
+			$attaccanti: attackingCreatures.listReference,
+			$bloccanti: blockingCreatures.listReference,
+			controlStateBasedActions
+		)
+	
+	// contiene tutte le carte in combattimento (bloccanti e attaccanti)
+   	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti)
+    $pmt: Permanent (
+				cardType[0].contains("creature"),
+				deathtouched == true
+			) from $allCardsInCombact
+		
+	then
+		System.out.println("702.2b --> Morte per Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !");
+		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta");
+		
+		GameEngine.sendToNode("La carta " + $pmt.getNameAsString + " viene distrutta per Deathtouch!");
+			
+		$g.destroy($pmt);
+
+		update($g)
+end
+
+
+rule "702.2c"
+/**
+	Any nonzero amount of combat damage assigned to a creature by a source with deathtouch is considered to 
+	be lethal damage for the purposes of determining if a proposed combat damage assignment is valid, 
+	regardless of that creature s toughness. 
+	See rules 510.1c-d.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+dialect "mvel"
+salience 500
+no-loop true 
+agenda-group "general"
+	when
+		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+		eval($g.currentStep.getObject().name == "combat damage")
+		
+		// contiene tutte le carte in combattimento (bloccanti e attaccanti)
+		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		$pmt: Permanent(
+				$difensori: blockedCreatures.listReference,
+				$attaccanti: blockedBy.listReference,
+				cardType[0].contains("creature"),
+				Integer.parseInt(toughness[0]) > 0,
+				markedDamage > 0,
+				deathtouched == false
+			) from $allCardsInCombact
+		
+		exists ( 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
+		)
+			
+	then
+		System.out.println("702.2c --> Marchiamento Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" viene marchiata con Deathtouch !");
+		
+		$pmt.setDeathtouched(true);
+
+		update($g)
+end
 
 rule "702.4a"
 /**
@@ -8012,7 +8126,6 @@ agenda-group "general"
 		System.out.println("702.4a -> Trovato Double Strike: " + $c.getName());
 		update($p)
 end
-
 
 
 //martina-damiano cerco keyword ability equip tra le abilità attivate e setto il booleano 

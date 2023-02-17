@@ -29,6 +29,18 @@ public class Permanent extends MagicObject {
 	// TODO: modificare costruttore ed altri metodi
 	private LinkedList<Permanent> attackersICanBlock;
 	
+	private boolean deathtouched = false;
+
+	public boolean isDeathtouched() {
+		return deathtouched;
+	}
+	
+	public boolean getDeathtouched() {
+		return deathtouched;
+	}
+	public void setDeathtouched(boolean deathtouched) {
+		this.deathtouched = deathtouched;
+	}
 
 	@Override
 	public String toString() {
