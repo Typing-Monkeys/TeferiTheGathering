@@ -148,7 +148,7 @@ window.onload = function() {
     deck0_creatures_only[2] = 1064; // Plains
     deck0_creatures_only[3] = 1068; // Forest
     deck0_creatures_only[4] = 1067; // Mountain
-    deck0_creatures_only[5] = 2191; // Cao Ren, Wei Commander (Creature, Horsemanship, Black)   
+    deck0_creatures_only[5] = 1487; // Test
     deck0_creatures_only[6] = 2882; // Marsh Threader (Creature, Landwalk, Swampwalk, White)   
     deck0_creatures_only[7] = 911; // Crow of Dark Tidings (Creature, Flying, Black)
     deck0_creatures_only[8] = 1673; // Commander Greven il-Vec (Creature, Fear, Black)
@@ -204,7 +204,7 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
-    
+
     deck1.push(2889)
     deck1.push(2889)
     deck1.push(2889)
@@ -216,6 +216,10 @@ window.onload = function() {
     deck1.push(2891)
     deck1.push(2891)
     deck1.push(2891)
+
+    deck1.push(2892)
+    deck1.push(2892)
+    deck1.push(2892)
 
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 

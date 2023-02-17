@@ -287,7 +287,10 @@ public class MagicObject implements Target{
 
 
 	public ArrayList<LinkedList<String>> getCardType() {
-		return cardType;
+		ArrayList<LinkedList<String>> lowerCard = (ArrayList<LinkedList<String>>) cardType.clone();
+		//for(int i=0 ; i<lowerCard.size(); i++)
+		lowerCard.get(0).set(0, lowerCard.get(0).get(0).toLowerCase());
+		return lowerCard;
 	}
 
 
