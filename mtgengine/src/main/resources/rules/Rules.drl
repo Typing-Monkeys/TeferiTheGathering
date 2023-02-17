@@ -2709,10 +2709,24 @@ then
 	choice.choiceText = "Choose which creature will attack";
 	boolean found = false;
 	choice.addOption(-1, "No attack");
+	
+	/*
+	Rule 702.3b. A creature with defender can't attack.
+	*/
 	for(Permanent permanent : $g.battleField) {
 		if(permanent.idController == $id && !permanent.getStatus().isTapped() && !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
-			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
-			found = true;
+			boolean nodefender = true;
+		
+			// Defender check of the selected permanent.
+			if (permanent.checkKeywordAbility("Defender")){
+				System.out.println("702.3b -> Card has Defender, can't attack !");
+				nodefender = false;
+			}	
+			
+			if (nodefender){
+				choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
+				found = true;
+			}
 		}
 	}
 	if(found){
@@ -7243,6 +7257,30 @@ To destroy a permanent, move it from the battlefield to its owner's graveyard.
 	then
 		$rpc.next()
 		update($rpc)
+end
+
+
+rule "702.3a"
+/*
+	9th January 2023
+	702.3a. Defender is a static ability.
+*/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck, $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender")) from $la
+	then
+		System.out.println("702.3a -> Trovata Defender");
+		$a.setKeyword_ability(true);	
+		$a.setStatic_ability(true);
+		//$a.setDefender(true);
+		//$a.setKeyword_text("defender");
+		update($p)
 end
 
 
