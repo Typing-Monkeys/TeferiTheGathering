@@ -469,7 +469,7 @@ public class Permanent extends MagicObject {
 		// TODO: gestire faccia attiva
 		return this.keywordAbilities.get(0)
 				                    .stream()
-				                    .anyMatch((Ability a) -> a.getKeyword_text().trim().equals(keyword_text));
+				                    .anyMatch((Ability a) -> a.getKeyword_text().trim().toLowerCase().equals(keyword_text.toLowerCase()));
 	}
 	
 	@Override

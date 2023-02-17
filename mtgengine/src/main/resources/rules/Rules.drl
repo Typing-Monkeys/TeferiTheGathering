@@ -1450,10 +1450,10 @@ rule "117.5"
 			"704.5b",
 			"704.5c",
 			"704.5f",
+			"702.2b",
 			"704.5g",
 			"704.5i",
-			"704.5j",
-			"702.2b"
+			"704.5j"
 		]);
 		
 		insert(
@@ -8072,12 +8072,19 @@ rule "702.2c"
 	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
 **/
 dialect "mvel"
-salience 500
+salience 600
 no-loop true 
 agenda-group "general"
 	when
-		$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField, $blk: blockingCreatures, $atk: attackingCreatures)
+		$g:Game(
+			stage == Game.GAME_STAGE, 
+			stepTimeFrame == Game.BEGIN_TIME_FRAME, 
+			$bf: battleField, 
+			$blk: blockingCreatures, 
+			$atk: attackingCreatures
+			)
 		eval($g.currentStep.getObject().name == "combat damage")
+		eval($g.stepCombatDamage.getObject() == "510.2")
 		
 		// contiene tutte le carte in combattimento (bloccanti e attaccanti)
 		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
@@ -8086,7 +8093,9 @@ agenda-group "general"
 				$attaccanti: blockedBy.listReference,
 				cardType[0].contains("creature"),
 				Integer.parseInt(toughness[0]) > 0,
-				markedDamage > 0,
+				combatDamage > 0,
+				//markedDamage > 0,
+				//damageDealt > 0,
 				deathtouched == false
 			) from $allCardsInCombact
 		
