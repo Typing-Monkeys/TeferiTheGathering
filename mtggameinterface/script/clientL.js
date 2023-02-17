@@ -204,7 +204,7 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
-    
+
     deck1.push(2889)
     deck1.push(2889)
     deck1.push(2889)
@@ -216,7 +216,6 @@ window.onload = function() {
     deck1.push(2891)
     deck1.push(2891)
     deck1.push(2891)
-
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 
     var deck2= Array(); // White/Blu
