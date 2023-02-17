@@ -8089,7 +8089,43 @@ agenda-group "general"
 		update($g)
 end
 
+rule "702.10a"
+agenda-group "general"	
+dialect "mvel"
+	when 
+		$g:  Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability == false && abilityText.startsWith("haste")) from $la
+		
+		then
+			$a.setStatic_ability(true);
+			System.out.println("Trovato Haste");
+			update($p)
+end
 
+
+rule "702.10b"
+agenda-group "general"	
+no-loop true
+dialect "mvel"
+	when 
+		$g: Game( 
+				stage == Game.GAME_STAGE,
+				$bf: battleField
+			)
+		$pmt: Permanent(
+				cardType[0].contains("creature"),
+				summoningSickness,
+				checkKeywordAbility("haste")
+				) from $bf
+		then 
+			$pmt.summoningSickness=false;
+			System.out.println("Trovata creatura con haste nel battelfied");
+			
+			update($g)
+end
 
 
 rule "702.13.a"
