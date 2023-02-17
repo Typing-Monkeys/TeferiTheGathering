@@ -204,17 +204,18 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
-    deck1.push(2889);
-    deck1.push(2889);
-    deck1.push(2889);
-    deck1.push(2890);
-    deck1.push(2890);
-    deck1.push(2890);
-    deck1.push(2891);
-    deck1.push(2891);
-    deck1.push(2891);
 
+    deck1.push(2889)
+    deck1.push(2889)
+    deck1.push(2889)
 
+    deck1.push(2890)
+    deck1.push(2890)
+    deck1.push(2890)
+
+    deck1.push(2891)
+    deck1.push(2891)
+    deck1.push(2891)
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 
     var deck2= Array(); // White/Blu
@@ -280,6 +281,10 @@ window.onload = function() {
     for(i; i<=59;i++)
         deck3.push(2161); //Enchant Armor of thorns (green)
 
+    var deck_huge_bean = Array(1169, 1958, 2159, 2159, 2160, 2161, 2162, 2163);
+    
+    console.log(deck_huge_bean);
+    console.log(deck0_creatures_only);
 
     var sideboard1 = Array();
     for (var i = 0; i < 7; i++) {
@@ -760,12 +765,17 @@ window.onload = function() {
             deck = deck3; // mono verde 
         } else if((document.getElementById("deck").value) == "4"){
             deck = deck0_creatures_only;
+        } else if((document.getElementById("deck").value) == "5"){
+            deck = deck_huge_bean;
         }
+
         if ((document.getElementById("sideboard").value) == "1") {
             sideboard = sideboard1;
         } else if ((document.getElementById("sideboard").value) == "2") {
             sideboard = sideboard2;
         }
+        
+        console.log(deck);
 
         socket.emit('ready', {
             "playerSettings": {
@@ -814,7 +824,10 @@ window.onload = function() {
             deck = deck3;
         } else if ((document.getElementById("deck").value) == "4") {
             deck = deck0_creatures_only;
+        } else if((document.getElementById("deck").value) == "5"){
+            deck = deck_huge_bean;
         }
+
         if ((document.getElementById("sideboard").value) == "1") {
             sideboard = sideboard1;
         } else if ((document.getElementById("sideboard").value) == "2") {
