@@ -9,13 +9,14 @@ public class Ability {
 	
 	private boolean keyword_ability 	= false;
 	private String 	keyword_text 		= "";
-	
+
 	private String 	abilityText 		= "";
 	// su ability text inserire il testo fornito dal json
 	
+	
+	private boolean trigg_haste 		= false;
 	private boolean spell_ability 		= false; // solo della classe ability on the stack
 	private boolean triggered_ability	= false;
-	
 	
 	//private String 	targetType			= "";
 	//private MagicObject targetted_obj	= null;
@@ -93,6 +94,19 @@ public class Ability {
 		}
 		this.manaCostSymbols=manaCostSymbols;
 	}
+	
+	public boolean isTrigg_haste() {
+		return trigg_haste;
+	}
+	
+	public boolean getTrigg_haste() {
+		return trigg_haste;
+	}
+
+	public void setTrigg_haste(boolean trigg_haste) {
+		this.trigg_haste = trigg_haste;
+	}
+
 
 
 	public LinkedList<String> getActivated_cost() {
@@ -310,8 +324,7 @@ public class Ability {
 	public void setAttached_to(boolean attached_to) {
 		this.attached_to = attached_to;
 	}
-
-
+	
 	public MagicObject getAttached_to_obj() {
 		return attached_to_obj;
 	}
@@ -345,8 +358,6 @@ public class Ability {
 	public LinkedList<String> getTargetType() {
 		return this.targetType;
 	}
-
-
 
 	
 	public boolean cercaTestoNellaStringa(String stringa, String tipo) {
@@ -507,7 +518,8 @@ public class Ability {
 				+ attached_to + ", attached_to_obj=" + attached_to_obj + ", timestamp=" + timestamp
 				+ ", triggered_condition=" + triggered_condition + ", triggered_effect=" + triggered_effect
 				+ ", triggered_instruction=" + triggered_instruction + ", activated_cost=" + activated_cost
-				+ ", activated_effect=" + activated_effect + ", activated_instruction=" + activated_instruction + "]";
+				+ ", activated_effect=" + activated_effect + ", activated_instruction=" + activated_instruction 
+				+ ", trigg_haste" + trigg_haste + "]";
 	}
 
 
@@ -519,6 +531,5 @@ public class Ability {
 	public void setFlash(boolean flash) {
 		this.flash = flash;
 	}
-
 
 }

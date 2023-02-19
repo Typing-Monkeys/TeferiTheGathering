@@ -31,7 +31,6 @@ import com.magicengine.RulePriorityCounter;
 import java.util.*;
 import org.kie.api.runtime.KieSession;
 
-
 rule "updateClients"
 	dialect "mvel"
 	agenda-group "general"
@@ -1451,6 +1450,7 @@ rule "117.5"
 			"704.5b",
 			"704.5c",
 			"704.5f",
+			"702.2b",
 			"704.5g",
 			"704.5i",
 			"704.5j"
@@ -1551,6 +1551,7 @@ then
 	$p.markedDamage += $p.damageDealt;
 	System.out.println($p.getNameAsString()+" ha "+$p.markedDamage+" danni segnati");
 	$p.damageDealt = 0;
+	$g.updateDamage = true;
 	update($g);
 end
 
@@ -2325,13 +2326,14 @@ rule "506.1 part 1"
 	combat damage, and end of combat.*/
 	agenda-group "initialization"
 	dialect "mvel"
+	salience 100
 	when 
 		$p: Player() 
-		$ph : Phase(this.isEmpty(), name == "combat") from $p.turn	
+		$ph : Phase(this.isEmpty(), name == "combat") from $p.turn
 	then
 		$ph.add(new Step("beginning of combat",false));		 		
 		$ph.add(new Step("declare attackers",false));
-		$ph.add(new Step("declare blockers",false));	
+		$ph.add(new Step("declare blockers",false));
 		$ph.add(new Step("combat damage",false));
 		$ph.add(new Step("end of combat",false));		
 		System.out.println("Rule 506.1 --> Player:  "+$p.getNickname());
@@ -2354,14 +2356,35 @@ end
 
 
 rule "506.1 part 3"
-/*
---- November 19, 2021 ---
+/* Tommaso Romani Nicol� Posta
 There are two combat damage steps if any attacking or blocking creature has first strike 
 (see rule 702.7) or double strike (see rule 702.4).*/
 dialect "mvel"
+salience 50
+no-loop true
+agenda-group "general"
 when
-	Game(stage == Game.GAME_STAGE);
+	$g:Game(stage == Game.GAME_STAGE, $bf: battleField, $ph: currentPhase.getObject())
+	eval($g.currentPhase.getObject().name == "combat")
+	eval($ph.size() <= 5)
+	//TODO: mettere che siano tra gli attaccanti o i bloccanti
+	exists (Permanent(
+			(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+		) from $bf)
 then
+	System.out.println("506.1 part 3 -> Aggiunto combat damage per First/Double strike");
+	
+	$ph.remove($ph.size()-1);
+	$ph.remove($ph.size()-1);
+	$ph.add(new Step("combat damage",true));
+	$ph.add(new Step("combat damage",false));
+	$ph.add(new Step("end of combat",false));
+	System.out.println("Size prima dell'aggiunta" + $ph.size());
+
+
+		
+	update($g)
+
 end
 
 		
@@ -2687,10 +2710,24 @@ then
 	choice.choiceText = "Choose which creature will attack";
 	boolean found = false;
 	choice.addOption(-1, "No attack");
+	
+	/*
+	Rule 702.3b. A creature with defender can't attack.
+	*/
 	for(Permanent permanent : $g.battleField) {
 		if(permanent.idController == $id && !permanent.getStatus().isTapped() && !permanent.summoningSickness && permanent.cardType[0].contains("creature")){
-			choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
-			found = true;
+			boolean nodefender = true;
+		
+			// Defender check of the selected permanent.
+			if (permanent.checkKeywordAbility("Defender")){
+				System.out.println("702.3b -> Card has Defender, can't attack !");
+				nodefender = false;
+			}	
+			
+			if (nodefender){
+				choice.addOption(permanent.magicTargetId, permanent.getNameAsString());
+				found = true;
+			}
 		}
 	}
 	if(found){
@@ -4162,13 +4199,16 @@ when
 	$g: Game($scd: stepCombatDamage.listReference)
 	eval($scd.size()==0)
 then
+	System.out.println("510.1 -> Aggiunti step per il combat damage");
+	// aggiungere prima una regola che controlla se c'� o non c'� double/first, se c'� crea la lista con queste 3 aggiunte	
 	$scd.add("510.1a");
 	$scd.add("510.1bc");
+	//$scd.add("702.2b");
 	$scd.add("510.1d");
 	//$scd.add("510.1e");
 	$scd.add("510.2");
 	$scd.add("510.3");
-	$scd.add("510.4");
+	//$scd.add("510.4");
 	$g.stepCombatDamage.next();
 	update($g);	
 end	
@@ -4190,28 +4230,50 @@ when
 then
 	System.out.println("510.1a -> calcola combat damage da power");
 	int powerInt = 0;
+
 	for(Permanent attacker : $g.attackingCreatures.listReference){
-		powerInt = Integer.parseInt(attacker.power[0]);
-		if(powerInt<=0){
+		if($g.firstStrikeAttaking == true && !((!attacker.checkKeywordAbility("First strike") && attacker.checkKeywordAbility("Double strike"))||((attacker.checkKeywordAbility("First strike") && !attacker.checkKeywordAbility("Double strike"))))){
 			attacker.damageToAssign = 0;
-			System.out.println(attacker.getNameAsString()+" ha "+attacker.damageToAssign+" danni");
+			System.out.println(attacker.getNameAsString()+" non fa danni perchè non ha First/Double Strike");
 		} else {
-			attacker.damageToAssign = powerInt;
-			System.out.println(attacker.getNameAsString()+" ha "+attacker.damageToAssign+" danni");
+			powerInt = Integer.parseInt(attacker.power[0]);
+			if(powerInt<=0){
+				attacker.damageToAssign = 0;
+				System.out.println(attacker.getNameAsString()+" ha "+attacker.damageToAssign+" danni");
+			} else {
+				attacker.damageToAssign = powerInt;
+				System.out.println(attacker.getNameAsString()+" ha "+attacker.damageToAssign+" danni");
+			}
 		}
 	}
 	
 	for(Permanent blocker : $g.blockingCreatures.listReference){
-		powerInt = Integer.parseInt(blocker.power[0]);
-		if(powerInt<=0){
+		if($g.notRedoDamage == false && blocker.checkKeywordAbility("First strike")){
 			blocker.damageToAssign = 0;
-			System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+			System.out.println(blocker.getNameAsString()+" non fa danni da difensore perchè li ha fatti prima con First Strike");
 		} else {
-			blocker.damageToAssign = powerInt;
-			System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+			if($g.firstStrikeAttaking == true && !((!blocker.checkKeywordAbility("First strike") && blocker.checkKeywordAbility("Double strike"))||((blocker.checkKeywordAbility("First strike") && !blocker.checkKeywordAbility("Double strike"))))){
+				blocker.damageToAssign = 0;
+				System.out.println(blocker.getNameAsString()+" non fa danni da difensore perchè non ha First/Double Strike");
+			} else {
+				powerInt = Integer.parseInt(blocker.power[0]);
+				if(powerInt<=0){
+					blocker.damageToAssign = 0;
+					System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				} else {
+					blocker.damageToAssign = powerInt;
+					System.out.println(blocker.getNameAsString()+" ha "+blocker.damageToAssign+" danni");
+				}
+			}
 		}
 	}
-	$g.attackingCreatures.movePointer(0);
+
+	if($g.attackingCreatures.listReference.size() > 0){
+		$g.attackingCreatures.movePointer(0);
+	}
+	
+	System.out.println("510.1a -> indice attuale di step: "+ $g.currentStep.getObject().name);
+	System.out.println("510.1a -> step addizionale? "+ $g.currentStep.getObject().additional);
 	$g.stepCombatDamage.next();
 	update($g);	
 end	
@@ -4666,6 +4728,7 @@ November 19, 2021
 510.3. Third, the active player gets priority. (See rule 117, "Timing and Priority.")*/
 agenda-group "general"
 dialect "mvel"
+salience 500
 when
 	$g:Game(stage == Game.GAME_STAGE, $ac : activePlayer, stepTimeFrame == Game.BEGIN_TIME_FRAME)
 	eval($g.currentStep.getObject().name == "combat damage")
@@ -4693,21 +4756,190 @@ rule "510.3a"
 	
 end
 
-rule "510.4"
-	/*
-	November 19, 2021
-	510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
-	only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
-	combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
-	that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
-	double strike. After that step, the phase proceeds to the end of combat step.*/
-	agenda-group "general"
-	dialect "mvel"
-	when
-		$g:Game(stage == Game.GAME_STAGE)
-	then
+
+rule "510.4 part 1a"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures, $blk: blockingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == false)
+	$allCardsInCombact: (Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+
+	exists(Permanent(
+		(checkKeywordAbility("Double strike") || checkKeywordAbility("First strike"))
+	) from $allCardsInCombact)
+	
+then
+	System.out.println("510.4 part 1a");
+	//Mi salvo la lista di tutti gli attaccanti e difensori di prima
+	System.out.println("Tutti gli attaccanti selezionati "+$atk.listReference);
+	
+
+	// copia della lista
+	for(Permanent tmp: $atk.listReference) {
+		$g.stepFirstStikeAttackingCreatures.add(tmp);
+	}
+
+	// ricerca carte first/double strike
+	$atk.listReference.clear();
+	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
+		if (tmp.checkKeywordAbility("First strike") || tmp.checkKeywordAbility("Double strike")){
+			System.out.println("Trovato FIRST/DOUBLE STRIKE da riaggiungere alla lista degli attaccanti");
+			$atk.listReference.add(tmp);
+		}
+	}
+	
+	System.out.println("Tutti gli attaccanti selezionati dopo averli salvati " + $g.stepFirstStikeAttackingCreatures);
+	System.out.println("Tutti gli attaccanti selezionati con First Strike" + $atk.listReference);
+
+	$g.firstStrikeAttaking = true;
+	update($g)
+
 end
 
+
+
+rule "510.4 part 2a"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $atk: attackingCreatures)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	eval($g.stepCombatDamage.getObject() == "510.1a")
+	eval($g.firstStrikeAttaking == true)
+	eval($g.notRedoDamage == false)
+then
+	System.out.println("510.4 part 2a");
+
+
+	for(Permanent tmp: $atk.listReference) {
+		$g.auxiliaryListFirstStrike.add(tmp);
+	
+	}
+	$atk.listReference.clear();
+
+	// double strike
+	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
+		if (tmp.checkKeywordAbility("Double strike")){
+			$atk.listReference.add(tmp);
+		}
+	}
+	
+	for(Permanent tmp: $g.stepFirstStikeAttackingCreatures) {
+		if (!tmp.checkKeywordAbility("First strike") && !tmp.checkKeywordAbility("Double strike")){
+			$atk.listReference.add(tmp);
+		}
+	}
+
+	$g.stepFirstStikeAttackingCreatures.clear();
+
+	for(Permanent tmp: $g.auxiliaryListFirstStrike) {
+		if (!tmp.checkKeywordAbility("Double strike")){
+			$g.stepFirstStikeAttackingCreatures.add(tmp);
+		}
+	}
+	$g.auxiliaryListFirstStrike.clear();
+	$g.firstStrikeAttaking = false;
+	update($g);
+
+end
+
+rule "510.4 part 3a"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 400
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.DURING_TIME_FRAME)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == true)
+	eval($g.stepCombatDamage.getObject() == "510.3")
+	eval($g.firstStrikeAttaking == true)
+	eval($g.notRedoDamage == true)
+then
+
+	$g.attackingPlayer.toHead();
+	$g.defendingPlayers.toHead();
+	
+	$g.attackingCreatures.toHead();
+	
+	$g.blockingCreatures.toHead();
+
+	$g.stepCombatDamage.movePointer(0);
+	$g.currentStep.next();
+
+	$g.stepTimeFrame = Game.BEGIN_TIME_FRAME;
+	System.out.println("510.4 part 3a");
+
+	$g.notRedoDamage = false;
+	update($g)
+
+end
+
+
+
+rule "510.4 update_damage"
+/*
+Tommaso Romani Nicol� Posta
+November 19, 2021
+510.4. If at least one attacking or blocking creature has first strike (see rule 702.7) or double strike (see rule 702.4) as the combat damage step begins, the 
+only creatures that assign combat damage in that step are those with first strike or double strike. After that step, instead of proceeding to the end of 
+combat step, the phase gets a second combat damage step. The only creatures that assign combat damage in that step are the remaining attackers and blockers 
+that had neither first strike nor double strike as the first combat damage step began, as well as the remaining attackers and blockers that currently have 
+double strike. After that step, the phase proceeds to the end of combat step.*/
+agenda-group "general"
+dialect "mvel"
+no-loop true
+salience 500
+when
+	$g:Game(stage == Game.GAME_STAGE, stepTimeFrame == Game.BEGIN_TIME_FRAME, $bf: battleField)
+	eval($g.currentStep.getObject().name == "combat damage" && $g.currentStep.getObject().additional == false)
+	eval($g.updateDamage == true)
+
+	$pmt: Permanent(
+				cardType[0].contains("creature"),
+				Integer.parseInt(toughness[0]) > 0,
+				Integer.parseInt(toughness[0]) <= markedDamage
+			) from $bf
+then
+	
+	System.out.println("510.4 --> Controlling if there are creatures that have marked damage greater or equal than toughness.");
+	System.out.println($pmt.getNameAsString+" ha toughness "+Integer.parseInt($pmt.toughness[0])+" e danni "+$pmt.markedDamage);
+	System.out.println($pmt.getNameAsString+" viene distrutta");
+	$g.destroy($pmt);
+	System.out.println("----------- TEST 510.4 -----------");
+	$g.updateDamage = false;
+	update($g)
+end
 
 //END OF COMBAT STEP
 
@@ -4775,6 +5007,10 @@ then
 	$g.stepDeclareAttackers.movePointer(0);
 	$g.stepDeclareBlockers.movePointer(0);
 	$g.stepCombatDamage.movePointer(0);
+
+	$g.auxiliaryListFirstStrike.clear();
+	$g.stepFirstStikeAttackingCreatures.clear();
+	$g.notRedoDamage = true;
 	
 	for(Step step : $g.currentStep.listReference){
 		if(step.name == "declare blockers" || step.name == "combat damage"){
@@ -7049,6 +7285,30 @@ To destroy a permanent, move it from the battlefield to its owner's graveyard.
 end
 
 
+rule "702.3a"
+/*
+	9th January 2023
+	702.3a. Defender is a static ability.
+*/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck, $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && abilityText.startsWith("Defender")) from $la
+	then
+		System.out.println("702.3a -> Trovata Defender");
+		$a.setKeyword_ability(true);	
+		$a.setStatic_ability(true);
+		//$a.setDefender(true);
+		//$a.setKeyword_text("defender");
+		update($p)
+end
+
+
 rule "704.3"
 /*
 --- November 19, 2021 ---
@@ -7213,7 +7473,7 @@ it ceases to exist.
 end
 
 
-rule "704.5f"
+rule "704.5f"	//non trigghera :+1
 /*
 November 19, 2021
 704.5f. If a creature has toughness 0 or less, it's put into its owner's graveyard.
@@ -7230,7 +7490,12 @@ Regeneration can't replace this event.
 	then
 		System.out.println("704.5f --> Controlling if there are creature that have toughness lower or equal than zero.");	
 		for (Permanent p : $bf) {
-			if (p.cardType[0].contains("creature") && Integer.parseInt(p.toughness[0]) <= 0) {
+			if(p.deathtouched){
+				System.out.println(p.getNameAsString + " ha Deathtouch !");
+				System.out.println(p.getNameAsString + " viene distrutta");
+				$g.destroy(p);
+			} 
+			else if (p.cardType[0].contains("creature") && Integer.parseInt(p.toughness[0]) <= 0) {
 				System.out.println(p.getNameAsString + " ha toughness minore di 0");
 				System.out.println(p.getNameAsString + " viene distrutta");
 				$g.destroy(p);
@@ -7754,6 +8019,145 @@ agenda-group "general"
 end
 
 
+rule "702.2a"
+/**
+	Deathtouch is a static ability.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+agenda-group "general"
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().startsWith("deathtouch")) from $la
+	then
+		$a.setStatic_ability(true);
+		System.out.println("702.2a -> Trovato Deathtouch: " + $c.getName());
+		
+		update($p)
+end
+	
+	
+rule "702.2b"
+/**
+	A creature with toughness greater than 0 that s been dealt damage by a source with deathtouch since the 
+	last time state-based actions were checked is destroyed as a state-based action. 
+	See rule 704.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+dialect "mvel"
+salience 500
+no-loop true 
+agenda-group "general"
+when
+	$g: Game(
+			stage == Game.GAME_STAGE, 
+			$bf : battleField,
+			$attaccanti: attackingCreatures.listReference,
+			$bloccanti: blockingCreatures.listReference,
+			controlStateBasedActions
+		)
+	
+	// contiene tutte le carte in combattimento (bloccanti e attaccanti)
+   	$allCardsInCombact: (Permanent() from $attaccanti or Permanent() from $bloccanti)
+    $pmt: Permanent (
+				cardType[0].contains("creature"),
+				deathtouched == true
+			) from $allCardsInCombact
+		
+	then
+		System.out.println("702.2b --> Morte per Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" subisce Deathtouch !");
+		System.out.println("\t" + $pmt.getNameAsString+" viene distrutta");
+		
+		GameEngine.sendToNode("La carta " + $pmt.getNameAsString + " viene distrutta per Deathtouch!");
+			
+		$g.destroy($pmt);
+
+		update($g)
+end
+
+
+rule "702.2c"
+/**
+	Any nonzero amount of combat damage assigned to a creature by a source with deathtouch is considered to 
+	be lethal damage for the purposes of determining if a proposed combat damage assignment is valid, 
+	regardless of that creature s toughness. 
+	See rules 510.1c-d.
+	
+	@date 2022/2023
+	@author Cristian Cosci, Fabrizio Fagiolo, Nicolò Vescera
+**/
+dialect "mvel"
+salience 600
+no-loop true 
+agenda-group "general"
+	when
+		$g:Game(
+			stage == Game.GAME_STAGE, 
+			stepTimeFrame == Game.BEGIN_TIME_FRAME, 
+			$bf: battleField, 
+			$blk: blockingCreatures, 
+			$atk: attackingCreatures
+			)
+		eval($g.currentStep.getObject().name == "combat damage")
+		eval($g.stepCombatDamage.getObject() == "510.2")
+		
+		// contiene tutte le carte in combattimento (bloccanti e attaccanti)
+		$allCardsInCombact: ( Permanent() from $atk.listReference or Permanent() from $blk.listReference)
+		$pmt: Permanent(
+				$difensori: blockedCreatures.listReference,
+				$attaccanti: blockedBy.listReference,
+				cardType[0].contains("creature"),
+				Integer.parseInt(toughness[0]) > 0,
+				combatDamage > 0,
+				//markedDamage > 0,
+				//damageDealt > 0,
+				deathtouched == false
+			) from $allCardsInCombact
+		
+		exists ( 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $difensori or 
+			Permanent(cardType[0].contains("creature") && checkKeywordAbility("Deathtouch")) from $attaccanti
+		)
+			
+	then
+		System.out.println("702.2c --> Marchiamento Deathtouch.");
+		System.out.println("\t" + $pmt.getNameAsString+" viene marchiata con Deathtouch !");
+		
+		$pmt.setDeathtouched(true);
+
+		update($g)
+end
+
+rule "702.4a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicol� Posta
+**/
+/*Double Strike is a static ability.*/
+agenda-group "general"
+//no-loop true
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("double strike")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setKeyword_ability(true);
+		$a.setKeyword_text("double strike");
+		System.out.println("702.4a -> Trovato Double Strike: " + $c.getName());
+		update($p)
+end
 
 
 //martina-damiano cerco keyword ability equip tra le abilità attivate e setto il booleano 
@@ -7805,6 +8209,32 @@ agenda-group "general"
 
 		update($p)
 end
+
+
+rule "702.7a"
+/**
+	@date 2022/2023
+	@author Tommaso Romani, Nicol� Posta
+**/
+/*First Strike is a static ability.*/
+agenda-group "general"
+//no-loop true
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			abilityText.toLowerCase().contains("first strike")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setKeyword_ability(true);
+		$a.setKeyword_text("first strike");
+		System.out.println("702.7a -> Trovato First Strike: " + $c.getName());
+		update($p)
+end
+
+
 rule "702.9a"
 /*
 	November 19, 2021
@@ -7866,7 +8296,43 @@ agenda-group "general"
 		update($g)
 end
 
+rule "702.10a"
+agenda-group "general"	
+dialect "mvel"
+	when 
+		$g:  Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getAbilities()
+		$a : Ability(keyword_ability==false && static_ability == false && abilityText.startsWith("haste")) from $la
+		
+		then
+			$a.setStatic_ability(true);
+			System.out.println("Trovato Haste");
+			update($p)
+end
 
+
+rule "702.10b"
+agenda-group "general"	
+no-loop true
+dialect "mvel"
+	when 
+		$g: Game( 
+				stage == Game.GAME_STAGE,
+				$bf: battleField
+			)
+		$pmt: Permanent(
+				cardType[0].contains("creature"),
+				summoningSickness,
+				checkKeywordAbility("haste")
+				) from $bf
+		then 
+			$pmt.summoningSickness=false;
+			System.out.println("Trovata creatura con haste nel battelfied");
+			
+			update($g)
+end
 
 
 rule "702.13.a"

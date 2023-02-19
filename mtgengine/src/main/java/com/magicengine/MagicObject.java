@@ -289,13 +289,23 @@ public class MagicObject implements Target{
 	public ArrayList<LinkedList<String>> getCardType() {
 		ArrayList<LinkedList<String>> lowerCard = (ArrayList<LinkedList<String>>) cardType.clone();
 		lowerCard.get(0).set(0, lowerCard.get(0).get(0).toLowerCase());
-		
 		return lowerCard;
 	}
 
 
 	public void setCardType(LinkedList<String> cardType) {
-		this.cardType.add(cardType);
+		/**
+		 * Converte le stringe in lowercase per rendere piu semplici
+		 * i controlli in DROOLS
+		 */
+		LinkedList<String> listToLower = new LinkedList<String>();
+		
+		for(String elem : cardType) {
+			listToLower.add(elem.toLowerCase());
+		}
+		this.cardType.add(listToLower);
+
+		//this.cardType.add(cardType);
 	}
 	
 	

@@ -198,10 +198,16 @@ public class Game {
 	private ListPointer<Player> defendingPlayers;
 	private ListPointer<Permanent> attackingCreatures;
 	private ListPointer<Permanent> blockingCreatures;
+	private LinkedList<Permanent> stepFirstStikeAttackingCreatures; 
+	private LinkedList<Permanent> stepFirstStikeBlockingCreatures;
+	private LinkedList<Permanent> auxiliaryListFirstStrike;
 	private ListPointer<String> stepDeclareAttackers;
 	private ListPointer<String> stepDeclareBlockers;
 	private ListPointer<String> stepCheckEvasionAbility;
 	private boolean blockValid; // flag di controllo per validità dei blocchi
+	private boolean firstStrikeAttaking = false; // flag per non far fare danni dai bloccnati senza first strike
+	private boolean notRedoDamage = true;
+	private boolean updateDamage = false;
 	private ListPointer<String> stepCombatDamage;
 	private LinkedList<Target> possibleTarget;
 	// --------------------------------------------------------------------------------------
@@ -268,6 +274,9 @@ public class Game {
 		this.defendingPlayers = new ListPointer<Player>(new LinkedList<Player>());
 		this.attackingCreatures = new ListPointer<Permanent>(new LinkedList<Permanent>());
 		this.blockingCreatures = new ListPointer<Permanent>(new LinkedList<Permanent>());
+		this.stepFirstStikeAttackingCreatures = new LinkedList<Permanent>();
+		this.stepFirstStikeBlockingCreatures = new LinkedList<Permanent>();
+		this.auxiliaryListFirstStrike = new LinkedList<Permanent>();
 		this.stepDeclareAttackers = new ListPointer<String>(new LinkedList<String>());
 		this.stepDeclareBlockers = new ListPointer<String>(new LinkedList<String>());
 		this.stepCheckEvasionAbility = new ListPointer<String>(new LinkedList<String>());
@@ -948,4 +957,54 @@ public class Game {
 	public void setDiscardTurn(boolean discardTurn) {
 		this.discardTurn = discardTurn;
 	}
+
+
+	public boolean isFirstStrikeAttaking() {
+		return firstStrikeAttaking;
+	}
+
+	public void setFirstStrikeAttaking(boolean firstStrikeAttaking) {
+		this.firstStrikeAttaking = firstStrikeAttaking;
+	}
+
+	public boolean getNotRedoDamage() {
+		return notRedoDamage;
+	}
+
+	public void setNotRedoDamage(boolean notRedoDamage) {
+		this.notRedoDamage = notRedoDamage;
+	}
+
+	public List<Permanent> getStepFirstStikeAttackingCreatures() {
+		return stepFirstStikeAttackingCreatures;
+	}
+
+	public void setStepFirstStikeAttackingCreatures(LinkedList<Permanent> stepFirstStikeAttackingCreatures) {
+		this.stepFirstStikeAttackingCreatures = stepFirstStikeAttackingCreatures;
+	}
+
+	public List<Permanent> getStepFirstStikeBlockingCreatures() {
+		return stepFirstStikeBlockingCreatures;
+	}
+
+	public void setStepFirstStikeBlockingCreatures(LinkedList<Permanent> stepFirstStikeBlockingCreatures) {
+		this.stepFirstStikeBlockingCreatures = stepFirstStikeBlockingCreatures;
+	}
+
+	public LinkedList<Permanent> getAuxiliaryListFirstStrike() {
+		return auxiliaryListFirstStrike;
+	}
+
+	public void setAuxiliaryListFirstStrike(LinkedList<Permanent> auxiliaryListFirstStrike) {
+		this.auxiliaryListFirstStrike = auxiliaryListFirstStrike;
+	}
+
+	public boolean isUpdateDamage() {
+		return updateDamage;
+	}
+
+	public void setUpdateDamage(boolean updateDamage) {
+		this.updateDamage = updateDamage;
+	}
+
 }
