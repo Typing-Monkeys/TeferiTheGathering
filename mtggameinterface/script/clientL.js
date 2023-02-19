@@ -205,18 +205,28 @@ window.onload = function() {
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
 
+    deck1.push(2888)
+
+    // lightnig Hounds (First strike)
     deck1.push(2889)
     deck1.push(2889)
     deck1.push(2889)
 
+    // Fancing Ace (Double strike)
     deck1.push(2890)
     deck1.push(2890)
     deck1.push(2890)
 
+    // Hired Prisoner (Deathtouch)
     deck1.push(2891)
     deck1.push(2891)
     deck1.push(2891)
 
+    // Flash Ability
+    deck1.push(2161)    // Armor of Thorns (Aura)
+    deck1.push(2169)    // Encase in Ice (Aura)
+    deck1.push(2885)    // Arcangel Avacyn (Angel)
+    
     deck1.push(2892)
     deck1.push(2892)
     deck1.push(2892)

@@ -44,6 +44,7 @@ public class Ability {
 	private String activated_instruction =null;
 	LinkedList<ManaSymbol> manaCostSymbols=null;
 			
+	private boolean flash = false;
 	
 	//public boolean checkedByDrools = false;
 
@@ -519,6 +520,16 @@ public class Ability {
 				+ ", triggered_instruction=" + triggered_instruction + ", activated_cost=" + activated_cost
 				+ ", activated_effect=" + activated_effect + ", activated_instruction=" + activated_instruction 
 				+ ", trigg_haste" + trigg_haste + "]";
+	}
+
+
+	public boolean hasFlash() {
+		return flash;
+	}
+
+
+	public void setFlash(boolean flash) {
+		this.flash = flash;
 	}
 
 }

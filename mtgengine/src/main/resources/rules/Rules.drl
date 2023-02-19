@@ -5322,21 +5322,42 @@ agenda-group "general"
 dialect "mvel"
 when 
 	Game(stage == Game.GAME_STAGE, castingSpell == null)
+	
 	$act: Action($id: id, option == Game.CAST_INSTANT_SPELL)
-	$p: Player(id == $id)
+	$p: Player(id == $id, $hand: hand)
+
 then
 	MakeChoice choice = new MakeChoice();
 	choice.idChoice = 60121;
 	choice.choiceText = "Choose which card to play";
 	boolean found = false;
 	// La ricerca delle carte castabili va fatta in tutte le zone
-	for(Card card : $p.hand) {
-		if(card.cardType.size() > 0 && card.cardType[0].contains("instant")
-		&& !card.cardType[0].contains("land")) {
-			choice.addOption(card.magicTargetId, card.getNameAsString());
-			found = true;
+	for(Card card : $hand) {
+		boolean foundInHand = false;
+		
+		if( card.cardType.size() > 0 && 
+			card.cardType[0].contains("instant") && 
+			!card.cardType[0].contains("land")) {
+				choice.addOption(card.magicTargetId, card.getNameAsString());
+				found = true;
+				foundInHand = true;
+		}
+		
+		if (!foundInHand){
+			System.out.println("702.8a -> Sto cercando flash tra le varie zone");
+			
+			for (LinkedList abilityList: card.getKeywordAbilities()){
+				for (Ability ability: abilityList){
+					if (ability.hasFlash()) {
+						System.out.println("702.8a -> Carta giocabile con Flash " + card.getNameAsString());
+						choice.addOption(card.magicTargetId, card.getNameAsString());
+						found = true;
+					}
+				}
+			}
 		}
 	}
+
 	if(found) {
 		GameEngine.sendToNode(choice, Game.CHOICE, Game.ONE_OF_CHOICE, $id);
 		GameEngine.sendToNode("The player " + $p.nickname + " wants cast a spell.");
@@ -5422,7 +5443,9 @@ then
 			$g.castingSpell = s;
 		}
 	}
+	
 	$p.hand.remove($g.castingSpell.originCard);
+
 	GameEngine.sendToNode("The player " + $p.nickname + " choosen to cast " + $g.castingSpell.name);
 	System.out.println("601.2a -> The player " + $p.nickname + " choosen to cast " + $g.castingSpell.name);
 	retract($ca);
@@ -8161,6 +8184,31 @@ agenda-group "general"
 end
 //è as a sorcery e targetted
 
+rule "702.8a"
+/**
+	 Flash is a static ability
+	 
+	 @author Cristian Cosci, Nicolò Vescera
+	 @date 2022/2023
+**/
+dialect "mvel"
+no-loop true
+agenda-group "general"	
+	when
+		$g : Game(stage == Game.STARTING_STAGE)
+		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
+		$c : Card() from $lib
+		$la: LinkedList() from $c.getKeywordAbilities()
+		$a : Ability(keyword_ability==false && static_ability==false && 
+			keyword_text.toLowerCase().startsWith("flash")) from $la
+	then
+		$a.setStatic_ability(true);
+		$a.setFlash(true);
+		
+		System.out.println("702.8a -> Trovato Flash: " + $c.getName());
+
+		update($p)
+end
 
 
 rule "702.7a"
@@ -8185,7 +8233,6 @@ agenda-group "general"
 		System.out.println("702.7a -> Trovato First Strike: " + $c.getName());
 		update($p)
 end
-
 
 
 rule "702.9a"
