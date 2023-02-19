@@ -24,9 +24,19 @@
 	- [***702.4 Double Strike*** :bowling: :bowling:](#7024-double-strike-bowling-bowling)
 		- [**Descrizione** :mag:](#descrizione-mag-2)
 		- [**Implementazione :computer:**](#implementazione-computer-2)
+			- [1. Trovare `Double Strike` nei mazzi](#1-trovare-double-strike-nei-mazzi)
 	- [***702.7 First Strike*** :bowling:](#7027-first-strike-bowling)
 		- [**Descrizione** :mag:](#descrizione-mag-3)
 		- [**Implementazione :computer:**](#implementazione-computer-3)
+			- [1. Trovare `First Strike` nei mazzi](#1-trovare-first-strike-nei-mazzi)
+	- [***510.4 Gestione Turno Bonus***  :bowling: :bowling: :bowling:](#5104-gestione-turno-bonus--bowling-bowling-bowling)
+		- [***Descrizione***](#descrizione)
+		- [***Implementazione***](#implementazione)
+			- [1. Controllare la presenza di creature con ***First/Double Strike*** tra gli attaccanti o i difensori.](#1-controllare-la-presenza-di-creature-con-firstdouble-strike-tra-gli-attaccanti-o-i-difensori)
+			- [***2. Controllo se ci sono creature con Fist o Double strike tra gli attaccanti o i difensori quandi ci si trova nel combat damage step***](#2-controllo-se-ci-sono-creature-con-fist-o-double-strike-tra-gli-attaccanti-o-i-difensori-quandi-ci-si-trova-nel-combat-damage-step)
+			- [***3. Riporta i puntatori delle liste delgi attaccanti in cima alla lista***](#3-riporta-i-puntatori-delle-liste-delgi-attaccanti-in-cima-alla-lista)
+			- [***4. Rimetto a posto le liste delgi attaccanti dopo che si è risolto il turno bonus***](#4-rimetto-a-posto-le-liste-delgi-attaccanti-dopo-che-si-è-risolto-il-turno-bonus)
+			- [***5. Aggiorno i danni subiti nel turno bonus e distruggo le eventuali carte che hanno danni maggiori ti toughness***](#5-aggiorno-i-danni-subiti-nel-turno-bonus-e-distruggo-le-eventuali-carte-che-hanno-danni-maggiori-ti-toughness)
 	- [***702.8 Flash*** :flashlight:](#7028-flash-flashlight)
 		- [**Descrizione** :mag:](#descrizione-mag-4)
 		- [**Implementazione :computer:**](#implementazione-computer-4)
@@ -106,7 +116,6 @@ rule "702.2a"
  when 
  	$g: Game( 
  			stage == Game.GAME_STAGE,  
- 			$bf : battleField, 
  			$attaccanti: attackingCreatures.listReference, 
  			$bloccanti: blockingCreatures.listReference, 
  			controlStateBasedActions 
@@ -142,10 +151,10 @@ rule "702.2a"
  	"704.5b", 
  	"704.5c", 
  	"704.5f", 
+ 	"702.2b" 
  	"704.5g", 
  	"704.5i", 
- 	"704.5j", 
- 	"702.2b" 
+ 	"704.5j" 
  ]); 
 ```
 
@@ -156,7 +165,7 @@ rule "702.2a"
 - Successivamente ci assicuriamo di trovarsi nello step `"combat damage"`.
 - E come fatto in precedenza andiamo a creare una lista di tutte le **carte in combattimento (attaccanti e bloccanti)**, 
 - la lista comprende tutte le carte indipendentemente da dove si trovano.
-- Dalla **lista** controlliamo che questa sia ancora in vita (`toughness > 0`), che subisca almeno 1 danno (`markedDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`). 
+- Dalla **lista** controlliamo che questa sia ancora in vita (`toughness > 0`), che subisca almeno 1 danno (`combatDamage > 0`) e che non sia stata già marchiata con `Deathtouch` (`deathtouched == false`). 
 - viene eseguito il controllo `deathtouched == false` perché più istanze di Deathtouch `sono ridondanti`. 
 - Quindi se le precedenti condizioni risultano vere e se esiste almeno una carta che abbia `Deathtouch` tra le creature che bloccano (rispettivamente le liste `blockedCreatures` e `blockedBy`),
 - la carta viene marchiata con `Deathtouch` (`deathtouched = true`)
@@ -189,7 +198,7 @@ rule "702.2a"
  				$attaccanti: blockedBy.listReference, 
  				cardType[0].contains("creature"), 
  				Integer.parseInt(toughness[0]) > 0, 
- 				markedDamage > 0, 
+ 				combatDamage > 0, 
  				deathtouched == false 
  			) from $allCardsInCombat 
  		 
@@ -417,7 +426,7 @@ end
 ```
 <hr>
 
-## ***_510.4 Gestione Turno Bonus_***
+## ***510.4 Gestione Turno Bonus***  :bowling: :bowling: :bowling:
 
 ### ***Descrizione***
 
