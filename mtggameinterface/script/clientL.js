@@ -148,7 +148,7 @@ window.onload = function() {
     deck0_creatures_only[2] = 1064; // Plains
     deck0_creatures_only[3] = 1068; // Forest
     deck0_creatures_only[4] = 1067; // Mountain
-    deck0_creatures_only[5] = 2191; // Cao Ren, Wei Commander (Creature, Horsemanship, Black)   
+    deck0_creatures_only[5] = 1487; // Test
     deck0_creatures_only[6] = 2882; // Marsh Threader (Creature, Landwalk, Swampwalk, White)   
     deck0_creatures_only[7] = 911; // Crow of Dark Tidings (Creature, Flying, Black)
     deck0_creatures_only[8] = 1673; // Commander Greven il-Vec (Creature, Fear, Black)
@@ -204,6 +204,32 @@ window.onload = function() {
         deck1.push(1460); //Bela (Normal Creature)
     for(i; i<=59;i++)
         deck1.push(2159); //Enchant Equipment (Black)
+
+    deck1.push(2888)
+
+    // lightnig Hounds (First strike)
+    deck1.push(2889)
+    deck1.push(2889)
+    deck1.push(2889)
+
+    // Fancing Ace (Double strike)
+    deck1.push(2890)
+    deck1.push(2890)
+    deck1.push(2890)
+
+    // Hired Prisoner (Deathtouch)
+    deck1.push(2891)
+    deck1.push(2891)
+    deck1.push(2891)
+
+    // Flash Ability
+    deck1.push(2161)    // Armor of Thorns (Aura)
+    deck1.push(2169)    // Encase in Ice (Aura)
+    deck1.push(2885)    // Arcangel Avacyn (Angel)
+    
+    deck1.push(2892)
+    deck1.push(2892)
+    deck1.push(2892)
 
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 
@@ -270,6 +296,10 @@ window.onload = function() {
     for(i; i<=59;i++)
         deck3.push(2161); //Enchant Armor of thorns (green)
 
+    var deck_huge_bean = Array(1169, 1958, 2159, 2159, 2160, 2161, 2162, 2163);
+    
+    console.log(deck_huge_bean);
+    console.log(deck0_creatures_only);
 
     var sideboard1 = Array();
     for (var i = 0; i < 7; i++) {
@@ -750,12 +780,17 @@ window.onload = function() {
             deck = deck3; // mono verde 
         } else if((document.getElementById("deck").value) == "4"){
             deck = deck0_creatures_only;
+        } else if((document.getElementById("deck").value) == "5"){
+            deck = deck_huge_bean;
         }
+
         if ((document.getElementById("sideboard").value) == "1") {
             sideboard = sideboard1;
         } else if ((document.getElementById("sideboard").value) == "2") {
             sideboard = sideboard2;
         }
+        
+        console.log(deck);
 
         socket.emit('ready', {
             "playerSettings": {
@@ -804,7 +839,10 @@ window.onload = function() {
             deck = deck3;
         } else if ((document.getElementById("deck").value) == "4") {
             deck = deck0_creatures_only;
+        } else if((document.getElementById("deck").value) == "5"){
+            deck = deck_huge_bean;
         }
+
         if ((document.getElementById("sideboard").value) == "1") {
             sideboard = sideboard1;
         } else if ((document.getElementById("sideboard").value) == "2") {

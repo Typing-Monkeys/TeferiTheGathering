@@ -29,6 +29,18 @@ public class Permanent extends MagicObject {
 	// TODO: modificare costruttore ed altri metodi
 	private LinkedList<Permanent> attackersICanBlock;
 	
+	private boolean deathtouched = false;
+
+	public boolean isDeathtouched() {
+		return deathtouched;
+	}
+	
+	public boolean getDeathtouched() {
+		return deathtouched;
+	}
+	public void setDeathtouched(boolean deathtouched) {
+		this.deathtouched = deathtouched;
+	}
 
 	@Override
 	public String toString() {
@@ -457,7 +469,7 @@ public class Permanent extends MagicObject {
 		// TODO: gestire faccia attiva
 		return this.keywordAbilities.get(0)
 				                    .stream()
-				                    .anyMatch((Ability a) -> a.getKeyword_text().trim().equals(keyword_text));
+				                    .anyMatch((Ability a) -> a.getKeyword_text().trim().toLowerCase().equals(keyword_text.toLowerCase()));
 	}
 	
 	@Override
