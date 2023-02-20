@@ -5564,6 +5564,7 @@ when
 	$g: Game(stage == Game.GAME_STAGE, $g.getCastingSpell()!=null)
 	$spell: Spell(targetted_id==-1, $id: idPlayer, $scs: stepCastingSpell.listReference) from $g.getCastingSpell()	
 	$p: Player(id == $id)
+	eval($spell.getStepCastingSpell().getObject()!= null)
 	eval($spell.getStepCastingSpell().getObject().equals("601.2cfase1"))
 then
 	System.out.println("601.2c: si deve selezionare il target dell'aura");
@@ -5784,6 +5785,7 @@ rule "601.2f"
 		$g: Game(stage == Game.GAME_STAGE, castingSpell != null, castingSpell.getTotalCost() == null, $spell: castingSpell)
 		$act: Action($id: id, option == Game.CAST_INSTANT_SPELL || option == Game.CAST_NON_INSTANT_SPELL)
 		$p: Player(id == $id)
+		eval($spell.getStepCastingSpell().getObject() != null)
 		eval($spell.getStepCastingSpell().getObject().equals("601.2f"))
 	then
 		$spell.initializeTotalCost();
@@ -5806,6 +5808,7 @@ rule "601.2g"
 		$act: Action($id: id, option == Game.CAST_INSTANT_SPELL || option == Game.CAST_NON_INSTANT_SPELL)
 		$p: Player(id == $id)
 		not ManaAbility()
+		eval($spell.getStepCastingSpell().getObject() != null)
 		eval($spell.getStepCastingSpell().getObject().equals("601.2g"))
 	then
 		MakeChoice choice = new MakeChoice();
@@ -6000,6 +6003,7 @@ when
 	$g: Game(stage == Game.GAME_STAGE, castingSpell != null, castingSpell.sufficientMana == true, $stack: stack, $spell: castingSpell)
 	$act: Action($id: id, option == Game.CAST_INSTANT_SPELL || option == Game.CAST_NON_INSTANT_SPELL)
 	$p: Player(id == $id)
+	eval($spell.getStepCastingSpell().getObject() != null)
 	eval($spell.stepCastingSpell.getObject().equals("601.2h"))
 then
 	System.out.println("601.2h");
@@ -7877,14 +7881,12 @@ agenda-group "general"
 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
-		$a : Ability(targetted_ability == false && (abilityText.contains("Target ") == true 
-			|| abilityText.contains("Targets ") == true)) from $la
+		$a : Ability(targetted_ability == false, cercaTestoNellaStringa("target") || cercaTestoNellaStringa("targets")) from $la
 	then	
+		System.out.println("La modifica che ho fatto funziona !!");
 		$a.setTargetted_ability(true);
 		$a.setManaCostSymbols();
-		System.out.println("SONO DENTRO E PRIMA DELLO SLPIT !!");
 		String[] words = $a.getAbilityText().split(" ");
-		System.out.println("SONO DENTRO E DOPO DELLO SLPIT !!");
 		
 		int i=0;
 		int j=0;
