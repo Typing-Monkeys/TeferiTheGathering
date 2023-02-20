@@ -231,6 +231,10 @@ window.onload = function() {
     deck1.push(2892)
     deck1.push(2892)
 
+    // Sorcery
+    deck1.push(2893)
+    deck1.push(2893)
+    deck1.push(2893)
 
 // - DECK 2 DECLARATION ----------------------------------------------------------------------------- 
     var deck2= Array(); // White/Blu

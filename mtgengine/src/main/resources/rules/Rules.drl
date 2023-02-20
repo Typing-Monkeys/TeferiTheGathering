@@ -7877,17 +7877,20 @@ agenda-group "general"
 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
-		$a : Ability(targetted_ability == false && (abilityText.contains("target ") == true 
-			|| abilityText.contains("targets ") == true)) from $la
+		$a : Ability(targetted_ability == false && (abilityText.contains("Target ") == true 
+			|| abilityText.contains("Targets ") == true)) from $la
 	then	
 		$a.setTargetted_ability(true);
 		$a.setManaCostSymbols();
+		System.out.println("SONO DENTRO E PRIMA DELLO SLPIT !!");
 		String[] words = $a.getAbilityText().split(" ");
+		System.out.println("SONO DENTRO E DOPO DELLO SLPIT !!");
+		
 		int i=0;
 		int j=0;
 		boolean trovato=false;
 		for(i = 0; i < words.length-1; i++){
-			if(words[i].equals("target") || words[i].equals("targets")){
+			if(words[i].toLowerCase().equals("target") || words[i].toLowerCase().equals("targets")){
 				if(
 					words[i+1].equals("artifact") ||
 					words[i+1].equals("creature") ||
