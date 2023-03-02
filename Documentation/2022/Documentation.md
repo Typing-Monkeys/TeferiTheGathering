@@ -895,3 +895,528 @@ dialect "mvel"
   	      update($g)
 end
 ```
+
+## Bug Fixes
+
+### Sorcery - NullPointerException
+
+La Sorcery a nostra disposizione, _Addle_, non aveva nessun sottotipo. Questo impediva alla regola `601.2c` di triggerare.
+Questa è stata riscritta come segue:
+
+```java
+rule "601.2c"
+agenda-group "general"
+dialect "mvel"
+when
+	$g: Game(stage == Game.GAME_STAGE, $g.getCastingSpell()!=null)
+	$spell: Spell(targetted_id==-1, $id: idPlayer, $scs: stepCastingSpell.listReference) from $g.getCastingSpell()	
+	eval($scs.size()==0)
+	$p: Player(id == $id)
+	$listaSottoTipi: LinkedList() from $spell.getSubtype()
+then
+	for (String sottoTipo : $listaSottoTipi) {
+		if(sottoTipo == "Aura"){
+			System.out.println("AURA");
+			$scs.add("601.2cfase1");
+			$scs.add("601.2cfase2");	
+		}
+	}
+	////da aggiungere 
+	//$sda.add("601.2d");
+	//$sda.add("601.2e");
+	$scs.add("601.2f");
+	$scs.add("601.2g");
+	$scs.add("601.2h");
+	
+	$spell.stepCastingSpell.next();
+	update($g);			
+end
+```
+
+### Instant/Sorcery - SoftLock
+
+La regola che finalizzava il cast delle Spell Instant, aveva un problema nel `when`: la condizione `resolvingSpell.isPermanent == null` era malposta in quanto bisogna controllare che sia `false` !
+
+```java
+rule "608.2m Spell" 
+ /* 
+ November 19, 2021 
+ 608.2m  
+ */ 
+ dialect "mvel" 
+ agenda-group "general" 
+ no-loop true  
+ 	when 
+ 		$g: Game(stage == Game.GAME_STAGE, resolvingSpell != null, resolvingSpell.isPermanent == false, $id: resolvingSpell.idController) 
+ 		$p: Player(id == $id) 
+ 	then 
+ 		if($g.resolvingSpell.cardType[0].contains("instant") || $g.resolvingSpell.cardType[0].contains("sorcery")) { 
+ 			$g.resolvingSpell.originCard.idGraveyard = $g.getIdGraveyardCounter(); 
+ 			$p.graveyard.add($g.resolvingSpell.originCard); 
+ 			$g.resolvingSpell = null; 
+ 			$g.resolvedSpell = true; 
+ 			System.out.println("608.2m -> The resolved spell was an Instant or a Sorcery Spell: it goes in the graveyard"); 
+ 			GameEngine.sendToNode("Instant or a Sorcery Spell resolved goes to Graveyard"); 
+ 		}  
+ 		update($g); 
+ end
+```
+
+### Mulligan discard
+
+La funzione `discard` è utilizzata solo per 'scartare' le carte durante la fase di Mulligan (le carte non vengono scartate ma messe in fondo al mazzo).
+Per scartare una carta si utilizza:
+
+```java
+player.graveyard.add(card)
+```
+
+Questa funzione è stata rinominata in `sendToBottomLibrary` ed è stato migliorato il relativo javadoc.
+
+### .DS_Store
+
+Rimossi tutti i file `.DS_Store` e aggiunto `.gitignore` per impedirne il tracciamento.
+
+### Rule 514.1
+
+Implementato funzionamento della regola 514.1 che era completamente assente.
+La regola è stat divisa in 3 sottosezioni:
+
+1. _Sezione 1 (head)_: è la testa della regola, quella che capisce quando è il momento di entrare nella fase di _discarding_ dato che un player ha un numero eccessivo di carte nella mano. La regola si attiva solo nella fase di "cleanup" e viene cambiato `stepTimeFrame` in modo da impedire che le altre regole vengano eseguite.
+```java
+rule "514.1" 
+ /* 
+ November 22, 2022 
+ First, if the active players hand contains more cards than his or her  
+ maximum hand size (normally seven), he or she discards enough cards to reduce  
+ his or her hand size to that number. This turn-based action doesnt use the  
+ stack. 
+  
+ Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci. 
+ */ 
+ agenda-group "general" 
+ salience 300 
+ dialect "mvel" 
+ when  
+ 	$g:Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.BEGIN_TIME_FRAME) 
+ 	eval($g.currentStep.getObject().name=="cleanup") 
+  
+ 	$p : Player(hand.size > maxHandSize) from $players 
+ then 
+ 	//passa alla fase di scarto delle carte in eccesso 
+ 	$p.discardToMaxHandSize = true; 
+ 	$g.stepTimeFrame = Game.CLEANUP_TIME_FRAME; 
+ 	System.out.println("514.1 -> discrdToMaxHandSize started"); 
+ 	update($g); 
+ end
+```
+2. _Sezione 2 (selectHandler)_: in questa fase viene creata la `Choise` per poi essere mandata al server Node con tutte le varie carte che possono essere selezionate ed il numero esatto di carte da selezionare. Questa fase viene eseguita una volta solo per player grazie alle variabili `discardToMaxHandSize` e `beginningDiscardingToMaxHandSize` che permettono anche di gestire l'attesa della risposta del player. 
+```java
+rule "514.1 selectHandler" 
+ /* 
+ November 22, 2022 
+ First, if the active players hand contains more cards than his or her  
+ maximum hand size (normally seven), he or she discards enough cards to reduce  
+ his or her hand size to that number. This turn-based action doesnt use the  
+ stack. 
+  
+ Edited by Nicolò Posta, Tommaso Romani, Nicolò Vescera, Fabrizio Fagiolo, Cristian Cosci. 
+ */ 
+ agenda-group "general" 
+ salience 200 
+ dialect "mvel" 
+ when 
+ 	$g : Game(stage == Game.GAME_STAGE, $players : players, stepTimeFrame == Game.CLEANUP_TIME_FRAME) 
+ 	$p : Player(discardToMaxHandSize && beginningDiscardingToMaxHandSize) from $players 
+ then 
+ 	//crea la MakeChoise da inviare al Node 
+ 	MakeChoice choice = new MakeChoice(); 
+ 	choice.idChoice = Game.DISCARD_TO_MAXHANDSIZE; 
+ 	choice.choiceText = "Choose " + ($p.getHand().size() - $p.getMaxHandSize()) + " card/s to discard"; 
+ 	for(Card card : $p.hand) { 
+ 		choice.addOption(card.magicTargetId, card.getNameAsString()); 
+ 	} 
+ 	 
+ 	//invia la choice al server  
+ 	GameEngine.sendToNode(choice, Game.CHOICE, Game.MULTIPLE_CHOICE, $p.id); 
+ 	 
+ 	//Impedisce che questa regola venga avviata molteplici volte mentre il giocatore aspetta di fare la scelta 
+ 	$p.beginningDiscardingToMaxHandSize = false; 
+ 	update($g); 
+ end
+```
+3. _Sezione 3 (answerHandler)_: questa è l'ultima fase della regola. Qui viene gestita la risposta dell'utente: se questo ha selezionato il numero esatto di carte vengono scartate, altrimenti viene mandato un messaggio di errore al server Node e rieffettuata la scelta fin quando il numero corretto di carte non verà scelto. Alla fine vengono ripristinati i valori iniziali delle variabili per poter continuare con la normale esecuzioen del gioco. 
+
+### Java & NodeJS
+
+Risolti vari problemi del server NodeJs e del ClientHTML:
+
+- Adesso quando un ClientHTML che sta giocando si disconnette, NodeJS avvisa tutti gli altri Client nella stanza e forza la chiusura di tutti i socket assegnando la vittoria all'altro giocatore rimasto in partita.
+-  Il Debugger può entrare e abbandonare quando vuole senza che causi il crash del server
+- Il Guest Player può entrare e uscire quando vuole senza che causi il crash del server
+- Quando viene forzata la chiusura di un Game, i ClientHTML connessi vengono buttati fuori, chiuse le varie connessioni e resettati allo stato iniziale (ritornano allo stato di quando li apri per la prima volta).
+- Quando Java viene chiuso o crasha, NodeJS forza la chiusura di tutte le connessioni relative a quel Game che Java gestiva per impedire al Node di crashare e lasciare tutto in uno stato consistente e vivo. I ClientHTML connessi vengono buttati fuori e resettati.
+- Quando NodeJS viene chiuso (`SIGINT`) o crasha per via di un'eccezione non controllata, forza la chiusura con tutti i socket io e Java, per far si che i ClientHTML vengano avvisati dell'accaduto e resettati e per impedire a Java di crashare
+- Tutto è stato testato e sembra funzionare 🚀 
+
+
+#### NodeJS viene chiuso/eccezione
+
+Il problema è stato risolto con le seguenti motifiche:
+```javascript
+ /** 
+  * Questa funzione viene lanciata quando i server NodeJs o Java vengono 
+  * chiusi di cattiveria. Forzano la disconnessione di tutti i socket 
+  * io (quelli tra Node e ClientHTML) e JSocket (tra Node e Java). 
+  * @author Fabrizio Fagiolo, Nicolò Vescera 
+  *  
+  * @param {string} msg messaggio da mostrare ai ClientHTML 
+  */ 
+ function forcedExit(msg="NodeJs server closed") { 
+     console.log("Closing all Sockets ..."); 
+  
+     for (const [socketRoom, socket] of Object.entries(room2jsocket)) { 
+         console.log(`Closing Sockets for Room ${socketRoom}`); 
+  
+         console.log(`Closing JSocket`); 
+         socket.sendMessage({"kill": 0}); 
+  
+         console.log(`Closing ClientHTML connection`); 
+         io.sockets.in(socketRoom).emit("clientLeave", msg); 
+     } 
+  
+     console.log("Done :D"); 
+ }; 
+  
+  
+ /************************************************** 
+  ** SERVER INITIALISATION 
+  **************************************************/ 
+ function init() { 
+     // Set up Socket.IO to listen on port SERVER_PORT 
+     server.listen(SERVER_PORT, () => { 
+         console.log("listening on: " + SERVER_PORT); 
+     }); 
+  
+      
+  
+     /** 
+      * Quando viene lanciata un'eccezione non gestita 
+      * viene forzata la chiusura di tutti i Socket (io e JSocket) 
+      * ed infine chiuso il server NodeJS 
+      *   
+      * @author Fabrizio Fagiolo, Nicolò Vescera 
+      */ 
+     process.on('uncaughtException', (err, origin) => { 
+         console.error(`Exception: ${err}`); 
+         console.error(`from origin: ${origin}`); 
+  
+         forcedExit(); 
+         process.exit(1); 
+       }); 
+  
+     /** 
+      * Quando NodeJs riceve SIGINT (CTRL+C) vengono chiusi 
+      * tutti i socket con Java per evitare che questo vada in Loop 
+      *  
+      * @author Nicolò Vescera 
+      */ 
+     process.on('SIGINT', function() { 
+         console.log("\nDetected SIGINT (CTRL+C) !!"); 
+         forcedExit(); 
+         process.exit(0); 
+       }); 
+        
+  
+     // Start listening for events 
+     setServerEventHandlers(); 
+ }
+```
+
+La funzione `forcedExit` serve per forzare ed assicurarsi che tutti i socket vengano chiusi.
+Le seguenti righe catturano il segnale di `SIGINT` e solo dopo aver chiuso tutti i socket chiude il server.
+```javascript
+process.on('SIGINT', function() { 
+     console.log("\nDetected SIGINT (CTRL+C) !!"); 
+     forcedExit(); 
+     process.exit(0); 
+   });
+```
+
+Stesso discorso per queste, solo che viene controllato se un'eccezione non controllata è stata lanciata.
+```javascript
+process.on('uncaughtException', (err, origin) => { 
+     console.error(`Exception: ${err}`); 
+     console.error(`from origin: ${origin}`); 
+  
+     forcedExit(); 
+     process.exit(1); 
+   });
+```
+*Questo permette a Java di rimanere in vita anche se il server NodeJS crasha o viene chiuso 🚀*
+
+#### Java viene chiuso/crasha
+
+Ora quando Java viene chiuso o crasha, il server NodeJS viene avvisato e forza la disconnessione di tutti i ClientHTML legati alle partite che Java stava gestendo.
+```javascript
+function onClose() { 
+     // Dovrebbe chiudere il socket o roba del genere ?? 
+     console.log("Connection from java closed"); 
+  
+     /** 
+      * Quando Java viene chiuso o crasha (?) 
+      * vengono chiusi tutti i Socket (io e JSocket) e  
+      * viene inviato il messaggio ai ClientHTML 
+      *  
+      * @author Fabrizio Fagiolo, Nicolò Vescera 
+      */ 
+     forcedExit(msg="Java server closed"); 
+ }
+```
+
+_Questo permette a NodeJS di rimanere vivo quando Java crasha o viene chiuso e di poter resettare tutti i ClientHTML 🚀_
+
+#### Debugger/Guest/Player abbandonano il Game
+
+```javascript
+function onClientDisconnect() { 
+     numconn--; 
+  
+     // se TRUE, un player si sta disconnettendo 
+     // se FALSe, il debugger si sta disconnettendo 
+     var isPlayerDisconnecting = true; 
+  
+     // inizializzo il messaggio di avviso disconnessione 
+     var msg = `Player has disconnected ${this.id}`; 
+  
+     console.debug(socket2player[this.id]); 
+  
+     //send request "close stream" to java server 
+     var playerRoom = socket2player[this.id].room; 
+     var playerId = socket2player[this.id].id; 
+     jSocket = room2jsocket[playerRoom]; 
+  
+     // player disconnection 
+     this.leave(playerRoom); 
+  
+     if (this.id === idDebugger) { 
+         isPlayerDisconnecting = false;      // indica che il debugger si disconnette 
+         idDebugger = null;                  // resetta l'idDebugger 
+         msg = "Debugger has disconnected";  // messagio da mandare ai client 
+     } 
+  
+     // guest disconnecting 
+     if (socketGuest !== null && this.id == socketGuest.id) { 
+         isPlayerDisconnecting = false;      // indica che il guest si disconnette 
+         socketGuest = null 
+         msg = `Guest Player has disconnected ${this.id}`; 
+     } 
+  
+     // emit the message 
+     console.log(msg); 
+     io.sockets.in(playerRoom).emit("messaggio", msg); 
+  
+     if (isPlayerDisconnecting) { 
+         // avvisa tutti i client connessi alla stanza di abbandonare la partita 
+         io.sockets.in(playerRoom).emit("clientLeave", msg); 
+         jSocket.sendMessage({"exit": playerId });    // avvisa java di resettare il game 
+         //room += '1';                               // create new room 
+     } 
+  
+     //delete player from maps 
+     delete socket2player[this.id]; 
+ }
+```
+
+Quando un ClientHTML viene chiuso o crasha, la funzione `onClientDisconnect` viene avviata. Vengono eseguite alcune operazioni comuni a tutte le tipologie di Player che abbandonano:
+
+- Viene decrementato il numero di connessioni attive 
+- Il Player che ha causato questo evento abbandona la stanza 
+- Vengono avvisati tutti gli altri Player connessi di questo evento 
+- Il socket relativo a questo player e le informazioni salvate vengono eliminate 
+
+Poi, operazioni differenti vengono eseguite in base a chi sta abbandonando:
+
+- se è il Debugger ad aver abbandonato: vengono rimosse le informazioni relative al debugger. Questo fa si che il Game rimanga vivo.
+- se è il Guest ad aver abbandonato: vengono pulite e resettate le informazioni sul Guest Player e basta.
+- se è il Player ad avere abbandonato: vengono avvertiti tutti gli altri socket che è stato un Player ad abbandonare e quindi il gioco è terminato; viene anche avvisato Java di porre fine al Game in corso.
+
+#### NodeJS gestione di nuovi Player
+
+Quando un nuovo ClientHTML si connette al server NodeJS viene fatta partire la funzione `onNewPlayer`. Questa ha il compito di gestire il nuovo player e in base al numero di player già pronti deve:
+
+- se non c'è nessuno, il prossimo player sarà il Player 1
+- se già uno Player è connesso, il successivo sarà il Player 2
+- se ce ne sono già 2, il successivo sarà il Guest Player.
+ 
+```javascript
+function onNewPlayer(numPlayer) { 
+     numconn++; 
+  
+     //console.debug(`numconn: ${numconn}`); 
+     //console.debug("numPlayer: ", typeof numPlayer, numPlayer); 
+     //console.debug(`PLAYERS_NUMBER: ${PLAYERS_NUMBER}`); 
+     //console.debug(`JSON_PLAYERS: ${JSON_PLAYERS}`); 
+  
+     //SOLO SE è il PRIMO -- cioè se numConn == 1 
+     //if PNumber==2 non tocco nulla 
+     if (numconn == 1) { 
+         PLAYERS_NUMBER = numPlayer.num_player; //toReview 
+         JSON_PLAYERS = { playersNumber: PLAYERS_NUMBER }; 
+     } 
+  
+     /* if(numconn%PLAYERS_NUMBER >= JSON_PLAYERS) { 
+         room += '1'; 
+     } */ 
+  
+     //ToDO: choice ROOM 
+     console.debug(room); 
+     this.join(room); 
+  
+     //fill the maps 
+     var newPlayer = new Player(room, numconn); 
+     socket2player[this.id] = newPlayer; 
+  
+     //ToDo: handle more room 
+     /*  
+      * queste 2 riche non fanno molto, 
+      * la gunzione getSizeRoom ritorna il numero di ClientHTML connessi, 
+      * basta solo che se ne apre uno (senza compilare nessun campo o premere il botteno Join Room) 
+      * per aumentarne il valore. 
+      */ 
+     var roomSize = getSizeRoom(room.toString()); 
+     console.log(roomSize + " players in room"); 
+  
+     /* CHECK IF ROOM IS FULL --------------------------------------------------------------------------------------------------------*/ 
+     if (numconn < PLAYERS_NUMBER) { 
+         console.log(numconn + " player connected of " + PLAYERS_NUMBER); 
+         io.sockets 
+             .in(room) 
+             .emit( 
+                 "messaggio", 
+                 "Join to the room...waiting for " + 
+                 (PLAYERS_NUMBER - numconn) + 
+                 " players..." 
+             ); 
+     } 
+  
+     if (numconn == PLAYERS_NUMBER) { 
+         //room is full 
+         console.log("last player connected, ready to play"); 
+         this.emit("messaggio", "Join to the room..."); 
+         io.sockets 
+             .in(room) 
+             .emit("messaggio", "Press SEND PLAYER DATA to send data!"); 
+         //open java connection 
+         var javaSocket = connectToJava(); 
+         javaSocket.sendMessage(JSON_PLAYERS); 
+         //fill the map 
+         room2jsocket[room] = javaSocket; 
+     } 
+  
+     if (numconn > PLAYERS_NUMBER) { 
+         console.log("Guest connected " + this.id); 
+  
+         //guest player 
+         socketGuest = this; 
+          
+         // avvisa tutti gli altri partecipanti della connessione del guest 
+         io.sockets.in(room).emit("messaggio", "Guest Player join the room !"); 
+     } 
+     /*END --------------------------------------------------------------------------------------------------------------------------------*/ 
+ } 
+```
+
+Qui c'era un problema per cui il GameEngine di Java veniva fatto partire troppe volte per una singola partita (deve esserci 1 GameEngine per 1 Partita, ovvero 1 GameEngine ogni 2 Player). Il GameEngine (java) veniva avviato ogni volta che un ClientHTML veniva aperto e questo causava uno strano comportamento lato server (js) e il fatto che una connessione rimaneva sempre aperta tra java e js. È stato risolto con la seguente modifica (`numconn` al posto di `roomSize`).
+Questo perchè `roomSize` viene incrementato appena un ClientHTML viene aperto, basto solo aprirlo e non serve premere alcun bottone per causare questo incremento. 
+
+```javascript
+if (numconn < PLAYERS_NUMBER) { 
+     console.log(numconn + " player connected of " + PLAYERS_NUMBER); 
+     io.sockets 
+         .in(room) 
+         .emit( 
+             "messaggio", 
+             "Join to the room...waiting for " + 
+             (PLAYERS_NUMBER - numconn) + 
+             " players..." 
+         ); 
+ } 
+  
+ if (numconn == PLAYERS_NUMBER) { 
+     //room is full 
+     console.log("last player connected, ready to play"); 
+     this.emit("messaggio", "Join to the room..."); 
+     io.sockets 
+         .in(room) 
+         .emit("messaggio", "Press SEND PLAYER DATA to send data!"); 
+     //open java connection 
+     var javaSocket = connectToJava(); 
+     javaSocket.sendMessage(JSON_PLAYERS); 
+     //fill the map 
+     room2jsocket[room] = javaSocket; 
+ } 
+  
+ if (numconn > PLAYERS_NUMBER) { 
+     console.log("Guest connected " + this.id); 
+  
+     //guest player 
+     socketGuest = this; 
+      
+     // avvisa tutti gli altri partecipanti della connessione del guest 
+     io.sockets.in(room).emit("messaggio", "Guest Player join the room !"); 
+ }
+```
+
+#### ClientHTML reset
+
+Ora i ClientHTML possono essere forzati a disconnettersi tramite la seguente modifica:
+```javascript
+ socket.on('clientLeave', function(data) { 
+     disconnectFunction(); 
+  
+     //console.log(data); 
+     alert(data); 
+     
+     // ricarica la pagine per resettare lo stato iniziale del client 
+     window.location.reload(); 
+ });
+```
+
+Questo fa sì che il NodeJS può, tramite un messaggio socket, scatenare l'evento `clientLeave` e forzare il client a disconnettersi dalla partita.
+
+Questa disconnessione avviene tramite invocando la funzione `disconnectFunction`, mostrando un `alert` con il messaggio ricevuto dal serve ed infine ricaricando la pagina per ripristinare il ClientHTML allo stato iniziale.
+
+```javascript
+function disconnectFunction() { 
+       document.getElementById("message").textContent = "disconnected"; 
+       console.log("DISCONNECTED"); 
+       socket.disconnect(); 
+ document.getElementById('nomePlayer').classList.remove("inGamePlayerName"); 
+       $('.create_room').show(); 
+       $('.in_room').hide(); 
+   } 
+   disconnect.onclick = disconnectFunction;
+```
+
+La `disconnectFunction` era il comportamento del bottone disconnect, che ora è stata resa una funzione che può essere chiamata in tutto il ClientHTML.
+
+#### Java force exit game
+
+Quando Java riceve da NodeJS il messaggio di `kill` termina il Game avvisando.
+
+```java
+ received = getJson(cleanJson, "kill"); 
+ if (received != null) { 
+ 	System.out.println("ricevuto kill"); 
+ 	System.out.println(String.format("Killing Game because NodeJs is closed (exit message %s)", received)); 
+ 	break; 
+ }
+```
+
+## Future Work
+
+- Correzione del Graveyard
+- Segnalazione dei "danni" tramite `<div>` etichetta
+- Controllo delle regole di cast
+- Aggiornare/riscrivere il servizio node alle versioni aggiornate
