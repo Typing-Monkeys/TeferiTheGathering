@@ -5506,12 +5506,13 @@ when
 	eval($scs.size()==0)
 	$p: Player(id == $id)
 	$listaSottoTipi: LinkedList() from $spell.getSubtype()
-	$sottoTipo : String() from $listaSottoTipi
 then
-	if($sottoTipo == "Aura"){
-		System.out.println("AURA");
-		$scs.add("601.2cfase1");
-		$scs.add("601.2cfase2");	
+	for (String sottoTipo : $listaSottoTipi) {
+		if(sottoTipo == "Aura"){
+			System.out.println("AURA");
+			$scs.add("601.2cfase1");
+			$scs.add("601.2cfase2");	
+		}
 	}
 	////da aggiungere 
 	//$sda.add("601.2d");
@@ -7138,7 +7139,7 @@ dialect "mvel"
 agenda-group "general"
 no-loop true 
 	when
-		$g: Game(stage == Game.GAME_STAGE, resolvingSpell != null, resolvingSpell.isPermanent == null, $id: resolvingSpell.idController)
+		$g: Game(stage == Game.GAME_STAGE, resolvingSpell != null, resolvingSpell.isPermanent == false, $id: resolvingSpell.idController)
 		$p: Player(id == $id)
 	then
 		if($g.resolvingSpell.cardType[0].contains("instant") || $g.resolvingSpell.cardType[0].contains("sorcery")) {
@@ -7877,17 +7878,18 @@ agenda-group "general"
 		$p : Player($id : id, $nickname: nickname, $deck: deck; $lib: library, library.size() > 0);
 		$c : Card() from $lib
 		$la: LinkedList() from $c.getAbilities()
-		$a : Ability(targetted_ability == false && (abilityText.contains("target ") == true 
-			|| abilityText.contains("targets ") == true)) from $la
+		$a : Ability(targetted_ability == false, cercaTestoNellaStringa("target") || cercaTestoNellaStringa("targets")) from $la
 	then	
+		System.out.println("La modifica che ho fatto funziona !!");
 		$a.setTargetted_ability(true);
 		$a.setManaCostSymbols();
 		String[] words = $a.getAbilityText().split(" ");
+		
 		int i=0;
 		int j=0;
 		boolean trovato=false;
 		for(i = 0; i < words.length-1; i++){
-			if(words[i].equals("target") || words[i].equals("targets")){
+			if(words[i].toLowerCase().equals("target") || words[i].toLowerCase().equals("targets")){
 				if(
 					words[i+1].equals("artifact") ||
 					words[i+1].equals("creature") ||
